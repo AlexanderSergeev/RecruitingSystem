@@ -3,10 +3,9 @@ packages/
 Logs/
 bin/
 obj/
-app/.js
-app/.js.map
 .vs
 *.dll
 *.cache
 *.pdb
 node_modules/
+*.map

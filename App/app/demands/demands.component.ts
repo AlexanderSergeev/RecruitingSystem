@@ -25,10 +25,37 @@ import { Demand } from '../shared/demand';
             </tbody>
         </table>
     </div>
-    <button [routerLink]="['/demands/form']" class="btn btn-success">Добавить</button>
-    <div id="popup">
-        <router-outlet></router-outlet>
-    </div>`,
+    <button (click)="popUpShow();" [routerLink]="['/demands/form']" class="btn btn-success">Добавить</button>
+	
+	<style>
+	  .b-popup {
+		width: 100%;
+		min-height: 100%;
+		background-color: rgba(0,0,0,0.5);
+		overflow: hidden;
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 10000;
+	}
+
+	.b-popup .b-popup-content {
+		margin: 200px auto 0 auto;
+		height: 100%;
+		max-width: 350px;
+		max-height: 400px;
+		padding: 8px;
+		background-color: #ffffff;
+		border-radius: 5px;
+		box-shadow: 0 0 10px #000;
+	}
+	</style>
+	
+	<div hidden="hidden" class="b-popup" id="popup1">
+		<div class="b-popup-content">
+			<router-outlet></router-outlet>
+		</div>
+	</div>`,
     providers: [DemandsService]
 })
 export class DemandsComponent implements OnInit {
@@ -41,4 +68,8 @@ export class DemandsComponent implements OnInit {
             this.demands = res;
         });
     }
+	
+	popUpShow() {
+		document.getElementById("popup1").style.display = "block";
+	}
 }
