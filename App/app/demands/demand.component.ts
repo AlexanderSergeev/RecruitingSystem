@@ -2,8 +2,6 @@
 import { DemandsService } from '../shared/demands.service';
 import { Candidate } from '../shared/candidate';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CartService } from '../shared/cart.service';
-import { WishListService } from '../shared/wishlist.service';
 
 @Component({
     selector: 'demand',
@@ -26,18 +24,18 @@ import { WishListService } from '../shared/wishlist.service';
             </tbody>
         </table>
     </div>`,
-    providers: [DemandsService, CartService, WishListService]
+    providers: [DemandsService]
 })
 export class DemandComponent implements OnInit, OnDestroy {
 
     candidates: Candidate[] = [];
     sub: any;
 
-    constructor(private demandsService: DemandsService, private cartService: CartService, private wishListService: WishListService, private route: ActivatedRoute, private router: Router) { }
+    constructor(private demandsService: DemandsService, private route: ActivatedRoute, private router: Router) { }
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
             let id = params['id'];
-            this.demandsService.getDemand(id).subscribe(res => {
+            this.demandsService.getDemandCandidates(id).subscribe(res => {
                 this.candidates = res;
             });
         });
@@ -45,15 +43,5 @@ export class DemandComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.sub.unsubscribe();
-    }
-
-    addToCart(idCar: number) {
-        this.cartService.addToCart(idCar);
-    }
-
-    addToWishList(idCar: number) {
-        this.wishListService.addToWishList(idCar).subscribe(function () {
-            alert("Adding successful");
-        });
     }
 }

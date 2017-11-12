@@ -137,7 +137,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DataAccess\SqlScripts\DropDB.sql" />
     <Content Include="external\Scripts\bootstrap.js" />
     <Content Include="external\Scripts\bootstrap.min.js" />
     <None Include="external\Scripts\jquery-1.10.2.intellisense.js" />
@@ -156,7 +155,6 @@
     <Content Include="external\Styles\bootstrap.min.css" />
     <Content Include="external\Styles\Site.css" />
     <Content Include="Global.asax" />
-    <Content Include="DataAccess\SqlScripts\CreateDB.sql" />
     <Content Include="systemjs.config.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

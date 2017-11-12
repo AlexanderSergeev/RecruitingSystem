@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using App.Models;
+using System;
 
 namespace App.DataAccess
 {
@@ -7,8 +8,14 @@ namespace App.DataAccess
     {
         IEnumerable<Demand> GetDemands();
 
-        IEnumerable<Candidate> GetDemandCandidates(System.Guid id);
+        Demand GetDemand(Guid id);
+
+        IEnumerable<Candidate> GetDemandCandidates(Guid id);
 
         Demand AddDemand(Demand d);
+		
+		Demand EditDemand(Demand d);
+		
+		Demand DeleteDemand(Guid id);
     }
 }

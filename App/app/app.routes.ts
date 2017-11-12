@@ -16,6 +16,9 @@ const routes: Routes = [
             {
                 path: 'form', component: DemandFormComponent,
             },
+            {
+                path: 'form/:id', component: DemandFormComponent,
+            },
         ]
     },
     {

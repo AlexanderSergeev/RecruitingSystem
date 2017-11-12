@@ -9,9 +9,10 @@ import { Demand } from '../shared/demand';
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Имя</th>
+                    <th>Название</th>
                     <th>Статус</th>
                     <th>Локация</th> 
+                    <th></th>
                     <th></th>
                 </tr>
             </thead>
@@ -19,13 +20,20 @@ import { Demand } from '../shared/demand';
                 <tr *ngFor="let demand of demands">
                     <td>{{demand.Name}}</td>
                     <td>{{demand.DemandStatus}}</td>
-                    <td>{{demand.DemandLocation}}</td>
+                    <td *ngIf="demand.DemandLocation==null;else unset">
+                        N/А
+                    </td>
+                    <ng-template #unset>  
+                        <td>{{demand.DemandLocation}}</td>  
+                    </ng-template>
                     <td><a [routerLink]="['/demands', demand.Id] ">Список кандидатов</a></td>
+                    <button (click)="popUpShow();" [routerLink]="['/demands/form', demand.Id]" class="btn btn-success">Редактировать</button>
+                    <button (click)="remove(demand.Id);" style="margin-left:5px;" class="btn btn-success">Удалить</button>
                 </tr>
             </tbody>
         </table>
     </div>
-    <button (click)="popUpShow();" [routerLink]="['/demands/form']" class="btn btn-success">Добавить</button>
+    <button (click)="popUpShow();" [routerLink]="['/demands/form', 0]" class="btn btn-primary">Добавить</button>
 	
 	<style>
 	  .b-popup {
@@ -70,6 +78,14 @@ export class DemandsComponent implements OnInit {
     }
 	
 	popUpShow() {
-		document.getElementById("popup1").style.display = "block";
-	}
+        document.getElementById("popup1").style.display = "block";
+    }
+
+    remove(id: number) {
+        const demandsComponent = this;
+        this.demandsService.remove(id).subscribe(function () {
+            let index = demandsComponent.demands.findIndex(d => d.Id == id);
+            demandsComponent.demands.splice(index, 1);
+        });
+    }
 }

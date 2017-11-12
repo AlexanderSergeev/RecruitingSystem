@@ -23,6 +23,18 @@ namespace App.DataAccess
         {
             return context.Demands;
         }
+
+        public Demand GetDemand(Guid id)
+        { 
+            foreach (Demand t in context.Demands)
+            {
+                if (t.Id == id)
+                {
+                    return t;
+                }
+            }
+            return null;
+        }
         public IEnumerable<Candidate> GetDemandCandidates(Guid id)
         {
             var arr = context.Demands.Include(t => t.Candidates);
@@ -44,5 +56,36 @@ namespace App.DataAccess
             context.SaveChanges();
             return d;
         }
+
+        public Demand EditDemand(Demand d)
+        {
+            var demand = context.Demands
+                .Where(c => c.Id == d.Id)
+                .FirstOrDefault();
+            if (demand != null)
+            {
+                demand = d;
+                context.SaveChanges();
+                return d;
+            }
+            return null;
+        }
+
+        public Demand DeleteDemand(Guid id)
+        {
+            Demand result = null;
+            foreach (Demand tmp in context.Demands)
+            {
+                if (tmp.Id == id)
+                {
+                    result = tmp;
+                    context.Demands.Remove(tmp);
+                    break;
+                }
+            }
+            context.SaveChanges();
+            return result;
+        }
+
     }
 }

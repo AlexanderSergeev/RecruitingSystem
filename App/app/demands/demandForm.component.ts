@@ -1,53 +1,93 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Demand } from '../shared/demand';
 import { DemandsService } from '../shared/demands.service';
 import { DemandsComponent } from './demands.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     template: `
     <form #myForm="ngForm" novalidate>
         <div class="row">
-            <h4 style="margin-left:15px;">Новый запрос</h4>
+            <h4 style="margin-left:15px;">Запрос на ресурс</h4>
             <br>
             <div class="form-group">
-                <label class="col-md-6 control-label">Имя: </label>
+                <label class="col-md-6 control-label">Название: </label>
                 <div class="col-md-10">
-                <input class="form-control" name="Name" [(ngModel)]="Name" required />
+                    <input id="Name" class="form-control" name="Name" [(ngModel)]="Name" required />
                 </div>
             </div>
             <div class="form-group">
-            <label class="col-md-6 control-label">Статус: </label>
-            <div class="col-md-10">
-                <input class="form-control" name="DemandStatus" [(ngModel)]="DemandStatus" required />
-            </div>
+                <label class="col-md-6 control-label">Статус: </label>
+                <div class="col-md-10">
+                    <input id="DemandStatus" class="form-control" name="DemandStatus" [(ngModel)]="DemandStatus" required pattern="\\d+" />
+                </div>
             </div>
             <div class="form-group">
                 <label class="col-md-6 control-label">Локация: </label>
                 <div class="col-md-10">
-                    <input class="form-control" name="DemandLocation" [(ngModel)]="DemandLocation" />
+                    <input id="DemandLocation" class="form-control" name="DemandLocation" [(ngModel)]="DemandLocation" />
                 </div>
-                </div>
+            </div>
             <div class="form-group">
                 <div class="col-md-10">
                     <br>
                     <button [routerLink]="['/demands']" [disabled]="myForm.invalid" (click)="addDemand(Name, DemandStatus, DemandLocation)" class="btn btn-primary">Сохранить</button>
+                    <button [routerLink]="['/demands']" (click)="popUpHide()" class="btn btn-primary">Отменить</button>
                 </div>
             </div>
         </div>
     </form>`,
     providers: [DemandsService]
 })
-export class DemandFormComponent {
+export class DemandFormComponent implements OnInit, OnDestroy {
 
-    constructor(private demandsService: DemandsService, private demandsComponent: DemandsComponent) { }
+    sub: any;
+    Id: number;
+    Name: string;
+    DemandStatus: number;
+    DemandLocation: string;
 
-    addDemand(name: string, demandStatus: string, demandLocation: string) {
+    constructor(private demandsService: DemandsService, private demandsComponent: DemandsComponent, private route: ActivatedRoute, private router: Router) { }
+
+    ngOnInit() {
+        this.sub = this.route.params.subscribe(params => {
+            let id = params['id'];
+            if (id != 0) {
+                this.demandsService.getDemand(id).subscribe(res => {
+                    this.Id = res.Id;
+                    this.Name = res.Name;
+                    this.DemandStatus = res.DemandStatus;
+                    this.DemandLocation = res.DemandLocation;
+                });
+            }
+        });
+    }
+
+    ngOnDestroy() {
+        this.sub.unsubscribe();
+    }
+
+    popUpHide() {
         document.getElementById("popup1").style.display = "none";
-        this.demandsService.addDemand(name, demandStatus, demandLocation).subscribe(
-            data => {
-                this.demandsComponent.demands.push(data);
-                var listDemands = document.getElementById('list-demands');
-                listDemands.scrollTop = listDemands.scrollHeight;
-            });
+    }
+
+    addDemand(name: string, demandStatus: number, demandLocation: string) {
+        this.popUpHide();
+        var id = this.Id;
+        if (id != null) {
+            this.demandsService.editDemand(id, name, demandStatus, demandLocation).subscribe(
+                data => {
+                    let index = this.demandsComponent.demands.findIndex(d => d.Id == id);
+                    this.demandsComponent.demands[index] = data;
+                });
+        }
+        else {
+            this.demandsService.addDemand(name, demandStatus, demandLocation).subscribe(
+                data => {
+                    this.demandsComponent.demands.push(data);
+                    var listDemands = document.getElementById('list-demands');
+                    listDemands.scrollTop = listDemands.scrollHeight;
+                });
+        }
     }
 }
