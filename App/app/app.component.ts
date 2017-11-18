@@ -12,6 +12,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a [routerLink]="['/demands']" class="navbar-brand">Запросы</a>
+                <a [routerLink]="['/vacancies']" class="navbar-brand">Вакансии</a>
             </div>
         </div>
     </div>

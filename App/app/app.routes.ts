@@ -1,9 +1,9 @@
 ﻿import { Routes, RouterModule } from '@angular/router';
-import { DemandComponent } from './demands/demand.component';
 import { DemandsComponent } from './demands/demands.component';
-import { CartComponent } from './cart/cart.component';
-import { WishListComponent } from './wishlist/wishlist.component';
 import { DemandFormComponent } from './demands/demandForm.component';
+import { VacanciesComponent } from './vacancies/vacancies.component';
+import { VacancyComponent } from './vacancies/vacancy.component';
+import { VacancyFormComponent } from './vacancies/vacancyForm.component';
 
 const routes: Routes = [
     {
@@ -22,7 +22,19 @@ const routes: Routes = [
         ]
     },
     {
-        path: 'demands/:id', component: DemandComponent,
+        path: 'vacancies', component: VacanciesComponent,
+        children:
+        [
+            {
+                path: 'form', component: VacancyFormComponent,
+            },
+            {
+                path: 'form/:id', component: VacancyFormComponent,
+            },
+        ]
+    },
+    {
+        path: 'vacancies/:id', component: VacancyComponent,
     },
     {
         path: '**', redirectTo: 'demands', pathMatch: 'full'

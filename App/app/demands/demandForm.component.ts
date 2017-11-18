@@ -17,12 +17,6 @@ import { ActivatedRoute, Router } from '@angular/router';
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-md-6 control-label">Статус: </label>
-                <div class="col-md-10">
-                    <input id="DemandStatus" class="form-control" name="DemandStatus" [(ngModel)]="DemandStatus" required pattern="\\d+" />
-                </div>
-            </div>
-            <div class="form-group">
                 <label class="col-md-6 control-label">Локация: </label>
                 <div class="col-md-10">
                     <input id="DemandLocation" class="form-control" name="DemandLocation" [(ngModel)]="DemandLocation" />
@@ -31,7 +25,7 @@ import { ActivatedRoute, Router } from '@angular/router';
             <div class="form-group">
                 <div class="col-md-10">
                     <br>
-                    <button [routerLink]="['/demands']" [disabled]="myForm.invalid" (click)="addDemand(Name, DemandStatus, DemandLocation)" class="btn btn-primary">Сохранить</button>
+                    <button [routerLink]="['/demands']" [disabled]="myForm.invalid" (click)="addDemand(Name, DemandLocation)" class="btn btn-primary">Сохранить</button>
                     <button [routerLink]="['/demands']" (click)="popUpHide()" class="btn btn-primary">Отменить</button>
                 </div>
             </div>
@@ -44,7 +38,6 @@ export class DemandFormComponent implements OnInit, OnDestroy {
     sub: any;
     Id: number;
     Name: string;
-    DemandStatus: number;
     DemandLocation: string;
 
     constructor(private demandsService: DemandsService, private demandsComponent: DemandsComponent, private route: ActivatedRoute, private router: Router) { }
@@ -56,7 +49,6 @@ export class DemandFormComponent implements OnInit, OnDestroy {
                 this.demandsService.getDemand(id).subscribe(res => {
                     this.Id = res.Id;
                     this.Name = res.Name;
-                    this.DemandStatus = res.DemandStatus;
                     this.DemandLocation = res.DemandLocation;
                 });
             }
@@ -71,18 +63,18 @@ export class DemandFormComponent implements OnInit, OnDestroy {
         document.getElementById("popup1").style.display = "none";
     }
 
-    addDemand(name: string, demandStatus: number, demandLocation: string) {
+    addDemand(name: string, demandLocation: string) {
         this.popUpHide();
         var id = this.Id;
         if (id != null) {
-            this.demandsService.editDemand(id, name, demandStatus, demandLocation).subscribe(
+            this.demandsService.editDemand(id, name, demandLocation).subscribe(
                 data => {
                     let index = this.demandsComponent.demands.findIndex(d => d.Id == id);
                     this.demandsComponent.demands[index] = data;
                 });
         }
         else {
-            this.demandsService.addDemand(name, demandStatus, demandLocation).subscribe(
+            this.demandsService.addDemand(name, demandLocation).subscribe(
                 data => {
                     this.demandsComponent.demands.push(data);
                     var listDemands = document.getElementById('list-demands');

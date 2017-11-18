@@ -10,12 +10,22 @@ namespace App.DataAccess
 
         Demand GetDemand(Guid id);
 
-        IEnumerable<Candidate> GetDemandCandidates(Guid id);
-
         Demand AddDemand(Demand d);
 		
 		Demand EditDemand(Demand d);
 		
 		Demand DeleteDemand(Guid id);
+
+        IEnumerable<Vacancy> GetVacancies();
+
+        Vacancy GetVacancy(Guid id);
+
+        IEnumerable<Candidate> GetVacancyCandidates(Guid id);
+
+        Vacancy AddVacancy(Vacancy d);
+
+        Vacancy EditVacancy(Vacancy d);
+
+        Vacancy DeleteVacancy(Guid id);
     }
 }

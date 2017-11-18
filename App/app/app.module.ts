@@ -2,21 +2,20 @@ import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { DemandsComponent } from './demands/demands.component';
-import { DemandComponent } from './demands/demand.component';
+import { VacanciesComponent } from './vacancies/vacancies.component';
+import { VacancyComponent } from './vacancies/vacancy.component';
 import { appRouterModule } from "./app.routes";
+import { VacanciesService } from "./shared/vacancies.service";
 import { DemandsService } from "./shared/demands.service";
-import { CartService } from './shared/cart.service';
-import { WishListService } from './shared/wishlist.service';
 import { AppComponent } from './app.component';
-import { CartComponent } from './cart/cart.component';
-import { WishListComponent } from './wishlist/wishlist.component';
 import { DemandFormComponent } from './demands/demandForm.component';
+import { VacancyFormComponent } from './vacancies/vacancyForm.component';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
     imports: [BrowserModule, HttpModule, appRouterModule, FormsModule],
-    declarations: [DemandsComponent, DemandComponent, WishListComponent, CartComponent, AppComponent, DemandFormComponent],
+    declarations: [DemandsComponent, VacanciesComponent, VacancyComponent, AppComponent, DemandFormComponent, VacancyFormComponent],
     bootstrap: [AppComponent],
-    providers: [DemandsService, CartService, WishListService]
+    providers: [DemandsService, VacanciesService]
 })
 export class AppModule { }

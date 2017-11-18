@@ -35,13 +35,6 @@ namespace App.Controllers
             return repository.GetDemand(id);
         }
 
-        [Route("candidates/{id}")]
-        [HttpGet]
-        public IEnumerable<Candidate> GetDemandCandidates(Guid id)
-        {
-            return repository.GetDemandCandidates(id);
-        }
-
         [Route]
         [HttpPost]
         public Demand AddDemand([FromBody]Demand d)

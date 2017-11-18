@@ -166,6 +166,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AppController.cs" />
     <Compile Include="Controllers\DemandsController.cs" />
+    <Compile Include="Controllers\VacanciesController.cs" />
     <Compile Include="DataAccess\IAppDbRepository.cs" />
     <Compile Include="DataAccess\AppDbContext.cs" />
     <Compile Include="DataAccess\AppDbRepository.cs" />
@@ -174,6 +175,7 @@
     </Compile>
     <Compile Include="Models\Candidate.cs" />
     <Compile Include="Models\Demand.cs" />
+    <Compile Include="Models\Vacancy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="App_Start\IocConfig.cs" />
   </ItemGroup>
@@ -205,18 +207,18 @@
   <ItemGroup>
     <TypeScriptCompile Include="app\app.component.ts" />
     <TypeScriptCompile Include="app\app.routes.ts" />
-    <TypeScriptCompile Include="app\cart\cart.component.ts" />
     <TypeScriptCompile Include="app\demands\demandForm.component.ts" />
     <TypeScriptCompile Include="app\shared\candidate.ts" />
-    <TypeScriptCompile Include="app\shared\cart.service.ts" />
-    <TypeScriptCompile Include="app\wishlist\wishlist.component.ts" />
     <TypeScriptCompile Include="app\shared\demand.ts" />
     <TypeScriptCompile Include="app\demands\demands.component.ts" />
     <TypeScriptCompile Include="app\app.module.ts" />
     <TypeScriptCompile Include="app\shared\demands.service.ts" />
-    <TypeScriptCompile Include="app\demands\demand.component.ts" />
     <TypeScriptCompile Include="app\main.ts" />
-    <TypeScriptCompile Include="app\shared\wishlist.service.ts" />
+    <TypeScriptCompile Include="app\shared\vacancies.service.ts" />
+    <TypeScriptCompile Include="app\shared\vacancy.ts" />
+    <TypeScriptCompile Include="app\vacancies\vacancy.component.ts" />
+    <TypeScriptCompile Include="app\vacancies\vacancyForm.component.ts" />
+    <TypeScriptCompile Include="app\vacancies\vacancies.component.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

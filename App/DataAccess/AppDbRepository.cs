@@ -35,21 +35,7 @@ namespace App.DataAccess
             }
             return null;
         }
-        public IEnumerable<Candidate> GetDemandCandidates(Guid id)
-        {
-            var arr = context.Demands.Include(t => t.Candidates);
-
-            foreach (Demand t in arr)
-            {
-                if (t.Id == id)
-                {
-                    return t.Candidates;
-                }
-            }
-
-            return null;
-        }
-
+      
         public Demand AddDemand(Demand d)
         {
             context.Demands.Add(d);
@@ -64,7 +50,8 @@ namespace App.DataAccess
                 .FirstOrDefault();
             if (demand != null)
             {
-                demand = d;
+                demand.Name = d.Name;
+                demand.DemandLocation = d.DemandLocation;
                 context.SaveChanges();
                 return d;
             }
@@ -80,6 +67,76 @@ namespace App.DataAccess
                 {
                     result = tmp;
                     context.Demands.Remove(tmp);
+                    break;
+                }
+            }
+            context.SaveChanges();
+            return result;
+        }
+
+        public IEnumerable<Vacancy> GetVacancies()
+        {
+            return context.Vacancies;
+        }
+
+        public Vacancy GetVacancy(Guid id)
+        {
+            foreach (Vacancy t in context.Vacancies)
+            {
+                if (t.Id == id)
+                {
+                    return t;
+                }
+            }
+            return null;
+        }
+        public IEnumerable<Candidate> GetVacancyCandidates(Guid id)
+        {
+            var arr = context.Vacancies.Include(t => t.Candidates);
+
+            foreach (Vacancy t in arr)
+            {
+                if (t.Id == id)
+                {
+                    return t.Candidates;
+                }
+            }
+
+            return null;
+        }
+
+        public Vacancy AddVacancy(Vacancy d)
+        {
+            context.Vacancies.Add(d);
+            context.SaveChanges();
+            return d;
+        }
+
+        public Vacancy EditVacancy(Vacancy d)
+        {
+            var vacancy = context.Vacancies
+                .Where(c => c.Id == d.Id)
+                .FirstOrDefault();
+            if (vacancy != null)
+            {
+                vacancy.Name = d.Name;
+                vacancy.VacancyStatus = d.VacancyStatus;
+                vacancy.VacancyLocation = d.VacancyLocation;
+                context.SaveChanges();
+                return d;
+            }
+            return null;
+        }
+
+        public Vacancy DeleteVacancy(Guid id)
+        {
+            Vacancy result = null;
+            foreach (Vacancy tmp in context.Vacancies)
+            {
+                if (tmp.Id == id)
+                {
+                    result = tmp;
+                    context.Vacancies.Remove(tmp);
                     break;
                 }
             }

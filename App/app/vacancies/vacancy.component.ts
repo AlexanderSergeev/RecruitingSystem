@@ -1,10 +1,10 @@
 ﻿import { Component, OnInit, OnDestroy } from '@angular/core';
-import { DemandsService } from '../shared/demands.service';
+import { VacanciesService } from '../shared/vacancies.service';
 import { Candidate } from '../shared/candidate';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-    selector: 'demand',
+    selector: 'vacancy',
     template: `
     <div class="panel">
         <table class="table table-striped">
@@ -24,18 +24,18 @@ import { ActivatedRoute, Router } from '@angular/router';
             </tbody>
         </table>
     </div>`,
-    providers: [DemandsService]
+    providers: [VacanciesService]
 })
-export class DemandComponent implements OnInit, OnDestroy {
+export class VacancyComponent implements OnInit, OnDestroy {
 
     candidates: Candidate[] = [];
     sub: any;
 
-    constructor(private demandsService: DemandsService, private route: ActivatedRoute, private router: Router) { }
+    constructor(private vacanciesService: VacanciesService, private route: ActivatedRoute, private router: Router) { }
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
             let id = params['id'];
-            this.demandsService.getDemandCandidates(id).subscribe(res => {
+            this.vacanciesService.getVacancyCandidates(id).subscribe(res => {
                 this.candidates = res;
             });
         });

@@ -6,53 +6,63 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
 @Injectable()
-export class DemandsService {
+export class VacanciesService {
 
     constructor(private http: Http) { }
 
-    getDemands() {
+    getVacancies() {
         return this.http
-            .get('/api/demands')
+            .get('/api/vacancies')
             .map(res => res.json());
     }
 
-    getDemand(id: string) {
+    getVacancy(id: string) {
         return this.http
-            .get('/api/demands/' + id)
+            .get('/api/vacancies/' + id)
             .map(res => {
                 return res.json();
             });
     }
 
-    addDemand(name: string, demandLocation: string) {
+    getVacancyCandidates(id: string) {
+        return this.http
+            .get('/api/vacancies/candidates' + id)
+            .map(res => {
+                return res.json();
+            });
+    }
+
+    addVacancy(name: string, vacancyStatus: number, vacancyLocation: string) {
         var json = JSON.stringify({
             Name: name,
-            DemandLocation: demandLocation
+            VacancyStatus: vacancyStatus,
+            VacancyLocation: vacancyLocation
         });
 
         let headers = new Headers({ 'Content-Type': 'application/json;charset=utf-8' });
 
-        return this.http.post('/api/demands', json, { headers: headers })
+        return this.http.post('/api/vacancies', json, { headers: headers })
             .map((resp: Response) => resp.json())
             .catch((error: any) => { return Observable.throw(error); });
     }
 
-    editDemand(id: number, name: string, demandLocation: string) {
+    editVacancy(id: number, name: string, vacancyStatus: number, vacancyLocation: string) {
         var json = JSON.stringify({
             Id: id,
             Name: name,
-            DemandLocation: demandLocation
+            VacancyStatus: vacancyStatus,
+            VacancyLocation: vacancyLocation
         });
 
         let headers = new Headers({ 'Content-Type': 'application/json;charset=utf-8' });
 
-        return this.http.put('/api/demands/', json, { headers: headers })
+        return this.http.put('/api/vacancies/', json, { headers: headers })
             .map((resp: Response) => resp.json())
             .catch((error: any) => { return Observable.throw(error); });
     }
 
     remove(id: number) {
-        return this.http.delete('/api/demands/' + id)
+        return this.http.delete('/api/vacancies/' + id)
             .map(this.extractData)
             .catch(this.handleErrorObservable);
     }

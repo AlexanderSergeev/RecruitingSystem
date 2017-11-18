@@ -4,16 +4,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace App.Models
 {
-    [Table("Candidates")]
-    public class Candidate
+    [Table("Vacancies")]
+    public class Vacancy
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public System.Guid Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public string Surname { get; set; }
-        public string Patronym { get; set; }
-        public ICollection<Vacancy> Vacancies { get; set; }
+        [Required]
+        public int VacancyStatus { get; set; }
+        public string VacancyLocation { get; set; }
+        public ICollection<Candidate> Candidates { get; set; }
     }
 }

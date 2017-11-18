@@ -10,25 +10,23 @@ import { Demand } from '../shared/demand';
             <thead>
                 <tr>
                     <th>Название</th>
-                    <th>Статус</th>
                     <th>Локация</th> 
-                    <th></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let demand of demands">
                     <td>{{demand.Name}}</td>
-                    <td>{{demand.DemandStatus}}</td>
-                    <td *ngIf="demand.DemandLocation==null;else unset">
+                    <td *ngIf="demand.DemandLocation==null || demand.DemandLocation=='';else unset">
                         N/А
                     </td>
                     <ng-template #unset>  
                         <td>{{demand.DemandLocation}}</td>  
                     </ng-template>
-                    <td><a [routerLink]="['/demands', demand.Id] ">Список кандидатов</a></td>
-                    <button (click)="popUpShow();" [routerLink]="['/demands/form', demand.Id]" class="btn btn-success">Редактировать</button>
-                    <button (click)="remove(demand.Id);" style="margin-left:5px;" class="btn btn-success">Удалить</button>
+                    <td>
+                        <button (click)="popUpShow();" [routerLink]="['/demands/form', demand.Id]" class="btn btn-success">Редактировать</button>
+                        <button (click)="remove(demand.Id);" style="margin-left:5px;" class="btn btn-success">Удалить</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
