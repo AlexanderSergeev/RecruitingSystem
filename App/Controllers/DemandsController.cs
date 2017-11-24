@@ -55,5 +55,13 @@ namespace App.Controllers
         {
             return repository.DeleteDemand(id);
         }
+
+        [Route("convert")]
+        [HttpPost]
+        public Vacancy ConvertToVacancy([FromBody]Demand d)
+        {
+            repository.DeleteDemand(d.Id);
+            return repository.AddVacancy(new Vacancy { Name = d.Name, VacancyLocation = d.DemandLocation, VacancyStatus = 0});
+        }
     }
 }

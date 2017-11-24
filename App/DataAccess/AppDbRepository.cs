@@ -74,6 +74,62 @@ namespace App.DataAccess
             return result;
         }
 
+        public IEnumerable<Candidate> GetCandidates()
+        {
+            return context.Candidates;
+        }
+
+        public Candidate GetCandidate(Guid id)
+        {
+            foreach (Candidate t in context.Candidates)
+            {
+                if (t.Id == id)
+                {
+                    return t;
+                }
+            }
+            return null;
+        }
+
+        public Candidate AddCandidate(Candidate d)
+        {
+            context.Candidates.Add(d);
+            context.SaveChanges();
+            return d;
+        }
+
+        public Candidate EditCandidate(Candidate d)
+        {
+            var candidate = context.Candidates
+                .Where(c => c.Id == d.Id)
+                .FirstOrDefault();
+            if (candidate != null)
+            {
+                candidate.Name = d.Name;
+                candidate.Surname = d.Surname;
+                candidate.Patronym = d.Patronym;
+                context.SaveChanges();
+                return d;
+            }
+            return null;
+        }
+
+        public Candidate DeleteCandidate(Guid id)
+        {
+            Candidate result = null;
+            foreach (Candidate tmp in context.Candidates)
+            {
+                if (tmp.Id == id)
+                {
+                    result = tmp;
+                    context.Candidates.Remove(tmp);
+                    break;
+                }
+            }
+            context.SaveChanges();
+            return result;
+        }
+
         public IEnumerable<Vacancy> GetVacancies()
         {
             return context.Vacancies;

@@ -28,38 +28,14 @@ import { Vacancy } from '../shared/vacancy';
                     </ng-template>
                     <td><a [routerLink]="['/vacancies', vacancy.Id] ">Список кандидатов</a></td>
                     <td>
-                        <button (click)="popUpShow();" [routerLink]="['/vacancies/form', vacancy.Id]" class="btn btn-success">Редактировать</button>
-                        <button (click)="remove(vacancy.Id);" style="margin-left:5px;" class="btn btn-success">Удалить</button>
+                        <button (click)="popUpShow();" [routerLink]="['/vacancies/form', vacancy.Id]" class="btn btn-info">Редактировать</button>
+                        <button (click)="remove(vacancy.Id);" style="margin-left:5px;" class="btn btn-danger">Удалить</button>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
     <button (click)="popUpShow();" [routerLink]="['/vacancies/form', 0]" class="btn btn-primary">Добавить</button>
-	
-	<style>
-	  .b-popup {
-		width: 100%;
-		min-height: 100%;
-		background-color: rgba(0,0,0,0.5);
-		overflow: hidden;
-		position: fixed;
-		top: 0;
-		left: 0;
-		z-index: 10000;
-	}
-
-	.b-popup .b-popup-content {
-		margin: 200px auto 0 auto;
-		height: 100%;
-		max-width: 350px;
-		max-height: 400px;
-		padding: 8px;
-		background-color: #ffffff;
-		border-radius: 5px;
-		box-shadow: 0 0 10px #000;
-	}
-	</style>
 	
 	<div hidden="hidden" class="b-popup" id="popupVacancy">
 		<div class="b-popup-content">

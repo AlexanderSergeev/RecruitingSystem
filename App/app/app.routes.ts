@@ -4,6 +4,8 @@ import { DemandFormComponent } from './demands/demandForm.component';
 import { VacanciesComponent } from './vacancies/vacancies.component';
 import { VacancyComponent } from './vacancies/vacancy.component';
 import { VacancyFormComponent } from './vacancies/vacancyForm.component';
+import { CandidatesComponent } from './candidates/candidates.component';
+import { CandidateFormComponent } from './candidates/candidateForm.component';
 
 const routes: Routes = [
     {
@@ -18,6 +20,18 @@ const routes: Routes = [
             },
             {
                 path: 'form/:id', component: DemandFormComponent,
+            },
+        ]
+    },
+    {
+        path: 'candidates', component: CandidatesComponent,
+        children:
+        [
+            {
+                path: 'form', component: CandidateFormComponent,
+            },
+            {
+                path: 'form/:id', component: CandidateFormComponent,
             },
         ]
     },

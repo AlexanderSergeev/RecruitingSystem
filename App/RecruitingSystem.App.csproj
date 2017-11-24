@@ -165,6 +165,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AppController.cs" />
+    <Compile Include="Controllers\CandidatesController.cs" />
     <Compile Include="Controllers\DemandsController.cs" />
     <Compile Include="Controllers\VacanciesController.cs" />
     <Compile Include="DataAccess\IAppDbRepository.cs" />
@@ -207,6 +208,9 @@
   <ItemGroup>
     <TypeScriptCompile Include="app\app.component.ts" />
     <TypeScriptCompile Include="app\app.routes.ts" />
+    <TypeScriptCompile Include="app\candidates\candidateForm.component.ts" />
+    <TypeScriptCompile Include="app\candidates\candidates.component.ts" />
+    <TypeScriptCompile Include="app\shared\candidates.service.ts" />
     <TypeScriptCompile Include="app\demands\demandForm.component.ts" />
     <TypeScriptCompile Include="app\shared\candidate.ts" />
     <TypeScriptCompile Include="app\shared\demand.ts" />
