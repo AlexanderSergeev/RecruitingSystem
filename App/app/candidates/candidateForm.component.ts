@@ -27,6 +27,12 @@ import { ActivatedRoute, Router } from '@angular/router';
                 <div class="col-md-10">
                     <input id="Patronym" class="form-control" name="Patronym" [(ngModel)]="Patronym" />
                 </div>
+            </div> 
+            <div class="form-group">
+                <label class="col-md-6 control-label">Загрузить резюме: </label>
+                <div class="col-md-10">
+                    <input id="Resume" (change)="handleUpload($event)" type="file" class="form-control" name="Resume" [(ngModel)]="Resume">
+                </div>
             </div>      
             <div class="form-group">
                 <div class="col-md-10">
@@ -46,6 +52,7 @@ export class CandidateFormComponent implements OnInit, OnDestroy {
     Name: string;
     Surname: string;
     Patronym: string;
+    Resume: any;
 
     constructor(private candidatesService: CandidatesService, private candidatesComponent: CandidatesComponent, private route: ActivatedRoute, private router: Router) { }
 
@@ -69,6 +76,10 @@ export class CandidateFormComponent implements OnInit, OnDestroy {
 
     popUpHide() {
         document.getElementById("popupCandidate").style.display = "none";
+    }
+
+    handleUpload(e: any): void {
+        console.log(e.target.value);
     }
 
     addCandidate(name: string, surname: string, patronym: string) {

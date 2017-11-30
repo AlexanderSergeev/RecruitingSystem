@@ -12,6 +12,7 @@ import { Candidate } from '../shared/candidate';
                     <th>Имя</th>
                     <th>Фамилия</th> 
                     <th>Отчество</th>
+                    <th>Резюме</th>
                     <th></th>
                 </tr>
             </thead>
@@ -30,6 +31,9 @@ import { Candidate } from '../shared/candidate';
                     <ng-template #unset2>  
                         <td>{{candidate.Patronym}}</td>  
                     </ng-template>
+                    <td>
+                        <a href="/Content/sample.docx" target='_blank' title="Нажмите, чтобы посмотреть резюме">Открыть</a>
+                    </td>
                     <td>
                         <button (click)="popUpShow();" [routerLink]="['/candidates/form', candidate.Id]" style="margin-left:5px;" class="btn btn-info">Редактировать</button>
                         <button (click)="remove(candidate.Id);" style="margin-left:5px;" class="btn btn-danger">Удалить</button>
