@@ -31,7 +31,7 @@ import { ActivatedRoute, Router } from '@angular/router';
             <div class="form-group">
                 <label class="col-md-6 control-label">Загрузить резюме: </label>
                 <div class="col-md-10">
-                    <input id="Resume" (change)="handleUpload($event)" type="file" class="form-control" name="Resume" [(ngModel)]="Resume">
+                    <input id="Resume" type="file" class="form-control" name="Resume">
                 </div>
             </div>      
             <div class="form-group">
@@ -52,7 +52,6 @@ export class CandidateFormComponent implements OnInit, OnDestroy {
     Name: string;
     Surname: string;
     Patronym: string;
-    Resume: any;
 
     constructor(private candidatesService: CandidatesService, private candidatesComponent: CandidatesComponent, private route: ActivatedRoute, private router: Router) { }
 
@@ -78,14 +77,19 @@ export class CandidateFormComponent implements OnInit, OnDestroy {
         document.getElementById("popupCandidate").style.display = "none";
     }
 
-    handleUpload(e: any): void {
-        console.log(e.target.value);
-    }
-
     addCandidate(name: string, surname: string, patronym: string) {
         this.popUpHide();
         var id = this.Id;
         if (id != null) {
+            var filePathInput: any = document.getElementById("Resume");
+            var data = new FormData();
+            if (filePathInput.files) {
+                var file: any = filePathInput.files[0];
+                data.append("file", file);
+            }
+            this.candidatesService.uploadResume(id, data).subscribe(
+                data => {});
+
             this.candidatesService.editCandidate(id, name, surname, patronym).subscribe(
                 data => {
                     let index = this.candidatesComponent.candidates.findIndex(d => d.Id == id);

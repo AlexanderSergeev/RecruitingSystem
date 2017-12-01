@@ -3,6 +3,10 @@ using App.DataAccess;
 using App.Models;
 using System.Collections.Generic;
 using System.Web.Http;
+using System.Threading.Tasks;
+using System.Net.Http;
+using System.IO;
+using System.Web;
 
 namespace App.Controllers
 {
@@ -48,6 +52,31 @@ namespace App.Controllers
         {
             return repository.EditCandidate(d);
         }
+
+        [Route("uploadResume/{id}")]
+        [HttpPost]
+        public async Task<IHttpActionResult> UploadResume(Guid id)
+        {
+            if (!Request.Content.IsMimeMultipartContent())
+            {
+                return BadRequest();
+            }
+            var provider = new MultipartMemoryStreamProvider();
+            string root = HttpContext.Current.Server.MapPath("~/Content/");
+            await Request.Content.ReadAsMultipartAsync(provider);
+
+            var file = provider.Contents[0];
+            var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
+            byte[] fileArray = await file.ReadAsByteArrayAsync();
+
+            using (FileStream fs = new FileStream(root + filename, FileMode.Create))
+            {
+                await fs.WriteAsync(fileArray, 0, fileArray.Length);
+            }
+            
+            return Ok("Файл загружен");
+        }
+    
 
         [Route("{id}")]
         [HttpDelete]

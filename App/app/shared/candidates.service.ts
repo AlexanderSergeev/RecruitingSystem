@@ -54,6 +54,15 @@ export class CandidatesService {
             .catch((error: any) => { return Observable.throw(error); });
     }
 
+    uploadResume(id: number, data: any) {
+
+        let headers = new Headers({ 'Content-Type': 'multipart/form-data' });
+
+        return this.http.post('/api/candidates/uploadResume/' + id, data, { headers: headers })
+            .map((resp: Response) => resp.json())
+            .catch((error: any) => { return Observable.throw(error); });
+    }
+
     remove(id: number) {
         return this.http.delete('/api/candidates/' + id)
             .map(this.extractData)
