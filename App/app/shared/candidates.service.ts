@@ -56,7 +56,7 @@ export class CandidatesService {
 
     uploadResume(id: number, data: any) {
 
-        let headers = new Headers({ 'Content-Type': 'multipart/form-data' });
+        let headers = new Headers({ 'enctype': 'multipart/form-data' });
 
         return this.http.post('/api/candidates/uploadResume/' + id, data, { headers: headers })
             .map((resp: Response) => resp.json())

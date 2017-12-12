@@ -19,7 +19,7 @@ import { ActivatedRoute, Router } from '@angular/router';
             <div class="form-group">
                 <label class="col-md-6 control-label">Фамилия: </label>
                 <div class="col-md-10">
-                    <input id="Surname" class="form-control" name="Surname" [(ngModel)]="Surname" />
+                    <input id="Surname" class="form-control" name="Surname" [(ngModel)]="Surname" required />
                 </div>
             </div>
             <div class="form-group">
