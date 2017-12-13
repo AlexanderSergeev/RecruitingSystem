@@ -34,58 +34,70 @@ namespace App.Controllers
 
         [Route("{id}")]
         [HttpGet]
-        public Candidate GetCandidate(Guid id)
+        public async Task<Candidate> GetCandidate(Guid id)
         {
-            return repository.GetCandidate(id);
+            return await repository.GetCandidate(id);
         }
 
         [Route]
         [HttpPost]
-        public Candidate AddCandidate([FromBody]Candidate d)
+        public async Task<Candidate> AddCandidate([FromBody]Candidate d)
         {
-            return repository.AddCandidate(d);
+            return await repository.AddCandidate(d);
         }
 
         [Route]
         [HttpPut]
-        public Candidate EditCandidate([FromBody]Candidate d)
+        public async Task<Candidate> EditCandidate([FromBody]Candidate d)
         {
-            return repository.EditCandidate(d);
+            return await repository.EditCandidate(d);
         }
 
         [Route("uploadResume/{id}")]
         [HttpPost]
         public async Task<IHttpActionResult> UploadResume(Guid id)
         {
-            if (!Request.Content.IsMimeMultipartContent())
+            try
             {
-                return BadRequest();
+                if (!Request.Content.IsMimeMultipartContent())
+                {
+                    return BadRequest();
+                }
+                var provider = new MultipartMemoryStreamProvider();
+                var root = HttpContext.Current.Server.MapPath("~/Content/Resume/" + id + "/");
+                await Request.Content.ReadAsMultipartAsync(provider);
+
+                if (!Directory.Exists(root))
+                    Directory.CreateDirectory(root);
+
+                var dirInfo = new DirectoryInfo(root);
+                foreach (var f in dirInfo.GetFiles())
+                    f.Delete();
+
+                var file = provider.Contents[0];
+                var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
+                byte[] fileArray = await file.ReadAsByteArrayAsync();
+
+                using (FileStream fs = new FileStream(root + filename, FileMode.Create))
+                {
+                    await fs.WriteAsync(fileArray, 0, fileArray.Length);
+                }
+
+                await repository.EditCandidateResumePath(id, root);
+                return Ok("Файл загружен");
             }
-            var provider = new MultipartMemoryStreamProvider();
-            string root = HttpContext.Current.Server.MapPath("~/Content/" + id.ToString() + "/");
-            await Request.Content.ReadAsMultipartAsync(provider);
-
-            var file = provider.Contents[0];
-            var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
-            byte[] fileArray = await file.ReadAsByteArrayAsync();
-
-            if (!Directory.Exists(root))
-                Directory.CreateDirectory(root);
-
-            using (FileStream fs = new FileStream(root + filename, FileMode.Create))
+            catch (Exception)
             {
-                await fs.WriteAsync(fileArray, 0, fileArray.Length);
+                return BadRequest("Произошла ошибка при загрузке резюме");
             }
-
-            return Ok("Файл загружен");
         }
 
 
         [Route("{id}")]
         [HttpDelete]
-        public Candidate DeleteCandidate(Guid id)
+        public async Task<Candidate> DeleteCandidate(Guid id)
         {
-            return repository.DeleteCandidate(id);
+            return await repository.DeleteCandidate(id);
         }
     }
 }

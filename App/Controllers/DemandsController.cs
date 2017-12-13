@@ -2,6 +2,7 @@
 using App.DataAccess;
 using App.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace App.Controllers
@@ -30,38 +31,38 @@ namespace App.Controllers
 
         [Route("{id}")]
         [HttpGet]
-        public Demand GetDemand(Guid id)
+        public async Task<Demand> GetDemand(Guid id)
         {
-            return repository.GetDemand(id);
+            return await repository.GetDemand(id);
         }
 
         [Route]
         [HttpPost]
-        public Demand AddDemand([FromBody]Demand d)
+        public async Task<Demand> AddDemand([FromBody]Demand d)
         {
-            return repository.AddDemand(d);
+            return await repository.AddDemand(d);
         }
 		
 		[Route]
         [HttpPut]
-        public Demand EditDemand([FromBody]Demand d)
+        public async Task<Demand> EditDemand([FromBody]Demand d)
         {
-            return repository.EditDemand(d);
+            return await repository.EditDemand(d);
         }
 		
 		[Route("{id}")]
         [HttpDelete]
-        public Demand DeleteDemand(Guid id)
+        public async Task<Demand> DeleteDemand(Guid id)
         {
-            return repository.DeleteDemand(id);
+            return await repository.DeleteDemand(id);
         }
 
         [Route("convert")]
         [HttpPost]
-        public Vacancy ConvertToVacancy([FromBody]Demand d)
+        public async Task<Vacancy> ConvertToVacancy([FromBody]Demand d)
         {
-            repository.DeleteDemand(d.Id);
-            return repository.AddVacancy(new Vacancy { Name = d.Name, VacancyLocation = d.DemandLocation, VacancyStatus = 0});
+            await repository.DeleteDemand(d.Id);
+            return await repository.AddVacancy(new Vacancy { Name = d.Name, VacancyLocation = d.DemandLocation, VacancyStatus = 0});
         }
     }
 }

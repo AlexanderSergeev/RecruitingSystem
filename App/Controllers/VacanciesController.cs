@@ -2,6 +2,7 @@
 using App.DataAccess;
 using App.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace App.Controllers
@@ -30,9 +31,9 @@ namespace App.Controllers
 
         [Route("{id}")]
         [HttpGet]
-        public Vacancy GetVacancy(Guid id)
+        public async Task<Vacancy> GetVacancy(Guid id)
         {
-            return repository.GetVacancy(id);
+            return await repository.GetVacancy(id);
         }
 
         [Route("candidates/{id}")]
@@ -44,23 +45,23 @@ namespace App.Controllers
 
         [Route]
         [HttpPost]
-        public Vacancy AddVacancy([FromBody]Vacancy d)
+        public async Task<Vacancy> AddVacancy([FromBody]Vacancy d)
         {
-            return repository.AddVacancy(d);
+            return await repository.AddVacancy(d);
         }
 
         [Route]
         [HttpPut]
-        public Vacancy EditVacancy([FromBody]Vacancy d)
+        public async Task<Vacancy> EditVacancy([FromBody]Vacancy d)
         {
-            return repository.EditVacancy(d);
+            return await repository.EditVacancy(d);
         }
 
         [Route("{id}")]
         [HttpDelete]
-        public Vacancy DeleteVacancy(Guid id)
+        public async Task<Vacancy> DeleteVacancy(Guid id)
         {
-            return repository.DeleteVacancy(id);
+            return await repository.DeleteVacancy(id);
         }
     }
 }

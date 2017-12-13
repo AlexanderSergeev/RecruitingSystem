@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web.Http;
+using System.Web.Http.Results;
+using App.Controllers;
 using App.Models;
 
 namespace App.DataAccess
@@ -24,44 +29,36 @@ namespace App.DataAccess
             return context.Demands;
         }
 
-        public Demand GetDemand(Guid id)
-        { 
-            foreach (Demand t in context.Demands)
-            {
-                if (t.Id == id)
-                {
-                    return t;
-                }
-            }
-            return null;
+        public async Task<Demand> GetDemand(Guid id)
+        {
+            return await context.Demands.FirstOrDefaultAsync(x => x.Id == id);
         }
-      
-        public Demand AddDemand(Demand d)
+
+        public async Task<Demand> AddDemand(Demand d)
         {
             context.Demands.Add(d);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return d;
         }
 
-        public Demand EditDemand(Demand d)
+        public async Task<Demand> EditDemand(Demand d)
         {
-            var demand = context.Demands
-                .Where(c => c.Id == d.Id)
-                .FirstOrDefault();
+            var demand = await context.Demands.FirstOrDefaultAsync(x => x.Id == d.Id);
+
             if (demand != null)
             {
                 demand.Name = d.Name;
                 demand.DemandLocation = d.DemandLocation;
-                context.SaveChanges();
+                await context.SaveChangesAsync();
                 return d;
             }
             return null;
         }
 
-        public Demand DeleteDemand(Guid id)
+        public async Task<Demand> DeleteDemand(Guid id)
         {
             Demand result = null;
-            foreach (Demand tmp in context.Demands)
+            foreach (var tmp in context.Demands)
             {
                 if (tmp.Id == id)
                 {
@@ -70,7 +67,7 @@ namespace App.DataAccess
                     break;
                 }
             }
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return result;
         }
 
@@ -79,42 +76,34 @@ namespace App.DataAccess
             return context.Candidates;
         }
 
-        public Candidate GetCandidate(Guid id)
+        public async Task<Candidate> GetCandidate(Guid id)
         {
-            foreach (Candidate t in context.Candidates)
-            {
-                if (t.Id == id)
-                {
-                    return t;
-                }
-            }
-            return null;
+            return await context.Candidates.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Candidate AddCandidate(Candidate d)
+        public async Task<Candidate> AddCandidate(Candidate d)
         {
             context.Candidates.Add(d);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return d;
         }
 
-        public Candidate EditCandidate(Candidate d)
+        public async Task<Candidate> EditCandidate(Candidate d)
         {
-            var candidate = context.Candidates
-                .Where(c => c.Id == d.Id)
-                .FirstOrDefault();
+            var candidate = await context.Candidates.FirstOrDefaultAsync(x => x.Id == d.Id);
+
             if (candidate != null)
             {
                 candidate.Name = d.Name;
                 candidate.Surname = d.Surname;
                 candidate.Patronym = d.Patronym;
-                context.SaveChanges();
+                await context.SaveChangesAsync();
                 return d;
             }
             return null;
         }
 
-        public Candidate DeleteCandidate(Guid id)
+        public async Task<Candidate> DeleteCandidate(Guid id)
         {
             Candidate result = null;
             foreach (Candidate tmp in context.Candidates)
@@ -126,8 +115,19 @@ namespace App.DataAccess
                     break;
                 }
             }
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return result;
+        }
+
+        public async Task EditCandidateResumePath(Guid id, string path)
+        {
+            var candidate = await context.Candidates.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (candidate != null)
+            {
+                candidate.ResumePath = path;
+                await context.SaveChangesAsync();
+            }
         }
 
         public IEnumerable<Vacancy> GetVacancies()
@@ -135,17 +135,11 @@ namespace App.DataAccess
             return context.Vacancies;
         }
 
-        public Vacancy GetVacancy(Guid id)
+        public async Task<Vacancy> GetVacancy(Guid id)
         {
-            foreach (Vacancy t in context.Vacancies)
-            {
-                if (t.Id == id)
-                {
-                    return t;
-                }
-            }
-            return null;
+            return await context.Vacancies.FirstOrDefaultAsync(x => x.Id == id);
         }
+
         public IEnumerable<Candidate> GetVacancyCandidates(Guid id)
         {
             var arr = context.Vacancies.Include(t => t.Candidates);
@@ -161,30 +155,28 @@ namespace App.DataAccess
             return null;
         }
 
-        public Vacancy AddVacancy(Vacancy d)
+        public async Task<Vacancy> AddVacancy(Vacancy d)
         {
             context.Vacancies.Add(d);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return d;
         }
 
-        public Vacancy EditVacancy(Vacancy d)
+        public async Task<Vacancy> EditVacancy(Vacancy d)
         {
-            var vacancy = context.Vacancies
-                .Where(c => c.Id == d.Id)
-                .FirstOrDefault();
+            var vacancy = await context.Vacancies.FirstOrDefaultAsync(x => x.Id == d.Id);
             if (vacancy != null)
             {
                 vacancy.Name = d.Name;
                 vacancy.VacancyStatus = d.VacancyStatus;
                 vacancy.VacancyLocation = d.VacancyLocation;
-                context.SaveChanges();
+                await context.SaveChangesAsync();
                 return d;
             }
             return null;
         }
 
-        public Vacancy DeleteVacancy(Guid id)
+        public async Task<Vacancy> DeleteVacancy(Guid id)
         {
             Vacancy result = null;
             foreach (Vacancy tmp in context.Vacancies)
@@ -196,7 +188,7 @@ namespace App.DataAccess
                     break;
                 }
             }
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return result;
         }
 

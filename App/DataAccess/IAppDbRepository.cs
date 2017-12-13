@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using App.Models;
 using System;
+using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace App.DataAccess
 {
@@ -8,34 +10,36 @@ namespace App.DataAccess
     {
         IEnumerable<Demand> GetDemands();
 
-        Demand GetDemand(Guid id);
+        Task<Demand> GetDemand(Guid id);
 
-        Demand AddDemand(Demand d);
-		
-		Demand EditDemand(Demand d);
-		
-		Demand DeleteDemand(Guid id);
+        Task<Demand> AddDemand(Demand d);
+
+        Task<Demand> EditDemand(Demand d);
+
+        Task<Demand> DeleteDemand(Guid id);
 
         IEnumerable<Candidate> GetCandidates();
 
-        Candidate GetCandidate(Guid id);
+        Task<Candidate> GetCandidate(Guid id);
 
-        Candidate AddCandidate(Candidate d);
+        Task<Candidate> AddCandidate(Candidate d);
 
-        Candidate EditCandidate(Candidate d);
+        Task<Candidate> EditCandidate(Candidate d);
 
-        Candidate DeleteCandidate(Guid id);
+        Task<Candidate> DeleteCandidate(Guid id);
+
+        Task EditCandidateResumePath(Guid id, string path);
 
         IEnumerable<Vacancy> GetVacancies();
 
-        Vacancy GetVacancy(Guid id);
+        Task<Vacancy> GetVacancy(Guid id);
 
         IEnumerable<Candidate> GetVacancyCandidates(Guid id);
 
-        Vacancy AddVacancy(Vacancy d);
+        Task<Vacancy> AddVacancy(Vacancy d);
 
-        Vacancy EditVacancy(Vacancy d);
+        Task<Vacancy> EditVacancy(Vacancy d);
 
-        Vacancy DeleteVacancy(Guid id);
+        Task<Vacancy> DeleteVacancy(Guid id);
     }
 }
