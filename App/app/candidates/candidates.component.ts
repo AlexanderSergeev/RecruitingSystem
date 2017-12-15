@@ -19,21 +19,21 @@ import { Candidate } from '../shared/candidate';
             <tbody>
                 <tr *ngFor="let candidate of candidates">
                     <td>{{candidate.Name}}</td>
-                    <td *ngIf="candidate.Surname==null || candidate.Surname=='';else unset1">
+                    <td>{{candidate.Surname}}</td>
+                    <td *ngIf="candidate.Patronym==null || candidate.Patronym=='';else unset1">
                         N/А
                     </td>
                     <ng-template #unset1>  
-                        <td>{{candidate.Surname}}</td>  
+                        <td>{{candidate.Patronym}}</td>  
                     </ng-template>
-                    <td *ngIf="candidate.Patronym==null || candidate.Patronym=='';else unset2">
+                    <td *ngIf="candidate.ResumePath==null || candidate.ResumePath=='';else unset2">
                         N/А
                     </td>
                     <ng-template #unset2>  
-                        <td>{{candidate.Patronym}}</td>  
+                        <td>
+                            <a href={candidate.ResumePath} target='_blank' title="Нажмите, чтобы посмотреть резюме">Резюме</a>
+                        </td>
                     </ng-template>
-                    <td>
-                        <a href="/Content/sample.docx" target='_blank' title="Нажмите, чтобы посмотреть резюме">Резюме</a>
-                    </td>
                     <td>
                         <button (click)="popUpShow();" [routerLink]="['/candidates/form', candidate.Id]" style="margin-left:5px;" class="btn btn-info">Редактировать</button>
                         <button (click)="remove(candidate.Id);" style="margin-left:5px;" class="btn btn-danger">Удалить</button>

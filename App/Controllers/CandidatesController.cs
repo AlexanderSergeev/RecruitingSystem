@@ -64,7 +64,7 @@ namespace App.Controllers
                     return BadRequest();
                 }
                 var provider = new MultipartMemoryStreamProvider();
-                var root = HttpContext.Current.Server.MapPath("~/Content/Resume/" + id + "/");
+                var root = HttpContext.Current.Server.MapPath("~/Content/" + id + "/Resume/");
                 await Request.Content.ReadAsMultipartAsync(provider);
 
                 if (!Directory.Exists(root))
@@ -83,7 +83,7 @@ namespace App.Controllers
                     await fs.WriteAsync(fileArray, 0, fileArray.Length);
                 }
 
-                await repository.EditCandidateResumePath(id, root);
+                await repository.EditCandidateResumePath(id, "/Content/" + id + "/Resume/" + filename);
                 return Ok("Файл загружен");
             }
             catch (Exception)
