@@ -79,21 +79,16 @@ export class CandidateFormComponent implements OnInit, OnDestroy {
 
     addCandidate(name: string, surname: string, patronym: string) {
         this.popUpHide();
+
+        var filePathInput: any = document.getElementById("Resume");
+
         var id = this.Id;
         if (id != null) {
-            var filePathInput: any = document.getElementById("Resume");
-            var data = new FormData();
-            if (filePathInput.files) {
-                var file: any = filePathInput.files[0];
-                data.append("file", file);
-            }
-            this.candidatesService.uploadResume(id, data).subscribe(
-                data => {});
-
             this.candidatesService.editCandidate(id, name, surname, patronym).subscribe(
                 data => {
-                    let index = this.candidatesComponent.candidates.findIndex(d => d.Id == id);
+                    let index = this.candidatesComponent.candidates.findIndex(d => d.Id === id);
                     this.candidatesComponent.candidates[index] = data;
+                    this.uploadResume(id, filePathInput);
                 });
         }
         else {
@@ -102,6 +97,21 @@ export class CandidateFormComponent implements OnInit, OnDestroy {
                     this.candidatesComponent.candidates.push(data);
                     var listCandidates = document.getElementById('list-candidates');
                     listCandidates.scrollTop = listCandidates.scrollHeight;
+                    this.uploadResume(data.Id, filePathInput);
+                });
+        }
+    }
+
+    private uploadResume(id: any, filePathInput: any) {
+
+        if (filePathInput.files) {
+            var data = new FormData();
+            var file: any = filePathInput.files[0];
+            data.append("file", file);
+            this.candidatesService.uploadResume(id, data).subscribe(
+                data => {
+                    let index = this.candidatesComponent.candidates.findIndex(d => d.Id === id);
+                    this.candidatesComponent.candidates[index].ResumePath = data;
                 });
         }
     }

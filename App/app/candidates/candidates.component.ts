@@ -12,7 +12,7 @@ import { Candidate } from '../shared/candidate';
                     <th>Имя</th>
                     <th>Фамилия</th> 
                     <th>Отчество</th>
-                    <th></th>
+                    <th>Резюме</th>
                     <th></th>
                 </tr>
             </thead>
@@ -31,7 +31,7 @@ import { Candidate } from '../shared/candidate';
                     </td>
                     <ng-template #unset2>  
                         <td>
-                            <a href={candidate.ResumePath} target='_blank' title="Нажмите, чтобы посмотреть резюме">Резюме</a>
+                            <a href="{{candidate.ResumePath}}" target='_blank' title="Нажмите, чтобы скачать резюме">Скачать</a>
                         </td>
                     </ng-template>
                     <td>

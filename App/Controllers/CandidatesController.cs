@@ -82,9 +82,9 @@ namespace App.Controllers
                 {
                     await fs.WriteAsync(fileArray, 0, fileArray.Length);
                 }
-
-                await repository.EditCandidateResumePath(id, "/Content/" + id + "/Resume/" + filename);
-                return Ok("Файл загружен");
+                var filePath = "/Content/" + id + "/Resume/" + filename;
+                await repository.EditCandidateResumePath(id, filePath);
+                return Ok(filePath);
             }
             catch (Exception)
             {
