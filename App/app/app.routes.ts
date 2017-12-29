@@ -4,6 +4,7 @@ import { DemandFormComponent } from './demands/demandForm.component';
 import { VacanciesComponent } from './vacancies/vacancies.component';
 import { VacancyComponent } from './vacancies/vacancy.component';
 import { VacancyFormComponent } from './vacancies/vacancyForm.component';
+import { VacancyCandidateFormComponent } from './vacancies/vacancyCandidateForm.component';
 import { CandidatesComponent } from './candidates/candidates.component';
 import { CandidateFormComponent } from './candidates/candidateForm.component';
 
@@ -16,11 +17,11 @@ const routes: Routes = [
         children:
         [
             {
-                path: 'form', component: DemandFormComponent,
+                path: 'form', component: DemandFormComponent
             },
             {
-                path: 'form/:id', component: DemandFormComponent,
-            },
+                path: 'form/:id', component: DemandFormComponent
+            }
         ]
     },
     {
@@ -28,11 +29,11 @@ const routes: Routes = [
         children:
         [
             {
-                path: 'form', component: CandidateFormComponent,
+                path: 'form', component: CandidateFormComponent
             },
             {
-                path: 'form/:id', component: CandidateFormComponent,
-            },
+                path: 'form/:id', component: CandidateFormComponent
+            }
         ]
     },
     {
@@ -40,15 +41,21 @@ const routes: Routes = [
         children:
         [
             {
-                path: 'form', component: VacancyFormComponent,
+                path: 'form', component: VacancyFormComponent
             },
             {
-                path: 'form/:id', component: VacancyFormComponent,
-            },
+                path: 'form/:id', component: VacancyFormComponent
+            }
         ]
     },
     {
         path: 'vacancies/:id', component: VacancyComponent,
+        children:
+        [
+            {
+                path: 'candidateForm', component: VacancyCandidateFormComponent
+            }
+        ]
     },
     {
         path: '**', redirectTo: 'demands', pathMatch: 'full'

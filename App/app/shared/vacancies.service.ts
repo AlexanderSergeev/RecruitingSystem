@@ -67,6 +67,12 @@ export class VacanciesService {
             .catch(this.handleErrorObservable);
     }
 
+    removeCandidateFromVacancy(idCandidate: number, idVacancy: string) {
+        return this.http.delete('/api/vacancies/' + idVacancy + '/' + idCandidate)
+            .map(this.extractData)
+            .catch(this.handleErrorObservable);
+    }
+
     private extractData(res: Response) {
         let body = res.json();
         return body || {};

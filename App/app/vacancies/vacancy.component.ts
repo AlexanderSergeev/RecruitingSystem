@@ -14,6 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
                     <th>Фамилия</th> 
                     <th>Отчество</th>
                     <th>Резюме</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -34,24 +35,46 @@ import { ActivatedRoute, Router } from '@angular/router';
                             <a href="{{candidate.ResumePath}}" target='_blank' title="Нажмите, чтобы скачать резюме">Скачать</a>
                         </td>
                     </ng-template>
+                    <td>
+                        <button (click)="remove(candidate.Id);" style="margin-left:5px;" class="btn btn-danger">Удалить</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
-    </div>`,
+    </div>
+    <button (click)="popUpShow();" [routerLink]="['/vacancies/:id/candidateForm', {id: id}]" class="btn btn-primary">Добавить</button>
+    <div hidden="hidden" class="b-popup" id="popupСandidateForm">
+	    <div class="b-popup-content">
+	        <router-outlet></router-outlet>
+	    </div>
+	</div>`,
     providers: [VacanciesService]
 })
 export class VacancyComponent implements OnInit, OnDestroy {
 
     candidates: Candidate[] = [];
     sub: any;
+    id: string;
 
     constructor(private vacanciesService: VacanciesService, private route: ActivatedRoute, private router: Router) { }
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
-            let id = params['id'];
-            this.vacanciesService.getVacancyCandidates(id).subscribe(res => {
+            this.id = params['id'];
+            this.vacanciesService.getVacancyCandidates(this.id).subscribe(res => {
                 this.candidates = res;
             });
+        });
+    }
+
+    popUpShow() {
+        document.getElementById("popupСandidateForm").style.display = "block";
+    }
+
+    remove(id: number) {
+        const vacancyComponent = this;
+        this.vacanciesService.removeCandidateFromVacancy(id, this.id).subscribe(function () {
+            let index = vacancyComponent.candidates.findIndex(c => c.Id === id);
+            vacancyComponent.candidates.splice(index, 1);
         });
     }
 

@@ -221,6 +221,7 @@
     <TypeScriptCompile Include="app\shared\vacancies.service.ts" />
     <TypeScriptCompile Include="app\shared\vacancy.ts" />
     <TypeScriptCompile Include="app\vacancies\vacancy.component.ts" />
+    <TypeScriptCompile Include="app\vacancies\vacancyCandidateForm.component.ts" />
     <TypeScriptCompile Include="app\vacancies\vacancyForm.component.ts" />
     <TypeScriptCompile Include="app\vacancies\vacancies.component.ts" />
   </ItemGroup>

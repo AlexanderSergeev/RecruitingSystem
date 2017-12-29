@@ -140,18 +140,13 @@ namespace App.DataAccess
             return await context.Vacancies.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public IEnumerable<Candidate> GetVacancyCandidates(Guid id)
+        public async Task<IEnumerable<Candidate>> GetVacancyCandidates(Guid id)
         {
-            var arr = context.Vacancies.Include(t => t.Candidates);
-
-            foreach (Vacancy t in arr)
+            var vacancy = await context.Vacancies.Include(t => t.Candidates).FirstOrDefaultAsync(x => x.Id == id);
+            if (vacancy != null)
             {
-                if (t.Id == id)
-                {
-                    return t.Candidates;
-                }
+                return vacancy.Candidates;
             }
-
             return null;
         }
 
@@ -188,6 +183,25 @@ namespace App.DataAccess
                     break;
                 }
             }
+            await context.SaveChangesAsync();
+            return result;
+        }
+
+        public async Task<Candidate> RemoveCandidateFromVacancy(Guid idCandidate, Guid idVacancy)
+        {
+            Candidate result = null;
+
+            var vacancy = await context.Vacancies.Include(t => t.Candidates).FirstOrDefaultAsync(x => x.Id == idVacancy);
+            if (vacancy != null)
+            {
+                var candidate = vacancy.Candidates.FirstOrDefault(x => x.Id == idCandidate);
+                if (candidate != null)
+                {
+                    result = candidate;
+                    vacancy.Candidates.Remove(candidate);
+                }
+            }
+
             await context.SaveChangesAsync();
             return result;
         }

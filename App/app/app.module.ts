@@ -13,11 +13,12 @@ import { AppComponent } from './app.component';
 import { DemandFormComponent } from './demands/demandForm.component';
 import { CandidateFormComponent } from './candidates/candidateForm.component';
 import { VacancyFormComponent } from './vacancies/vacancyForm.component';
+import { VacancyCandidateFormComponent } from './vacancies/vacancyCandidateForm.component';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
     imports: [BrowserModule, HttpModule, appRouterModule, FormsModule],
-    declarations: [DemandsComponent, CandidatesComponent, CandidateFormComponent, VacanciesComponent, VacancyComponent, AppComponent, DemandFormComponent, VacancyFormComponent],
+    declarations: [DemandsComponent, CandidatesComponent, CandidateFormComponent, VacanciesComponent, VacancyComponent, AppComponent, DemandFormComponent, VacancyFormComponent, VacancyCandidateFormComponent],
     bootstrap: [AppComponent],
     providers: [DemandsService, VacanciesService, CandidatesService]
 })

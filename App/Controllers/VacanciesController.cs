@@ -38,9 +38,9 @@ namespace App.Controllers
 
         [Route("candidates/{id}")]
         [HttpGet]
-        public IEnumerable<Candidate> GetVacancyCandidates(Guid id)
+        public async Task<IEnumerable<Candidate>> GetVacancyCandidates(Guid id)
         {
-            return repository.GetVacancyCandidates(id);
+            return await repository.GetVacancyCandidates(id);
         }
 
         [Route]
@@ -62,6 +62,13 @@ namespace App.Controllers
         public async Task<Vacancy> DeleteVacancy(Guid id)
         {
             return await repository.DeleteVacancy(id);
+        }
+
+        [Route("{idCandidate}/{idVacancy}")]
+        [HttpDelete]
+        public async Task<Candidate> RemoveCandidateFromVacancy(Guid idCandidate, Guid idVacancy)
+        {
+            return await repository.RemoveCandidateFromVacancy(idCandidate, idVacancy);
         }
     }
 }

@@ -34,12 +34,14 @@ namespace App.DataAccess
 
         Task<Vacancy> GetVacancy(Guid id);
 
-        IEnumerable<Candidate> GetVacancyCandidates(Guid id);
+        Task<IEnumerable<Candidate>> GetVacancyCandidates(Guid id);
 
         Task<Vacancy> AddVacancy(Vacancy d);
 
         Task<Vacancy> EditVacancy(Vacancy d);
 
         Task<Vacancy> DeleteVacancy(Guid id);
+
+        Task<Candidate> RemoveCandidateFromVacancy(Guid idCandidate, Guid idVacancy);
     }
 }
