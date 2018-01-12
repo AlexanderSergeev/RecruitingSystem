@@ -26,7 +26,15 @@ export class VacanciesService {
 
     getVacancyCandidates(id: string) {
         return this.http
-            .get('/api/vacancies/candidates' + id)
+            .get('/api/vacancies/candidates/' + id)
+            .map(res => {
+                return res.json();
+            });
+    }
+
+    getOtherVacancyCandidates(id: string) {
+        return this.http
+            .get('/api/vacancies/otherCandidates/' + id)
             .map(res => {
                 return res.json();
             });

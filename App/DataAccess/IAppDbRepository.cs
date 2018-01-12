@@ -36,6 +36,8 @@ namespace App.DataAccess
 
         Task<IEnumerable<Candidate>> GetVacancyCandidates(Guid id);
 
+        Task<IEnumerable<Candidate>> GetOtherVacancyCandidates(Guid id);
+
         Task<Vacancy> AddVacancy(Vacancy d);
 
         Task<Vacancy> EditVacancy(Vacancy d);

@@ -43,6 +43,13 @@ namespace App.Controllers
             return await repository.GetVacancyCandidates(id);
         }
 
+        [Route("otherCandidates/{id}")]
+        [HttpGet]
+        public async Task<IEnumerable<Candidate>> GetOtherVacancyCandidates(Guid id)
+        {
+            return await repository.GetOtherVacancyCandidates(id);
+        }
+
         [Route]
         [HttpPost]
         public async Task<Vacancy> AddVacancy([FromBody]Vacancy d)

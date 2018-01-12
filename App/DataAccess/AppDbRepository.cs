@@ -150,6 +150,18 @@ namespace App.DataAccess
             return null;
         }
 
+        public async Task<IEnumerable<Candidate>> GetOtherVacancyCandidates(Guid id)
+        {
+            var vacancy = await context.Vacancies.Include(t => t.Candidates).FirstOrDefaultAsync(x => x.Id == id);
+            if (vacancy != null)
+            {
+                var vacancyCandidates = vacancy.Candidates;
+                var candidates = context.Candidates.Where(x => !vacancyCandidates.Contains(x));
+                return candidates;
+            }
+            return null;
+        }
+
         public async Task<Vacancy> AddVacancy(Vacancy d)
         {
             context.Vacancies.Add(d);
