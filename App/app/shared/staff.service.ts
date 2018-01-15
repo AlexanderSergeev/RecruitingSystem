@@ -6,25 +6,25 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
 @Injectable()
-export class CandidatesService {
+export class StaffService {
 
     constructor(private http: Http) { }
 
-    getCandidates() {
+    getStaff() {
         return this.http
-            .get('/api/candidates')
+            .get('/api/staff')
             .map(res => res.json());
     }
 
-    getCandidate(id: string) {
+    getStaffMember(id: string) {
         return this.http
-            .get('/api/candidates/' + id)
+            .get('/api/staff/' + id)
             .map(res => {
                 return res.json();
             });
     }
 
-    addCandidate(name: string, surname: string, patronym: string) {
+    addStaffMember(name: string, surname: string, patronym: string) {
         var json = JSON.stringify({
             Name: name,
             Surname: surname,
@@ -33,12 +33,12 @@ export class CandidatesService {
 
         let headers = new Headers({ 'Content-Type': 'application/json;charset=utf-8' });
 
-        return this.http.post('/api/candidates', json, { headers: headers })
+        return this.http.post('/api/staff', json, { headers: headers })
             .map((resp: Response) => resp.json())
             .catch((error: any) => { return Observable.throw(error); });
     }
 
-    editCandidate(id: number, name: string, surname: string, patronym: string) {
+    editStaffMember(id: number, name: string, surname: string, patronym: string) {
         var json = JSON.stringify({
             Id: id,
             Name: name,
@@ -48,7 +48,7 @@ export class CandidatesService {
 
         let headers = new Headers({ 'Content-Type': 'application/json;charset=utf-8' });
 
-        return this.http.put('/api/candidates/', json, { headers: headers })
+        return this.http.put('/api/staff/', json, { headers: headers })
             .map((resp: Response) => resp.json())
             .catch((error: any) => { return Observable.throw(error); });
     }
@@ -57,13 +57,13 @@ export class CandidatesService {
 
         let headers = new Headers({ 'enctype': 'multipart/form-data' });
 
-        return this.http.post('/api/candidates/uploadResume/' + id, data, { headers: headers })
+        return this.http.post('/api/staff/uploadResume/' + id, data, { headers: headers })
             .map((resp: Response) => resp.json())
             .catch((error: any) => { return Observable.throw(error); });
     }
 
     remove(id: number) {
-        return this.http.delete('/api/candidates/' + id)
+        return this.http.delete('/api/staff/' + id)
             .map(this.extractData)
             .catch(this.handleErrorObservable);
     }

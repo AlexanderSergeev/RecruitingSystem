@@ -26,7 +26,7 @@ import { Vacancy } from '../shared/vacancy';
                     <ng-template #unset>  
                         <td>{{vacancy.VacancyLocation}}</td>  
                     </ng-template>
-                    <td><a [routerLink]="['/vacancies', vacancy.Id]">Список кандидатов</a></td>
+                    <td><a [routerLink]="['/vacancies', vacancy.Id]">Кандидаты</a></td>
                     <td>
                         <button (click)="popUpShow();" [routerLink]="['/vacancies/form', vacancy.Id]" class="btn btn-info">Редактировать</button>
                         <button (click)="remove(vacancy.Id);" style="margin-left:5px;" class="btn btn-danger">Удалить</button>

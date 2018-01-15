@@ -64,5 +64,33 @@ namespace App.Controllers
             await repository.DeleteDemand(d.Id);
             return await repository.AddVacancy(new Vacancy { Name = d.Name, VacancyLocation = d.DemandLocation, VacancyStatus = 0});
         }
+
+        [Route("staff/{id}")]
+        [HttpGet]
+        public async Task<IEnumerable<StaffMember>> GetDemandStaff(Guid id)
+        {
+            return await repository.GetDemandStaff(id);
+        }
+
+        [Route("otherStaff/{id}")]
+        [HttpGet]
+        public async Task<IEnumerable<StaffMember>> GetOtherDemandStaff(Guid id)
+        {
+            return await repository.GetOtherDemandStaff(id);
+        }
+
+        [Route("staff")]
+        [HttpPost]
+        public async Task<StaffMember> AddDemandStaffMember([FromBody]DemandIdCouple couple)
+        {
+            return await repository.AddDemandStaffMember(couple);
+        }
+
+        [Route("{idStaffMember}/{idDemand}")]
+        [HttpDelete]
+        public async Task<StaffMember> RemoveStaffMemberFromDemand(Guid idStaffMember, Guid idDemand)
+        {
+            return await repository.RemoveStaffMemberFromDemand(idStaffMember, idDemand);
+        }
     }
 }

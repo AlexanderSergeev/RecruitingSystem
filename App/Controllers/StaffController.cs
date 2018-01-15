@@ -11,12 +11,12 @@ using System.Web;
 namespace App.Controllers
 {
 
-    [RoutePrefix("api/candidates")]
-    public class CandidatesController : ApiController
+    [RoutePrefix("api/staff")]
+    public class StaffController : ApiController
     {
         private IAppDbRepository repository;
 
-        public CandidatesController(IAppDbRepository repoInstance)
+        public StaffController(IAppDbRepository repoInstance)
         {
             if (repoInstance == null)
             {
@@ -27,30 +27,30 @@ namespace App.Controllers
 
         [Route]
         [HttpGet]
-        public IEnumerable<Candidate> GetCandidates()
+        public IEnumerable<StaffMember> GetStaff()
         {
-            return repository.GetCandidates();
+            return repository.GetStaff();
         }
 
         [Route("{id}")]
         [HttpGet]
-        public async Task<Candidate> GetCandidate(Guid id)
+        public async Task<StaffMember> GetStaffMember(Guid id)
         {
-            return await repository.GetCandidate(id);
+            return await repository.GetStaffMember(id);
         }
 
         [Route]
         [HttpPost]
-        public async Task<Candidate> AddCandidate([FromBody]Candidate d)
+        public async Task<StaffMember> AddStaffMember([FromBody]StaffMember d)
         {
-            return await repository.AddCandidate(d);
+            return await repository.AddStaffMember(d);
         }
 
         [Route]
         [HttpPut]
-        public async Task<Candidate> EditCandidate([FromBody]Candidate d)
+        public async Task<StaffMember> EditStaffMember([FromBody]StaffMember d)
         {
-            return await repository.EditCandidate(d);
+            return await repository.EditStaffMember(d);
         }
 
         [Route("uploadResume/{id}")]
@@ -64,7 +64,7 @@ namespace App.Controllers
                     return BadRequest();
                 }
                 var provider = new MultipartMemoryStreamProvider();
-                var root = HttpContext.Current.Server.MapPath("~/Content/Candidates/" + id + "/Resume/");
+                var root = HttpContext.Current.Server.MapPath("~/Content/Staff/" + id + "/Resume/");
                 await Request.Content.ReadAsMultipartAsync(provider);
 
                 if (!Directory.Exists(root))
@@ -82,8 +82,8 @@ namespace App.Controllers
                 {
                     await fs.WriteAsync(fileArray, 0, fileArray.Length);
                 }
-                var filePath = "/Content/Candidates/" + id + "/Resume/" + filename;
-                await repository.EditCandidateResumePath(id, filePath);
+                var filePath = "/Content/Staff/" + id + "/Resume/" + filename;
+                await repository.EditStaffMemberResumePath(id, filePath);
                 return Ok(filePath);
             }
             catch (Exception)
@@ -92,12 +92,11 @@ namespace App.Controllers
             }
         }
 
-
         [Route("{id}")]
         [HttpDelete]
-        public async Task<Candidate> DeleteCandidate(Guid id)
+        public async Task<StaffMember> DeleteStaffMember(Guid id)
         {
-            return await repository.DeleteCandidate(id);
+            return await repository.DeleteStaffMember(id);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Demand } from '../shared/demand';
 import { DemandsService } from '../shared/demands.service';
 import { DemandsComponent } from './demands.component';
 import { ActivatedRoute, Router } from '@angular/router';

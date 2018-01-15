@@ -27,3 +27,9 @@ App/app/shared/candidates.service.js
 App/app/vacancies/vacancy.component.js
 App/app/shared/vacancy.js
 App/app/vacancies/vacancyCandidateForm.component.js
+App/app/demands/demand.component.js
+App/app/demands/demandStaffForm.component.js
+App/app/shared/staff.js
+App/app/shared/staff.service.js
+App/app/staff/staff.component.js
+App/app/staff/staffForm.component.js

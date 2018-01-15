@@ -1,5 +1,4 @@
 ﻿import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Vacancy } from '../shared/vacancy';
 import { VacanciesService } from '../shared/vacancies.service';
 import { VacanciesComponent } from './vacancies.component';
 import { ActivatedRoute, Router } from '@angular/router';

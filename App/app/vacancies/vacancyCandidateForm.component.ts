@@ -2,6 +2,7 @@
 import { VacanciesService } from '../shared/vacancies.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Candidate } from '../shared/candidate';
+import { VacancyComponent } from './vacancy.component';
 
 @Component({
     template: `
@@ -9,7 +10,7 @@ import { Candidate } from '../shared/candidate';
         <div>
             <h4 style="margin-left:15px;">Кандидаты</h4>
             <div class="form-group">
-                    <div class="panel">
+                <div style="overflow:auto;" id="list-vacancies-candidates-form" class="panel">
                         <table class="table table-striped">
                             <thead>
                             <tr>
@@ -45,7 +46,7 @@ import { Candidate } from '../shared/candidate';
                             </tbody>
                         </table>
                     </div>
-                    <button [routerLink]="['/vacancies', id]" (click)="popUpHide()" class="btn btn-primary">Отменить</button>
+                    <button [routerLink]="['/vacancies', idVacancy]" (click)="popUpHide()" class="btn btn-primary">Выйти</button>
                 </div>
         </div>
     </form>`,
@@ -55,21 +56,31 @@ export class VacancyCandidateFormComponent implements OnInit, OnDestroy {
 
     candidates: Candidate[] = [];
     sub: any;
-    id: string;
+    idVacancy: string;
 
-    constructor(private vacanciesService: VacanciesService, private route: ActivatedRoute, private router: Router) { }
+    constructor(private vacanciesService: VacanciesService, private vacancyComponent: VacancyComponent, private route: ActivatedRoute, private router: Router) { }
 
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
-            this.id = params['id'];
-            this.vacanciesService.getOtherVacancyCandidates(this.id).subscribe(res => {
+            this.idVacancy = params['id'];
+            this.vacanciesService.getOtherVacancyCandidates(this.idVacancy).subscribe(res => {
                 this.candidates = res;
             });
         });
     }
 
-    add(id: number) {
-        alert(id);
+    add(idCandidate: number) {
+        if (idCandidate != null) {
+            const vacancyCandidateForm = this;
+            this.vacanciesService.addVacancyCandidate(idCandidate, this.idVacancy).subscribe(
+                data => {
+                    this.vacancyComponent.candidates.push(data);
+                    var listVacanciesCandidates = document.getElementById('list-vacancies-candidates');
+                    listVacanciesCandidates.scrollTop = listVacanciesCandidates.scrollHeight;
+                    let index = vacancyCandidateForm.candidates.findIndex(c => c.Id === idCandidate);
+                    vacancyCandidateForm.candidates.splice(index, 1);
+                });
+        }
     }
 
     ngOnDestroy() {

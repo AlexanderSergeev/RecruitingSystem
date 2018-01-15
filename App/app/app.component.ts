@@ -13,6 +13,7 @@
                 </button>
                 <a [routerLink]="['/demands']" class="navbar-brand">Запросы</a>
                 <a [routerLink]="['/vacancies']" class="navbar-brand">Вакансии</a>
+                <a [routerLink]="['/staff']" class="navbar-brand">Сотрудники</a>
                 <a [routerLink]="['/candidates']" class="navbar-brand">Кандидаты</a>
             </div>
         </div>

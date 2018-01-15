@@ -98,7 +98,7 @@ namespace App.DataAccess
                 candidate.Surname = d.Surname;
                 candidate.Patronym = d.Patronym;
                 await context.SaveChangesAsync();
-                return d;
+                return candidate;
             }
             return null;
         }
@@ -130,6 +130,65 @@ namespace App.DataAccess
             }
         }
 
+        public IEnumerable<StaffMember> GetStaff()
+        {
+            return context.Staff;
+        }
+
+        public async Task<StaffMember> GetStaffMember(Guid id)
+        {
+            return await context.Staff.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<StaffMember> AddStaffMember(StaffMember d)
+        {
+            context.Staff.Add(d);
+            await context.SaveChangesAsync();
+            return d;
+        }
+
+        public async Task<StaffMember> EditStaffMember(StaffMember d)
+        {
+            var staffMember = await context.Staff.FirstOrDefaultAsync(x => x.Id == d.Id);
+
+            if (staffMember != null)
+            {
+                staffMember.Name = d.Name;
+                staffMember.Surname = d.Surname;
+                staffMember.Patronym = d.Patronym;
+                await context.SaveChangesAsync();
+                return staffMember;
+            }
+            return null;
+        }
+
+        public async Task<StaffMember> DeleteStaffMember(Guid id)
+        {
+            StaffMember result = null;
+            foreach (StaffMember tmp in context.Staff)
+            {
+                if (tmp.Id == id)
+                {
+                    result = tmp;
+                    context.Staff.Remove(tmp);
+                    break;
+                }
+            }
+            await context.SaveChangesAsync();
+            return result;
+        }
+
+        public async Task EditStaffMemberResumePath(Guid id, string path)
+        {
+            var staffMember = await context.Staff.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (staffMember != null)
+            {
+                staffMember.ResumePath = path;
+                await context.SaveChangesAsync();
+            }
+        }
+
         public IEnumerable<Vacancy> GetVacancies()
         {
             return context.Vacancies;
@@ -156,8 +215,9 @@ namespace App.DataAccess
             if (vacancy != null)
             {
                 var vacancyCandidates = vacancy.Candidates;
-                var candidates = context.Candidates.Where(x => !vacancyCandidates.Contains(x));
-                return candidates;
+                var candidates = context.Candidates;
+                var result = candidates.ToList().Where(x=> !vacancyCandidates.Contains(x));
+                return result;
             }
             return null;
         }
@@ -167,6 +227,24 @@ namespace App.DataAccess
             context.Vacancies.Add(d);
             await context.SaveChangesAsync();
             return d;
+        }
+
+        public async Task<Candidate> AddVacancyCandidate(VacancyIdCouple couple)
+        {
+            Candidate result = null;
+            var vacancy = await context.Vacancies.Include(t => t.Candidates)
+                .FirstOrDefaultAsync(x => x.Id == couple.IdVacancy);
+            if (vacancy != null)
+            {
+                var candidate = await context.Candidates.FirstOrDefaultAsync(x => x.Id == couple.IdCandidate);
+                if (candidate != null)
+                {
+                    vacancy.Candidates.Add(candidate);
+                    result = candidate;
+                }
+            }
+            await context.SaveChangesAsync();
+            return result;
         }
 
         public async Task<Vacancy> EditVacancy(Vacancy d)
@@ -214,6 +292,66 @@ namespace App.DataAccess
                 }
             }
 
+            await context.SaveChangesAsync();
+            return result;
+        }
+
+        public async Task<IEnumerable<StaffMember>> GetDemandStaff(Guid id)
+        {
+            var demand = await context.Demands.Include(t => t.Staff).FirstOrDefaultAsync(x => x.Id == id);
+            if (demand != null)
+            {
+                return demand.Staff;
+            }
+            return null;
+        }
+
+        public async Task<IEnumerable<StaffMember>> GetOtherDemandStaff(Guid id)
+        {
+            var demand = await context.Demands.Include(t => t.Staff).FirstOrDefaultAsync(x => x.Id == id);
+            if (demand != null)
+            {
+                var demandStaff = demand.Staff;
+                var staff = context.Staff;
+                var result = staff.ToList().Where(x => !demandStaff.Contains(x));
+                return result;
+            }
+            return null;
+        }
+
+        public async Task<StaffMember> RemoveStaffMemberFromDemand(Guid idStaffMember, Guid idDemand)
+        {
+            StaffMember result = null;
+
+            var demand = await context.Demands.Include(t => t.Staff).FirstOrDefaultAsync(x => x.Id == idDemand);
+            if (demand != null)
+            {
+                var staff = demand.Staff.FirstOrDefault(x => x.Id == idStaffMember);
+                if (staff != null)
+                {
+                    result = staff;
+                    demand.Staff.Remove(staff);
+                }
+            }
+
+            await context.SaveChangesAsync();
+            return result;
+        }
+
+        public async Task<StaffMember> AddDemandStaffMember(DemandIdCouple couple)
+        {
+            StaffMember result = null;
+            var demand = await context.Demands.Include(t => t.Staff)
+                .FirstOrDefaultAsync(x => x.Id == couple.IdDemand);
+            if (demand != null)
+            {
+                var staff = await context.Staff.FirstOrDefaultAsync(x => x.Id == couple.IdStaffMember);
+                if (staff != null)
+                {
+                    demand.Staff.Add(staff);
+                    result = staff;
+                }
+            }
             await context.SaveChangesAsync();
             return result;
         }

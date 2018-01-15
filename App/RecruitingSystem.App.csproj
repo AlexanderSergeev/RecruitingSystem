@@ -164,6 +164,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\StaffController.cs" />
     <Compile Include="Controllers\AppController.cs" />
     <Compile Include="Controllers\CandidatesController.cs" />
     <Compile Include="Controllers\DemandsController.cs" />
@@ -176,6 +177,9 @@
     </Compile>
     <Compile Include="Models\Candidate.cs" />
     <Compile Include="Models\Demand.cs" />
+    <Compile Include="Models\DemandIdCouple.cs" />
+    <Compile Include="Models\VacancyIdCouple.cs" />
+    <Compile Include="Models\StaffMember.cs" />
     <Compile Include="Models\Vacancy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="App_Start\IocConfig.cs" />
@@ -210,6 +214,10 @@
     <TypeScriptCompile Include="app\app.routes.ts" />
     <TypeScriptCompile Include="app\candidates\candidateForm.component.ts" />
     <TypeScriptCompile Include="app\candidates\candidates.component.ts" />
+    <TypeScriptCompile Include="app\demands\demand.component.ts" />
+    <TypeScriptCompile Include="app\demands\demandStaffForm.component.ts" />
+    <TypeScriptCompile Include="app\shared\staff.ts" />
+    <TypeScriptCompile Include="app\shared\staff.service.ts" />
     <TypeScriptCompile Include="app\shared\candidates.service.ts" />
     <TypeScriptCompile Include="app\demands\demandForm.component.ts" />
     <TypeScriptCompile Include="app\shared\candidate.ts" />
@@ -220,6 +228,8 @@
     <TypeScriptCompile Include="app\main.ts" />
     <TypeScriptCompile Include="app\shared\vacancies.service.ts" />
     <TypeScriptCompile Include="app\shared\vacancy.ts" />
+    <TypeScriptCompile Include="app\staff\staffForm.component.ts" />
+    <TypeScriptCompile Include="app\staff\staff.component.ts" />
     <TypeScriptCompile Include="app\vacancies\vacancy.component.ts" />
     <TypeScriptCompile Include="app\vacancies\vacancyCandidateForm.component.ts" />
     <TypeScriptCompile Include="app\vacancies\vacancyForm.component.ts" />

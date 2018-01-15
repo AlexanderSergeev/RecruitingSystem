@@ -10,7 +10,8 @@ import { Demand } from '../shared/demand';
             <thead>
                 <tr>
                     <th>Название</th>
-                    <th>Локация</th> 
+                    <th>Локация</th>
+                    <th></th> 
                     <th></th>
                 </tr>
             </thead>
@@ -23,6 +24,7 @@ import { Demand } from '../shared/demand';
                     <ng-template #unset>  
                         <td>{{demand.DemandLocation}}</td>  
                     </ng-template>
+                    <td><a [routerLink]="['/demands', demand.Id]">Сотрудники</a></td>
                     <td>
                         <button (click)="convertToVacancy(demand);" class="btn btn-success">Конвертировать в вакансию</button>
                         <button (click)="popUpShow();" [routerLink]="['/demands/form', demand.Id]" style="margin-left:5px;" class="btn btn-info">Редактировать</button>

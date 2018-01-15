@@ -72,6 +72,42 @@ export class DemandsService {
             .catch((error: any) => { return Observable.throw(error); });
     }
 
+    getDemandStaff(id: string) {
+        return this.http
+            .get('/api/demands/staff/' + id)
+            .map(res => {
+                return res.json();
+            });
+    }
+
+    getOtherDemandStaff(id: string) {
+        return this.http
+            .get('/api/demands/otherStaff/' + id)
+            .map(res => {
+                return res.json();
+            });
+    }
+
+    removeStaffMemberFromDemand(idStaffMember: number, idDemand: string) {
+        return this.http.delete('/api/demands/' + idStaffMember + '/' + idDemand)
+            .map(this.extractData)
+            .catch(this.handleErrorObservable);
+    }
+
+
+    addDemandStaffMember(idStaffMember: number, idDemand: string) {
+        var json = JSON.stringify({
+            IdStaffMember: idStaffMember,
+            IdDemand: idDemand
+        });
+
+        let headers = new Headers({ 'Content-Type': 'application/json;charset=utf-8' });
+
+        return this.http.post('/api/demands/staff', json, { headers: headers })
+            .map(this.extractData)
+            .catch(this.handleErrorObservable);
+    }
+
     private extractData(res: Response) {
         let body = res.json();
         return body || {};

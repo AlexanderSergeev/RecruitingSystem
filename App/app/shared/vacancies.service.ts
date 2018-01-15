@@ -54,6 +54,19 @@ export class VacanciesService {
             .catch((error: any) => { return Observable.throw(error); });
     }
 
+    addVacancyCandidate(idCandidate: number, idVacancy: string) {
+        var json = JSON.stringify({
+            IdCandidate: idCandidate,
+            IdVacancy: idVacancy
+        });
+
+        let headers = new Headers({ 'Content-Type': 'application/json;charset=utf-8' });
+
+        return this.http.post('/api/vacancies/candidates', json, { headers: headers })
+            .map(this.extractData)
+            .catch(this.handleErrorObservable);
+    }
+
     editVacancy(id: number, name: string, vacancyStatus: number, vacancyLocation: string) {
         var json = JSON.stringify({
             Id: id,
@@ -76,7 +89,7 @@ export class VacanciesService {
     }
 
     removeCandidateFromVacancy(idCandidate: number, idVacancy: string) {
-        return this.http.delete('/api/vacancies/' + idVacancy + '/' + idCandidate)
+        return this.http.delete('/api/vacancies/' + idCandidate + '/' + idVacancy)
             .map(this.extractData)
             .catch(this.handleErrorObservable);
     }

@@ -57,6 +57,13 @@ namespace App.Controllers
             return await repository.AddVacancy(d);
         }
 
+        [Route("candidates")]
+        [HttpPost]
+        public async Task<Candidate> AddVacancyCandidate([FromBody]VacancyIdCouple couple)
+        {
+            return await repository.AddVacancyCandidate(couple);
+        }
+
         [Route]
         [HttpPut]
         public async Task<Vacancy> EditVacancy([FromBody]Vacancy d)

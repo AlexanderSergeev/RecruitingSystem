@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
     selector: 'vacancy',
     template: `
-    <div class="panel">
+    <div style="overflow:auto; height:480px;" id="list-vacancies-candidates" class="panel">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -44,7 +44,7 @@ import { ActivatedRoute, Router } from '@angular/router';
     </div>
     <button (click)="popUpShow();" [routerLink]="['/vacancies/:id/candidateForm', {id: id}]" class="btn btn-primary">Добавить</button>
     <div hidden="hidden" class="b-popup" id="popupСandidateForm">
-	    <div class="b-popup-content">
+	    <div class="b-popup-content" style="max-width: 400px;">
 	        <router-outlet></router-outlet>
 	    </div>
 	</div>`,

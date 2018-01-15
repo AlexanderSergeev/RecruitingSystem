@@ -15,6 +15,8 @@ namespace App.DataAccess
 
         public DbSet<Candidate> Candidates { get; set; }
 
+        public DbSet<StaffMember> Staff { get; set; }
+
         public DbSet<Vacancy> Vacancies { get; set; }
     }
 }

@@ -1,13 +1,13 @@
 ﻿import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CandidatesService } from '../shared/candidates.service';
-import { CandidatesComponent } from './candidates.component';
+import { StaffService } from '../shared/staff.service';
+import { StaffComponent } from './staff.component';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     template: `
     <form #myForm="ngForm" novalidate>
         <div class="row">
-            <h4 style="margin-left:15px;">Кандидат</h4>
+            <h4 style="margin-left:15px;">Сотрудник</h4>
             <br>
             <div class="form-group">
                 <label class="col-md-6 control-label">Имя: </label>
@@ -30,21 +30,21 @@ import { ActivatedRoute, Router } from '@angular/router';
             <div class="form-group">
                 <label class="col-md-6 control-label">Загрузить резюме: </label>
                 <div class="col-md-10">
-                    <input id="Resume" type="file" class="form-control" name="Resume">
+                    <input id="StaffResume" type="file" class="form-control" name="Resume">
                 </div>
             </div>      
             <div class="form-group">
                 <div class="col-md-10">
                     <br>
-                    <button [routerLink]="['/candidates']" [disabled]="myForm.invalid" (click)="addCandidate(Name, Surname, Patronym)" class="btn btn-primary">Сохранить</button>
-                    <button [routerLink]="['/candidates']" (click)="popUpHide()" class="btn btn-primary">Отменить</button>
+                    <button [routerLink]="['/staff']" [disabled]="myForm.invalid" (click)="addStaffMember(Name, Surname, Patronym)" class="btn btn-primary">Сохранить</button>
+                    <button [routerLink]="['/staff']" (click)="popUpHide()" class="btn btn-primary">Отменить</button>
                 </div>
             </div>
         </div>
     </form>`,
-    providers: [CandidatesService]
+    providers: [StaffService]
 })
-export class CandidateFormComponent implements OnInit, OnDestroy {
+export class StaffFormComponent implements OnInit, OnDestroy {
 
     sub: any;
     Id: number;
@@ -52,13 +52,13 @@ export class CandidateFormComponent implements OnInit, OnDestroy {
     Surname: string;
     Patronym: string;
 
-    constructor(private candidatesService: CandidatesService, private candidatesComponent: CandidatesComponent, private route: ActivatedRoute, private router: Router) { }
+    constructor(private staffService: StaffService, private staffComponent: StaffComponent, private route: ActivatedRoute, private router: Router) { }
 
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
             let id = params['id'];
             if (id != 0) {
-                this.candidatesService.getCandidate(id).subscribe(res => {
+                this.staffService.getStaffMember(id).subscribe(res => {
                     this.Id = res.Id;
                     this.Name = res.Name;
                     this.Surname = res.Surname;
@@ -73,29 +73,29 @@ export class CandidateFormComponent implements OnInit, OnDestroy {
     }
 
     popUpHide() {
-        document.getElementById("popupCandidate").style.display = "none";
+        document.getElementById("popupStaff").style.display = "none";
     }
 
-    addCandidate(name: string, surname: string, patronym: string) {
+    addStaffMember(name: string, surname: string, patronym: string) {
         this.popUpHide();
 
-        var filePathInput: any = document.getElementById("Resume");
+        var filePathInput: any = document.getElementById("StaffResume");
 
         var id = this.Id;
         if (id != null) {
-            this.candidatesService.editCandidate(id, name, surname, patronym).subscribe(
+            this.staffService.editStaffMember(id, name, surname, patronym).subscribe(
                 data => {
-                    let index = this.candidatesComponent.candidates.findIndex(d => d.Id === id);
-                    this.candidatesComponent.candidates[index] = data;
+                    let index = this.staffComponent.staff.findIndex(d => d.Id === id);
+                    this.staffComponent.staff[index] = data;
                     this.uploadResume(id, filePathInput);
                 });
         }
         else {
-            this.candidatesService.addCandidate(name, surname, patronym).subscribe(
+            this.staffService.addStaffMember(name, surname, patronym).subscribe(
                 data => {
-                    this.candidatesComponent.candidates.push(data);
-                    var listCandidates = document.getElementById('list-candidates');
-                    listCandidates.scrollTop = listCandidates.scrollHeight;
+                    this.staffComponent.staff.push(data);
+                    var listStaff = document.getElementById('list-staff');
+                    listStaff.scrollTop = listStaff.scrollHeight;
                     this.uploadResume(data.Id, filePathInput);
                 });
         }
@@ -108,10 +108,10 @@ export class CandidateFormComponent implements OnInit, OnDestroy {
             var file: any = filePathInput.files[0];
             data.append("file", file);
             if (file) {
-                this.candidatesService.uploadResume(id, data).subscribe(
+                this.staffService.uploadResume(id, data).subscribe(
                     data => {
-                        let index = this.candidatesComponent.candidates.findIndex(d => d.Id === id);
-                        this.candidatesComponent.candidates[index].ResumePath = data;
+                        let index = this.staffComponent.staff.findIndex(d => d.Id === id);
+                        this.staffComponent.staff[index].ResumePath = data;
                     });
             }
         }
