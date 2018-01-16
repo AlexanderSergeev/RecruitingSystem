@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
         <table class="table table-striped">
             <thead>
                 <tr>
+                    <th></th>
                     <th>Имя</th>
                     <th>Фамилия</th> 
                     <th>Отчество</th>
@@ -19,15 +20,21 @@ import { ActivatedRoute, Router } from '@angular/router';
             </thead>
             <tbody>
                 <tr *ngFor="let candidate of candidates">
+                    <td *ngIf="candidate.Checked!=null && candidate.Checked else unset">
+                        <input type="checkbox" checked>
+                    </td>
+                    <ng-template #unset>  
+                        <td><input type="checkbox"></td> 
+                    </ng-template>
                     <td>{{candidate.Name}}</td>
                     <td>{{candidate.Surname}}</td>
-                    <td *ngIf="candidate.Patronym==null || candidate.Patronym=='';else unset1">
+                    <td *ngIf="candidate.Patronym==null || candidate.Patronym=='' else unset1">
                         N/А
                     </td>
                     <ng-template #unset1>  
                         <td>{{candidate.Patronym}}</td>  
                     </ng-template>
-                    <td *ngIf="candidate.ResumePath==null || candidate.ResumePath=='';else unset2">
+                    <td *ngIf="candidate.ResumePath==null || candidate.ResumePath=='' else unset2">
                         N/А
                     </td>
                     <ng-template #unset2>  

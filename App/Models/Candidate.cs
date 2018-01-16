@@ -14,6 +14,8 @@ namespace App.Models
         public string Name { get; set; }
         [Required]
         public string Surname { get; set; }
+        [Required]
+        public bool Checked { get; set; }
         public string Patronym { get; set; }
         public string ResumePath { get; set; }
         public ICollection<Vacancy> Vacancies { get; set; }

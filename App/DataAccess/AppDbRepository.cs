@@ -2,11 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
-using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web.Http;
-using System.Web.Http.Results;
-using App.Controllers;
 using App.Models;
 
 namespace App.DataAccess
@@ -83,6 +79,7 @@ namespace App.DataAccess
 
         public async Task<Candidate> AddCandidate(Candidate d)
         {
+            d.Checked = false;
             context.Candidates.Add(d);
             await context.SaveChangesAsync();
             return d;
