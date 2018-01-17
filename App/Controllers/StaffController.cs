@@ -53,6 +53,13 @@ namespace App.Controllers
             return await repository.EditStaffMember(d);
         }
 
+        [Route("{id}")]
+        [HttpDelete]
+        public async Task<StaffMember> DeleteStaffMember(Guid id)
+        {
+            return await repository.DeleteStaffMember(id);
+        }
+
         [Route("uploadResume/{id}")]
         [HttpPost]
         public async Task<IHttpActionResult> UploadResume(Guid id)
@@ -90,13 +97,6 @@ namespace App.Controllers
             {
                 return BadRequest("Произошла ошибка при загрузке резюме");
             }
-        }
-
-        [Route("{id}")]
-        [HttpDelete]
-        public async Task<StaffMember> DeleteStaffMember(Guid id)
-        {
-            return await repository.DeleteStaffMember(id);
         }
     }
 }

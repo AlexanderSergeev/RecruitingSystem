@@ -67,6 +67,32 @@ export class VacanciesService {
             .catch(this.handleErrorObservable);
     }
 
+    checkCandidate(idCandidate: number, idVacancy: string, status: boolean) {
+        var json = JSON.stringify({
+            IdCandidate: idCandidate,
+            IdVacancy: idVacancy
+        });
+
+        let headers = new Headers({ 'Content-Type': 'application/json;charset=utf-8' });
+
+        return this.http.put('/api/vacancies/candidates/' + status, json, { headers: headers })
+            .map(this.extractData)
+            .catch(this.handleErrorObservable);
+    }
+
+    checkCandidateInterview(idCandidate: number, idVacancy: string, status: boolean) {
+        var json = JSON.stringify({
+            IdCandidate: idCandidate,
+            IdVacancy: idVacancy
+        });
+
+        let headers = new Headers({ 'Content-Type': 'application/json;charset=utf-8' });
+
+        return this.http.put('/api/vacancies/candidates/interview/' + status, json, { headers: headers })
+            .map(this.extractData)
+            .catch(this.handleErrorObservable);
+    }
+
     editVacancy(id: number, name: string, vacancyStatus: number, vacancyLocation: string) {
         var json = JSON.stringify({
             Id: id,

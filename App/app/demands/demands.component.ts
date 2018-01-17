@@ -5,7 +5,7 @@ import { Demand } from '../shared/demand';
 @Component({
     selector: 'list-demands',
     template: ` 
-    <div style="overflow:auto; height:480px;" id="list-demands" class="panel">
+    <div style="overflow:auto;" id="list-demands" class="panel">
         <table class="table table-striped">
             <thead>
                 <tr>

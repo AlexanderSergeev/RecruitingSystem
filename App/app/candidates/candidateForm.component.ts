@@ -32,7 +32,19 @@ import { ActivatedRoute, Router } from '@angular/router';
                 <div class="col-md-10">
                     <input id="Resume" type="file" class="form-control" name="Resume">
                 </div>
-            </div>      
+            </div>  
+            <div class="form-group">
+                <label class="col-md-6 control-label">Загрузить HR-конспект: </label>
+                <div class="col-md-10">
+                    <input id="Summary" type="file" class="form-control" name="Summary">
+                </div>
+            </div> 
+            <div class="form-group">
+                <label class="col-md-6 control-label">Загрузить технический конспект: </label>
+                <div class="col-md-10">
+                    <input id="Interview" type="file" class="form-control" name="Interview">
+                </div>
+            </div>       
             <div class="form-group">
                 <div class="col-md-10">
                     <br>
@@ -79,7 +91,9 @@ export class CandidateFormComponent implements OnInit, OnDestroy {
     addCandidate(name: string, surname: string, patronym: string) {
         this.popUpHide();
 
-        var filePathInput: any = document.getElementById("Resume");
+        var resumePathInput: any = document.getElementById("Resume");
+        var summaryPathInput: any = document.getElementById("Summary");
+        var interviewPathInput: any = document.getElementById("Interview");
 
         var id = this.Id;
         if (id != null) {
@@ -87,7 +101,9 @@ export class CandidateFormComponent implements OnInit, OnDestroy {
                 data => {
                     let index = this.candidatesComponent.candidates.findIndex(d => d.Id === id);
                     this.candidatesComponent.candidates[index] = data;
-                    this.uploadResume(id, filePathInput);
+                    this.uploadResume(id, resumePathInput);
+                    this.uploadSummary(id, summaryPathInput);
+                    this.uploadInterview(id, interviewPathInput);
                 });
         }
         else {
@@ -96,7 +112,9 @@ export class CandidateFormComponent implements OnInit, OnDestroy {
                     this.candidatesComponent.candidates.push(data);
                     var listCandidates = document.getElementById('list-candidates');
                     listCandidates.scrollTop = listCandidates.scrollHeight;
-                    this.uploadResume(data.Id, filePathInput);
+                    this.uploadResume(data.Id, resumePathInput);
+                    this.uploadSummary(data.Id, summaryPathInput);
+                    this.uploadInterview(data.Id, interviewPathInput);
                 });
         }
     }
@@ -112,6 +130,38 @@ export class CandidateFormComponent implements OnInit, OnDestroy {
                     data => {
                         let index = this.candidatesComponent.candidates.findIndex(d => d.Id === id);
                         this.candidatesComponent.candidates[index].ResumePath = data;
+                    });
+            }
+        }
+    }
+
+    private uploadInterview(id: any, filePathInput: any) {
+
+        if (filePathInput.files) {
+            var data = new FormData();
+            var file: any = filePathInput.files[0];
+            data.append("file", file);
+            if (file) {
+                this.candidatesService.uploadInterview(id, data).subscribe(
+                    data => {
+                        let index = this.candidatesComponent.candidates.findIndex(d => d.Id === id);
+                        this.candidatesComponent.candidates[index].InterviewPath = data;
+                    });
+            }
+        }
+    }
+
+    private uploadSummary(id: any, filePathInput: any) {
+
+        if (filePathInput.files) {
+            var data = new FormData();
+            var file: any = filePathInput.files[0];
+            data.append("file", file);
+            if (file) {
+                this.candidatesService.uploadSummary(id, data).subscribe(
+                    data => {
+                        let index = this.candidatesComponent.candidates.findIndex(d => d.Id === id);
+                        this.candidatesComponent.candidates[index].SummaryPath = data;
                     });
             }
         }

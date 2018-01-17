@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
+using System.IO;
 using System.Threading.Tasks;
+using System.Web;
 using App.Models;
 
 namespace App.DataAccess
@@ -109,6 +111,20 @@ namespace App.DataAccess
                 {
                     result = tmp;
                     context.Candidates.Remove(tmp);
+                    var root = HttpContext.Current.Server.MapPath("~/Content/Candidates/" + id);
+                    if (Directory.Exists(root))
+                    {
+                        var dirInfo = new DirectoryInfo(root);
+                        foreach (var d in dirInfo.GetDirectories())
+                        {
+                            foreach (var f in d.GetFiles())
+                            {
+                                f.Delete();
+                            }
+                            d.Delete();
+                        }
+                        dirInfo.Delete();
+                    }
                     break;
                 }
             }
@@ -123,6 +139,28 @@ namespace App.DataAccess
             if (candidate != null)
             {
                 candidate.ResumePath = path;
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task EditCandidateSummaryPath(Guid id, string path)
+        {
+            var candidate = await context.Candidates.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (candidate != null)
+            {
+                candidate.SummaryPath = path;
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task EditCandidateInterviewPath(Guid id, string path)
+        {
+            var candidate = await context.Candidates.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (candidate != null)
+            {
+                candidate.InterviewPath = path;
                 await context.SaveChangesAsync();
             }
         }
@@ -168,6 +206,20 @@ namespace App.DataAccess
                 {
                     result = tmp;
                     context.Staff.Remove(tmp);
+                    var root = HttpContext.Current.Server.MapPath("~/Content/Staff/" + id);
+                    if (Directory.Exists(root))
+                    {
+                        var dirInfo = new DirectoryInfo(root);
+                        foreach (var d in dirInfo.GetDirectories())
+                        {
+                            foreach (var f in d.GetFiles())
+                            {
+                                f.Delete();
+                            }
+                            d.Delete();
+                        }
+                        dirInfo.Delete();
+                    }
                     break;
                 }
             }
@@ -347,6 +399,40 @@ namespace App.DataAccess
                 {
                     demand.Staff.Add(staff);
                     result = staff;
+                }
+            }
+            await context.SaveChangesAsync();
+            return result;
+        }
+
+        public async Task<Candidate> CheckCandidate(VacancyIdCouple couple, bool status)
+        {
+            Candidate result = null;
+            var vacancy = await context.Vacancies.Include(t => t.Candidates).FirstOrDefaultAsync(x => x.Id == couple.IdVacancy);
+            if (vacancy != null)
+            {
+                var candidate = vacancy.Candidates.FirstOrDefault(x => x.Id == couple.IdCandidate);
+                if (candidate != null)
+                {
+                    candidate.Checked = status;
+                    result = candidate;
+                }
+            }
+            await context.SaveChangesAsync();
+            return result;
+        }
+
+        public async Task<Candidate> CheckCandidateInterview(VacancyIdCouple couple, bool status)
+        {
+            Candidate result = null;
+            var vacancy = await context.Vacancies.Include(t => t.Candidates).FirstOrDefaultAsync(x => x.Id == couple.IdVacancy);
+            if (vacancy != null)
+            {
+                var candidate = vacancy.Candidates.FirstOrDefault(x => x.Id == couple.IdCandidate);
+                if (candidate != null)
+                {
+                    candidate.InterviewRequired = status;
+                    result = candidate;
                 }
             }
             await context.SaveChangesAsync();

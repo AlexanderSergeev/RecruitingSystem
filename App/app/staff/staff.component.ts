@@ -5,7 +5,7 @@ import { StaffMember } from '../shared/staff';
 @Component({
     selector: 'list-staff',
     template: ` 
-    <div style="overflow:auto; height:480px;" id="list-staff" class="panel">
+    <div style="overflow:auto;" id="list-staff" class="panel">
         <table class="table table-striped">
             <thead>
                 <tr>

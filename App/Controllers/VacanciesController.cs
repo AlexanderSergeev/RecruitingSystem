@@ -64,6 +64,20 @@ namespace App.Controllers
             return await repository.AddVacancyCandidate(couple);
         }
 
+        [Route("candidates/{status}")]
+        [HttpPut]
+        public async Task<Candidate> CheckCandidate(bool status, [FromBody]VacancyIdCouple couple)
+        {
+            return await repository.CheckCandidate(couple, status);
+        }
+
+        [Route("candidates/interview/{status}")]
+        [HttpPut]
+        public async Task<Candidate> CheckCandidateInterview(bool status, [FromBody]VacancyIdCouple couple)
+        {
+            return await repository.CheckCandidateInterview(couple, status);
+        }
+
         [Route]
         [HttpPut]
         public async Task<Vacancy> EditVacancy([FromBody]Vacancy d)

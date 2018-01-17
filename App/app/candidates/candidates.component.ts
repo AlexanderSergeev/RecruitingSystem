@@ -5,7 +5,7 @@ import { Candidate } from '../shared/candidate';
 @Component({
     selector: 'list-candidates',
     template: ` 
-    <div style="overflow:auto; height:480px;" id="list-candidates" class="panel">
+    <div style="overflow:auto;" id="list-candidates" class="panel">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -13,6 +13,8 @@ import { Candidate } from '../shared/candidate';
                     <th>Фамилия</th> 
                     <th>Отчество</th>
                     <th>Резюме</th>
+                    <th>HR-конспект</th>
+                    <th>Технический конспект</th>
                     <th></th>
                 </tr>
             </thead>
@@ -32,6 +34,22 @@ import { Candidate } from '../shared/candidate';
                     <ng-template #unset2>  
                         <td>
                             <a href="{{candidate.ResumePath}}" target='_blank' title="Нажмите, чтобы скачать резюме">Скачать</a>
+                        </td>
+                    </ng-template>
+                    <td *ngIf="candidate.SummaryPath==null || candidate.SummaryPath=='' else unset3">
+                        N/А
+                    </td>
+                    <ng-template #unset3>  
+                        <td>
+                            <a href="{{candidate.SummaryPath}}" target='_blank' title="Нажмите, чтобы скачать HR-конспект">Скачать</a>
+                        </td>
+                    </ng-template>
+                    <td *ngIf="candidate.InterviewPath==null || candidate.InterviewPath=='' else unset4">
+                        N/А
+                    </td>
+                    <ng-template #unset4>  
+                        <td>
+                            <a href="{{candidate.InterviewPath}}" target='_blank' title="Нажмите, чтобы скачать технический конспект">Скачать</a>
                         </td>
                     </ng-template>
                     <td>

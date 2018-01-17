@@ -16,8 +16,12 @@ namespace App.Models
         public string Surname { get; set; }
         [Required]
         public bool Checked { get; set; }
+        [Required]
+        public bool InterviewRequired { get; set; }
         public string Patronym { get; set; }
         public string ResumePath { get; set; }
+        public string SummaryPath { get; set; }
+        public string InterviewPath { get; set; }
         public ICollection<Vacancy> Vacancies { get; set; }
     }
 }

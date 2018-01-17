@@ -10,7 +10,29 @@
     <script src="/node_modules/core-js/client/shim.min.js"></script>
     <script src="/node_modules/zone.js/dist/zone.js"></script>
     <script src="/node_modules/systemjs/dist/system.src.js"></script>
+    <style>
+        .b-popup {
+            width: 100%;
+            min-height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10000;
+        }
 
+        .b-popup .b-popup-content {
+            margin: 200px auto 0 auto;
+            height: 100%;
+            max-width: 400px;
+            max-height: 500px;
+            padding: 8px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px #000;
+        } 
+    </style>
     <script src="../../systemjs.config.js"></script>
 
     <script>

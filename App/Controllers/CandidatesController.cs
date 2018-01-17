@@ -53,6 +53,13 @@ namespace App.Controllers
             return await repository.EditCandidate(d);
         }
 
+        [Route("{id}")]
+        [HttpDelete]
+        public async Task<Candidate> DeleteCandidate(Guid id)
+        {
+            return await repository.DeleteCandidate(id);
+        }
+
         [Route("uploadResume/{id}")]
         [HttpPost]
         public async Task<IHttpActionResult> UploadResume(Guid id)
@@ -92,12 +99,82 @@ namespace App.Controllers
             }
         }
 
-
-        [Route("{id}")]
-        [HttpDelete]
-        public async Task<Candidate> DeleteCandidate(Guid id)
+        [Route("uploadSummary/{id}")]
+        [HttpPost]
+        public async Task<IHttpActionResult> UploadSummary(Guid id)
         {
-            return await repository.DeleteCandidate(id);
+            try
+            {
+                if (!Request.Content.IsMimeMultipartContent())
+                {
+                    return BadRequest();
+                }
+                var provider = new MultipartMemoryStreamProvider();
+                var root = HttpContext.Current.Server.MapPath("~/Content/Candidates/" + id + "/Summary/");
+                await Request.Content.ReadAsMultipartAsync(provider);
+
+                if (!Directory.Exists(root))
+                    Directory.CreateDirectory(root);
+
+                var dirInfo = new DirectoryInfo(root);
+                foreach (var f in dirInfo.GetFiles())
+                    f.Delete();
+
+                var file = provider.Contents[0];
+                var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
+                byte[] fileArray = await file.ReadAsByteArrayAsync();
+
+                using (FileStream fs = new FileStream(root + filename, FileMode.Create))
+                {
+                    await fs.WriteAsync(fileArray, 0, fileArray.Length);
+                }
+                var filePath = "/Content/Candidates/" + id + "/Summary/" + filename;
+                await repository.EditCandidateSummaryPath(id, filePath);
+                return Ok(filePath);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Произошла ошибка при загрузке HR-конспекта");
+            }
+        }
+
+        [Route("uploadInterview/{id}")]
+        [HttpPost]
+        public async Task<IHttpActionResult> UploadInterview(Guid id)
+        {
+            try
+            {
+                if (!Request.Content.IsMimeMultipartContent())
+                {
+                    return BadRequest();
+                }
+                var provider = new MultipartMemoryStreamProvider();
+                var root = HttpContext.Current.Server.MapPath("~/Content/Candidates/" + id + "/Interview/");
+                await Request.Content.ReadAsMultipartAsync(provider);
+
+                if (!Directory.Exists(root))
+                    Directory.CreateDirectory(root);
+
+                var dirInfo = new DirectoryInfo(root);
+                foreach (var f in dirInfo.GetFiles())
+                    f.Delete();
+
+                var file = provider.Contents[0];
+                var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
+                byte[] fileArray = await file.ReadAsByteArrayAsync();
+
+                using (FileStream fs = new FileStream(root + filename, FileMode.Create))
+                {
+                    await fs.WriteAsync(fileArray, 0, fileArray.Length);
+                }
+                var filePath = "/Content/Candidates/" + id + "/Interview/" + filename;
+                await repository.EditCandidateInterviewPath(id, filePath);
+                return Ok(filePath);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Произошла ошибка при загрузке  технического конспекта");
+            }
         }
     }
 }

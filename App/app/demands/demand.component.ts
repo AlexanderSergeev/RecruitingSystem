@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
     selector: 'demand',
     template: `
-    <div style="overflow:auto; height:480px;" id="list-demands-staff" class="panel">
+    <div style="overflow:auto;" id="list-demands-staff" class="panel">
         <table class="table table-striped">
             <thead>
                 <tr>

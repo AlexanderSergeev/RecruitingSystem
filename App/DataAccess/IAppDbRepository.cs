@@ -30,6 +30,10 @@ namespace App.DataAccess
 
         Task EditCandidateResumePath(Guid id, string path);
 
+        Task EditCandidateSummaryPath(Guid id, string path);
+
+        Task EditCandidateInterviewPath(Guid id, string path);
+
         IEnumerable<StaffMember> GetStaff();
 
         Task<StaffMember> GetStaffMember(Guid id);
@@ -67,5 +71,9 @@ namespace App.DataAccess
         Task<StaffMember> RemoveStaffMemberFromDemand(Guid idStaffMember, Guid idDemand);
 
         Task<StaffMember> AddDemandStaffMember(DemandIdCouple couple);
+
+        Task<Candidate> CheckCandidate(VacancyIdCouple couple, bool status);
+
+        Task<Candidate> CheckCandidateInterview(VacancyIdCouple couple, bool status);
     }
 }

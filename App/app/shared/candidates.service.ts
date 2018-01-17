@@ -62,6 +62,24 @@ export class CandidatesService {
             .catch((error: any) => { return Observable.throw(error); });
     }
 
+    uploadSummary(id: number, data: any) {
+
+        let headers = new Headers({ 'enctype': 'multipart/form-data' });
+
+        return this.http.post('/api/candidates/uploadSummary/' + id, data, { headers: headers })
+            .map((resp: Response) => resp.json())
+            .catch((error: any) => { return Observable.throw(error); });
+    }
+
+    uploadInterview(id: number, data: any) {
+
+        let headers = new Headers({ 'enctype': 'multipart/form-data' });
+
+        return this.http.post('/api/candidates/uploadInterview/' + id, data, { headers: headers })
+            .map((resp: Response) => resp.json())
+            .catch((error: any) => { return Observable.throw(error); });
+    }
+
     remove(id: number) {
         return this.http.delete('/api/candidates/' + id)
             .map(this.extractData)
