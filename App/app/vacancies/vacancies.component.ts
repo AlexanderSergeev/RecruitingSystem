@@ -19,7 +19,11 @@ import { Vacancy } from '../shared/vacancy';
             <tbody>
                 <tr *ngFor="let vacancy of vacancies">
                     <td>{{vacancy.Name}}</td>
-                    <td>{{vacancy.VacancyStatus}}</td>
+                    <td>
+                        <span *ngIf="vacancy.VacancyStatus===0">Открыта</span>
+                        <span *ngIf="vacancy.VacancyStatus===1">Ожидает решения</span>
+                        <span *ngIf="vacancy.VacancyStatus===2">Закрыта</span>
+                    </td>
                     <td *ngIf="vacancy.VacancyLocation==null || vacancy.VacancyLocation=='';else unset">
                         N/А
                     </td>

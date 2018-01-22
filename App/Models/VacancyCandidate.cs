@@ -14,6 +14,8 @@ namespace App.Models
         [Required]
         public bool InterviewRequired { get; set; }
         [Required]
+        public int Status { get; set; }
+        [Required]
         public int IdCandidate { get; set; }
         [Required]
         public int IdVacancy { get; set; }

@@ -18,7 +18,11 @@ import { ActivatedRoute, Router } from '@angular/router';
             <div class="form-group">
                 <label class="col-md-6 control-label">Статус: </label>
                 <div class="col-md-10">
-                    <input id="VacancyStatus" class="form-control" name="VacancyStatus" [(ngModel)]="VacancyStatus" required pattern="\\d+" />
+                    <select id="VacancyStatus" name="VacancyStatus" [(ngModel)]="VacancyStatus">
+                        <option value="0" selected="selected">Открыта</option>
+                        <option value="1">Ожидает решения</option>
+                        <option value="2">Закрыта</option>
+                    </select>
                 </div>
             </div>
             <div class="form-group">

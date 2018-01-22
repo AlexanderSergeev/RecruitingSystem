@@ -18,6 +18,7 @@ import { ActivatedRoute, Router } from '@angular/router';
                     <th>HR-конспект</th>
                     <th>Собеседование</th>
                     <th>Технический конспект</th>
+                    <th>Статус</th>
                     <th></th>
                 </tr>
             </thead>
@@ -67,6 +68,12 @@ import { ActivatedRoute, Router } from '@angular/router';
                             <a href="{{candidate.InterviewPath}}" target='_blank' title="Нажмите, чтобы скачать технический конспект">Скачать</a>
                         </td>
                     </ng-template>
+                    <td>
+                        <span *ngIf="candidate.Status===0">Pending</span>
+                        <span *ngIf="candidate.Status===1">Hold</span>
+                        <span *ngIf="candidate.Status===2">Accept</span>
+                        <span *ngIf="candidate.Status===3">Decline</span>
+                    </td>
                     <td>
                         <button (click)="remove(candidate.Id);" style="margin-left:5px;" class="btn btn-danger">Удалить</button>
                     </td>

@@ -254,7 +254,7 @@ namespace App.DataAccess
             foreach (var vacancyCandidate in vacancyCandidates)
             {
                 var candidate = await context.Candidates.FirstOrDefaultAsync(x => x.Id == vacancyCandidate.IdCandidate);
-                result.Add(new CheckedCandidate{ Id = candidate.Id, Name = candidate.Name, Surname = candidate.Surname, Patronym = candidate.Patronym, ResumePath = candidate.ResumePath, InterviewPath = candidate.InterviewPath, SummaryPath = candidate.SummaryPath, Checked = vacancyCandidate.Checked, InterviewRequired = vacancyCandidate.InterviewRequired });
+                result.Add(new CheckedCandidate{ Id = candidate.Id, Name = candidate.Name, Surname = candidate.Surname, Patronym = candidate.Patronym, ResumePath = candidate.ResumePath, InterviewPath = candidate.InterviewPath, SummaryPath = candidate.SummaryPath, Checked = vacancyCandidate.Checked, InterviewRequired = vacancyCandidate.InterviewRequired, Status = vacancyCandidate.Status });
             }
             return result;
         }
@@ -283,7 +283,7 @@ namespace App.DataAccess
                 var candidate = await context.Candidates.FirstOrDefaultAsync(x => x.Id == couple.IdCandidate);
                 if (candidate != null)
                 {
-                    context.VacancyCandidates.Add(new VacancyCandidate {IdCandidate = candidate.Id, IdVacancy = vacancy.Id, InterviewRequired = false, Checked = false });
+                    context.VacancyCandidates.Add(new VacancyCandidate {IdCandidate = candidate.Id, IdVacancy = vacancy.Id, InterviewRequired = false, Checked = false, Status = 0});
                     result = candidate;
                 }
             }

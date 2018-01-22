@@ -12,5 +12,6 @@ namespace App.Models
         public string InterviewPath { get; set; }
         public bool Checked { get; set; }
         public bool InterviewRequired { get; set; }
+        public int Status { get; set; }
     }
 }
