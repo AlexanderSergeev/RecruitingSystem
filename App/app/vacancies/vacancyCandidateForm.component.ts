@@ -56,7 +56,7 @@ export class VacancyCandidateFormComponent implements OnInit, OnDestroy {
 
     candidates: Candidate[] = [];
     sub: any;
-    idVacancy: string;
+    idVacancy: number;
 
     constructor(private vacanciesService: VacanciesService, private vacancyComponent: VacancyComponent, private route: ActivatedRoute, private router: Router) { }
 

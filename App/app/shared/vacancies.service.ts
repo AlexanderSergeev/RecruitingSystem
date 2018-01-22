@@ -16,7 +16,7 @@ export class VacanciesService {
             .map(res => res.json());
     }
 
-    getVacancy(id: string) {
+    getVacancy(id: number) {
         return this.http
             .get('/api/vacancies/' + id)
             .map(res => {
@@ -24,7 +24,7 @@ export class VacanciesService {
             });
     }
 
-    getVacancyCandidates(id: string) {
+    getVacancyCandidates(id: number) {
         return this.http
             .get('/api/vacancies/candidates/' + id)
             .map(res => {
@@ -32,7 +32,7 @@ export class VacanciesService {
             });
     }
 
-    getOtherVacancyCandidates(id: string) {
+    getOtherVacancyCandidates(id: number) {
         return this.http
             .get('/api/vacancies/otherCandidates/' + id)
             .map(res => {
@@ -54,7 +54,7 @@ export class VacanciesService {
             .catch((error: any) => { return Observable.throw(error); });
     }
 
-    addVacancyCandidate(idCandidate: number, idVacancy: string) {
+    addVacancyCandidate(idCandidate: number, idVacancy: number) {
         var json = JSON.stringify({
             IdCandidate: idCandidate,
             IdVacancy: idVacancy
@@ -67,7 +67,7 @@ export class VacanciesService {
             .catch(this.handleErrorObservable);
     }
 
-    checkCandidate(idCandidate: number, idVacancy: string, status: boolean) {
+    checkCandidate(idCandidate: number, idVacancy: number, status: boolean) {
         var json = JSON.stringify({
             IdCandidate: idCandidate,
             IdVacancy: idVacancy
@@ -80,7 +80,7 @@ export class VacanciesService {
             .catch(this.handleErrorObservable);
     }
 
-    checkCandidateInterview(idCandidate: number, idVacancy: string, status: boolean) {
+    checkCandidateInterview(idCandidate: number, idVacancy: number, status: boolean) {
         var json = JSON.stringify({
             IdCandidate: idCandidate,
             IdVacancy: idVacancy
@@ -114,7 +114,7 @@ export class VacanciesService {
             .catch(this.handleErrorObservable);
     }
 
-    removeCandidateFromVacancy(idCandidate: number, idVacancy: string) {
+    removeCandidateFromVacancy(idCandidate: number, idVacancy: number) {
         return this.http.delete('/api/vacancies/' + idCandidate + '/' + idVacancy)
             .map(this.extractData)
             .catch(this.handleErrorObservable);

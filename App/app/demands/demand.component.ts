@@ -54,7 +54,7 @@ export class DemandComponent implements OnInit, OnDestroy {
 
     staff: StaffMember[] = [];
     sub: any;
-    id: string;
+    id: number;
 
     constructor(private demandsService: DemandsService, private route: ActivatedRoute, private router: Router) { }
     ngOnInit() {

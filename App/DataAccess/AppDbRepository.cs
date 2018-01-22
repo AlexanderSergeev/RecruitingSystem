@@ -27,7 +27,7 @@ namespace App.DataAccess
             return context.Demands;
         }
 
-        public async Task<Demand> GetDemand(Guid id)
+        public async Task<Demand> GetDemand(int id)
         {
             return await context.Demands.FirstOrDefaultAsync(x => x.Id == id);
         }
@@ -53,7 +53,7 @@ namespace App.DataAccess
             return null;
         }
 
-        public async Task<Demand> DeleteDemand(Guid id)
+        public async Task<Demand> DeleteDemand(int id)
         {
             Demand result = null;
             foreach (var tmp in context.Demands)
@@ -74,14 +74,13 @@ namespace App.DataAccess
             return context.Candidates;
         }
 
-        public async Task<Candidate> GetCandidate(Guid id)
+        public async Task<Candidate> GetCandidate(int id)
         {
             return await context.Candidates.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Candidate> AddCandidate(Candidate d)
         {
-            d.Checked = false;
             context.Candidates.Add(d);
             await context.SaveChangesAsync();
             return d;
@@ -102,7 +101,7 @@ namespace App.DataAccess
             return null;
         }
 
-        public async Task<Candidate> DeleteCandidate(Guid id)
+        public async Task<Candidate> DeleteCandidate(int id)
         {
             Candidate result = null;
             foreach (Candidate tmp in context.Candidates)
@@ -132,7 +131,7 @@ namespace App.DataAccess
             return result;
         }
 
-        public async Task EditCandidateResumePath(Guid id, string path)
+        public async Task EditCandidateResumePath(int id, string path)
         {
             var candidate = await context.Candidates.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -143,7 +142,7 @@ namespace App.DataAccess
             }
         }
 
-        public async Task EditCandidateSummaryPath(Guid id, string path)
+        public async Task EditCandidateSummaryPath(int id, string path)
         {
             var candidate = await context.Candidates.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -154,7 +153,7 @@ namespace App.DataAccess
             }
         }
 
-        public async Task EditCandidateInterviewPath(Guid id, string path)
+        public async Task EditCandidateInterviewPath(int id, string path)
         {
             var candidate = await context.Candidates.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -170,7 +169,7 @@ namespace App.DataAccess
             return context.Staff;
         }
 
-        public async Task<StaffMember> GetStaffMember(Guid id)
+        public async Task<StaffMember> GetStaffMember(int id)
         {
             return await context.Staff.FirstOrDefaultAsync(x => x.Id == id);
         }
@@ -197,7 +196,7 @@ namespace App.DataAccess
             return null;
         }
 
-        public async Task<StaffMember> DeleteStaffMember(Guid id)
+        public async Task<StaffMember> DeleteStaffMember(int id)
         {
             StaffMember result = null;
             foreach (StaffMember tmp in context.Staff)
@@ -227,7 +226,7 @@ namespace App.DataAccess
             return result;
         }
 
-        public async Task EditStaffMemberResumePath(Guid id, string path)
+        public async Task EditStaffMemberResumePath(int id, string path)
         {
             var staffMember = await context.Staff.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -243,32 +242,29 @@ namespace App.DataAccess
             return context.Vacancies;
         }
 
-        public async Task<Vacancy> GetVacancy(Guid id)
+        public async Task<Vacancy> GetVacancy(int id)
         {
             return await context.Vacancies.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<Candidate>> GetVacancyCandidates(Guid id)
+        public async Task<IEnumerable<CheckedCandidate>> GetVacancyCandidates(int id)
         {
-            var vacancy = await context.Vacancies.Include(t => t.Candidates).FirstOrDefaultAsync(x => x.Id == id);
-            if (vacancy != null)
+            List<CheckedCandidate> result = new List<CheckedCandidate>();
+            var vacancyCandidates = context.VacancyCandidates.Where(x => x.IdVacancy == id);
+            foreach (var vacancyCandidate in vacancyCandidates)
             {
-                return vacancy.Candidates;
+                var candidate = await context.Candidates.FirstOrDefaultAsync(x => x.Id == vacancyCandidate.IdCandidate);
+                result.Add(new CheckedCandidate{ Id = candidate.Id, Name = candidate.Name, Surname = candidate.Surname, Patronym = candidate.Patronym, ResumePath = candidate.ResumePath, InterviewPath = candidate.InterviewPath, SummaryPath = candidate.SummaryPath, Checked = vacancyCandidate.Checked, InterviewRequired = vacancyCandidate.InterviewRequired });
             }
-            return null;
+            return result;
         }
 
-        public async Task<IEnumerable<Candidate>> GetOtherVacancyCandidates(Guid id)
+        public async Task<IEnumerable<Candidate>> GetOtherVacancyCandidates(int id)
         {
-            var vacancy = await context.Vacancies.Include(t => t.Candidates).FirstOrDefaultAsync(x => x.Id == id);
-            if (vacancy != null)
-            {
-                var vacancyCandidates = vacancy.Candidates;
-                var candidates = context.Candidates;
-                var result = candidates.ToList().Where(x=> !vacancyCandidates.Contains(x));
-                return result;
-            }
-            return null;
+            var vacancyCandidates = context.VacancyCandidates.Where(x => x.IdVacancy == id).Select(p => p.IdCandidate);
+            var candidates = context.Candidates;
+            var result = candidates.ToList().Where(x => !vacancyCandidates.ToList().Contains(x.Id));
+            return result;
         }
 
         public async Task<Vacancy> AddVacancy(Vacancy d)
@@ -281,14 +277,13 @@ namespace App.DataAccess
         public async Task<Candidate> AddVacancyCandidate(VacancyIdCouple couple)
         {
             Candidate result = null;
-            var vacancy = await context.Vacancies.Include(t => t.Candidates)
-                .FirstOrDefaultAsync(x => x.Id == couple.IdVacancy);
+            var vacancy = await context.Vacancies.FirstOrDefaultAsync(x => x.Id == couple.IdVacancy);
             if (vacancy != null)
             {
                 var candidate = await context.Candidates.FirstOrDefaultAsync(x => x.Id == couple.IdCandidate);
                 if (candidate != null)
                 {
-                    vacancy.Candidates.Add(candidate);
+                    context.VacancyCandidates.Add(new VacancyCandidate {IdCandidate = candidate.Id, IdVacancy = vacancy.Id, InterviewRequired = false, Checked = false });
                     result = candidate;
                 }
             }
@@ -310,7 +305,7 @@ namespace App.DataAccess
             return null;
         }
 
-        public async Task<Vacancy> DeleteVacancy(Guid id)
+        public async Task<Vacancy> DeleteVacancy(int id)
         {
             Vacancy result = null;
             foreach (Vacancy tmp in context.Vacancies)
@@ -326,26 +321,20 @@ namespace App.DataAccess
             return result;
         }
 
-        public async Task<Candidate> RemoveCandidateFromVacancy(Guid idCandidate, Guid idVacancy)
+        public async Task<Candidate> RemoveCandidateFromVacancy(int idCandidate, int idVacancy)
         {
             Candidate result = null;
-
-            var vacancy = await context.Vacancies.Include(t => t.Candidates).FirstOrDefaultAsync(x => x.Id == idVacancy);
-            if (vacancy != null)
+            var vacancyCandidate = await context.VacancyCandidates.FirstOrDefaultAsync(x => x.IdVacancy == idVacancy && x.IdCandidate == idCandidate);
+            if (vacancyCandidate != null)
             {
-                var candidate = vacancy.Candidates.FirstOrDefault(x => x.Id == idCandidate);
-                if (candidate != null)
-                {
-                    result = candidate;
-                    vacancy.Candidates.Remove(candidate);
-                }
+                result = await context.Candidates.FirstOrDefaultAsync(x=> x.Id==vacancyCandidate.IdCandidate);
+                context.VacancyCandidates.Remove(vacancyCandidate);
             }
-
             await context.SaveChangesAsync();
             return result;
         }
 
-        public async Task<IEnumerable<StaffMember>> GetDemandStaff(Guid id)
+        public async Task<IEnumerable<StaffMember>> GetDemandStaff(int id)
         {
             var demand = await context.Demands.Include(t => t.Staff).FirstOrDefaultAsync(x => x.Id == id);
             if (demand != null)
@@ -355,7 +344,7 @@ namespace App.DataAccess
             return null;
         }
 
-        public async Task<IEnumerable<StaffMember>> GetOtherDemandStaff(Guid id)
+        public async Task<IEnumerable<StaffMember>> GetOtherDemandStaff(int id)
         {
             var demand = await context.Demands.Include(t => t.Staff).FirstOrDefaultAsync(x => x.Id == id);
             if (demand != null)
@@ -368,7 +357,7 @@ namespace App.DataAccess
             return null;
         }
 
-        public async Task<StaffMember> RemoveStaffMemberFromDemand(Guid idStaffMember, Guid idDemand)
+        public async Task<StaffMember> RemoveStaffMemberFromDemand(int idStaffMember, int idDemand)
         {
             StaffMember result = null;
 
@@ -408,15 +397,11 @@ namespace App.DataAccess
         public async Task<Candidate> CheckCandidate(VacancyIdCouple couple, bool status)
         {
             Candidate result = null;
-            var vacancy = await context.Vacancies.Include(t => t.Candidates).FirstOrDefaultAsync(x => x.Id == couple.IdVacancy);
-            if (vacancy != null)
+            var vacancyCandidate = await context.VacancyCandidates.FirstOrDefaultAsync(x => x.IdVacancy == couple.IdVacancy && x.IdCandidate == couple.IdCandidate);
+            if (vacancyCandidate != null)
             {
-                var candidate = vacancy.Candidates.FirstOrDefault(x => x.Id == couple.IdCandidate);
-                if (candidate != null)
-                {
-                    candidate.Checked = status;
-                    result = candidate;
-                }
+                vacancyCandidate.Checked = status;
+                result = await context.Candidates.FirstOrDefaultAsync(x=>x.Id==vacancyCandidate.IdCandidate);
             }
             await context.SaveChangesAsync();
             return result;
@@ -425,15 +410,11 @@ namespace App.DataAccess
         public async Task<Candidate> CheckCandidateInterview(VacancyIdCouple couple, bool status)
         {
             Candidate result = null;
-            var vacancy = await context.Vacancies.Include(t => t.Candidates).FirstOrDefaultAsync(x => x.Id == couple.IdVacancy);
-            if (vacancy != null)
+            var vacancyCandidate = await context.VacancyCandidates.FirstOrDefaultAsync(x => x.IdVacancy == couple.IdVacancy && x.IdCandidate == couple.IdCandidate);
+            if (vacancyCandidate != null)
             {
-                var candidate = vacancy.Candidates.FirstOrDefault(x => x.Id == couple.IdCandidate);
-                if (candidate != null)
-                {
-                    candidate.InterviewRequired = status;
-                    result = candidate;
-                }
+                vacancyCandidate.InterviewRequired = status;
+                result = await context.Candidates.FirstOrDefaultAsync(x => x.Id == vacancyCandidate.IdCandidate);
             }
             await context.SaveChangesAsync();
             return result;

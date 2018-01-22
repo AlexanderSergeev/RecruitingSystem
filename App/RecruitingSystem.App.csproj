@@ -176,6 +176,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Candidate.cs" />
+    <Compile Include="Models\CheckedCandidate.cs" />
+    <Compile Include="Models\VacancyCandidate.cs" />
     <Compile Include="Models\Demand.cs" />
     <Compile Include="Models\DemandIdCouple.cs" />
     <Compile Include="Models\VacancyIdCouple.cs" />

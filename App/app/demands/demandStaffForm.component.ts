@@ -56,7 +56,7 @@ export class DemandStaffFormComponent implements OnInit, OnDestroy {
 
     staff: StaffMember[] = [];
     sub: any;
-    idDemand: string;
+    idDemand: number;
 
     constructor(private demandsService: DemandsService, private demandComponent: DemandComponent, private route: ActivatedRoute, private router: Router) { }
 

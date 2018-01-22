@@ -16,7 +16,7 @@ export class StaffService {
             .map(res => res.json());
     }
 
-    getStaffMember(id: string) {
+    getStaffMember(id: number) {
         return this.http
             .get('/api/staff/' + id)
             .map(res => {

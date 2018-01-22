@@ -34,7 +34,7 @@ namespace App.Controllers
 
         [Route("{id}")]
         [HttpGet]
-        public async Task<Candidate> GetCandidate(Guid id)
+        public async Task<Candidate> GetCandidate(int id)
         {
             return await repository.GetCandidate(id);
         }
@@ -55,14 +55,14 @@ namespace App.Controllers
 
         [Route("{id}")]
         [HttpDelete]
-        public async Task<Candidate> DeleteCandidate(Guid id)
+        public async Task<Candidate> DeleteCandidate(int id)
         {
             return await repository.DeleteCandidate(id);
         }
 
         [Route("uploadResume/{id}")]
         [HttpPost]
-        public async Task<IHttpActionResult> UploadResume(Guid id)
+        public async Task<IHttpActionResult> UploadResume(int id)
         {
             try
             {
@@ -101,7 +101,7 @@ namespace App.Controllers
 
         [Route("uploadSummary/{id}")]
         [HttpPost]
-        public async Task<IHttpActionResult> UploadSummary(Guid id)
+        public async Task<IHttpActionResult> UploadSummary(int id)
         {
             try
             {
@@ -140,7 +140,7 @@ namespace App.Controllers
 
         [Route("uploadInterview/{id}")]
         [HttpPost]
-        public async Task<IHttpActionResult> UploadInterview(Guid id)
+        public async Task<IHttpActionResult> UploadInterview(int id)
         {
             try
             {

@@ -31,7 +31,7 @@ namespace App.Controllers
 
         [Route("{id}")]
         [HttpGet]
-        public async Task<Demand> GetDemand(Guid id)
+        public async Task<Demand> GetDemand(int id)
         {
             return await repository.GetDemand(id);
         }
@@ -52,7 +52,7 @@ namespace App.Controllers
 		
 		[Route("{id}")]
         [HttpDelete]
-        public async Task<Demand> DeleteDemand(Guid id)
+        public async Task<Demand> DeleteDemand(int id)
         {
             return await repository.DeleteDemand(id);
         }
@@ -67,14 +67,14 @@ namespace App.Controllers
 
         [Route("staff/{id}")]
         [HttpGet]
-        public async Task<IEnumerable<StaffMember>> GetDemandStaff(Guid id)
+        public async Task<IEnumerable<StaffMember>> GetDemandStaff(int id)
         {
             return await repository.GetDemandStaff(id);
         }
 
         [Route("otherStaff/{id}")]
         [HttpGet]
-        public async Task<IEnumerable<StaffMember>> GetOtherDemandStaff(Guid id)
+        public async Task<IEnumerable<StaffMember>> GetOtherDemandStaff(int id)
         {
             return await repository.GetOtherDemandStaff(id);
         }
@@ -88,7 +88,7 @@ namespace App.Controllers
 
         [Route("{idStaffMember}/{idDemand}")]
         [HttpDelete]
-        public async Task<StaffMember> RemoveStaffMemberFromDemand(Guid idStaffMember, Guid idDemand)
+        public async Task<StaffMember> RemoveStaffMemberFromDemand(int idStaffMember, int idDemand)
         {
             return await repository.RemoveStaffMemberFromDemand(idStaffMember, idDemand);
         }

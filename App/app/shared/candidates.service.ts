@@ -16,7 +16,7 @@ export class CandidatesService {
             .map(res => res.json());
     }
 
-    getCandidate(id: string) {
+    getCandidate(id: number) {
         return this.http
             .get('/api/candidates/' + id)
             .map(res => {

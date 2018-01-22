@@ -3,16 +3,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace App.Models
 {
-    [Table("Vacancies")]
-    public class Vacancy
+    [Table("VacancyCandidates")]
+    public class VacancyCandidate
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int Id { get; set; }
         [Required]
-        public string Name { get; set; }
+        public bool Checked { get; set; }
         [Required]
-        public int VacancyStatus { get; set; }
-        public string VacancyLocation { get; set; }
+        public bool InterviewRequired { get; set; }
+        [Required]
+        public int IdCandidate { get; set; }
+        [Required]
+        public int IdVacancy { get; set; }
     }
 }

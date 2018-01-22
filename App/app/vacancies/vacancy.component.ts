@@ -86,7 +86,7 @@ export class VacancyComponent implements OnInit, OnDestroy {
 
     candidates: Candidate[] = [];
     sub: any;
-    id: string;
+    id: number;
 
     constructor(private vacanciesService: VacanciesService, private route: ActivatedRoute, private router: Router) { }
     ngOnInit() {

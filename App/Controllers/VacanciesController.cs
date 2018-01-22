@@ -31,21 +31,21 @@ namespace App.Controllers
 
         [Route("{id}")]
         [HttpGet]
-        public async Task<Vacancy> GetVacancy(Guid id)
+        public async Task<Vacancy> GetVacancy(int id)
         {
             return await repository.GetVacancy(id);
         }
 
         [Route("candidates/{id}")]
         [HttpGet]
-        public async Task<IEnumerable<Candidate>> GetVacancyCandidates(Guid id)
+        public async Task<IEnumerable<CheckedCandidate>> GetVacancyCandidates(int id)
         {
             return await repository.GetVacancyCandidates(id);
         }
 
         [Route("otherCandidates/{id}")]
         [HttpGet]
-        public async Task<IEnumerable<Candidate>> GetOtherVacancyCandidates(Guid id)
+        public async Task<IEnumerable<Candidate>> GetOtherVacancyCandidates(int id)
         {
             return await repository.GetOtherVacancyCandidates(id);
         }
@@ -87,14 +87,14 @@ namespace App.Controllers
 
         [Route("{id}")]
         [HttpDelete]
-        public async Task<Vacancy> DeleteVacancy(Guid id)
+        public async Task<Vacancy> DeleteVacancy(int id)
         {
             return await repository.DeleteVacancy(id);
         }
 
         [Route("{idCandidate}/{idVacancy}")]
         [HttpDelete]
-        public async Task<Candidate> RemoveCandidateFromVacancy(Guid idCandidate, Guid idVacancy)
+        public async Task<Candidate> RemoveCandidateFromVacancy(int idCandidate, int idVacancy)
         {
             return await repository.RemoveCandidateFromVacancy(idCandidate, idVacancy);
         }

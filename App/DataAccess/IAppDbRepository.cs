@@ -10,65 +10,65 @@ namespace App.DataAccess
     {
         IEnumerable<Demand> GetDemands();
 
-        Task<Demand> GetDemand(Guid id);
+        Task<Demand> GetDemand(int id);
 
         Task<Demand> AddDemand(Demand d);
 
         Task<Demand> EditDemand(Demand d);
 
-        Task<Demand> DeleteDemand(Guid id);
+        Task<Demand> DeleteDemand(int id);
 
         IEnumerable<Candidate> GetCandidates();
 
-        Task<Candidate> GetCandidate(Guid id);
+        Task<Candidate> GetCandidate(int id);
 
         Task<Candidate> AddCandidate(Candidate d);
 
         Task<Candidate> EditCandidate(Candidate d);
 
-        Task<Candidate> DeleteCandidate(Guid id);
+        Task<Candidate> DeleteCandidate(int id);
 
-        Task EditCandidateResumePath(Guid id, string path);
+        Task EditCandidateResumePath(int id, string path);
 
-        Task EditCandidateSummaryPath(Guid id, string path);
+        Task EditCandidateSummaryPath(int id, string path);
 
-        Task EditCandidateInterviewPath(Guid id, string path);
+        Task EditCandidateInterviewPath(int id, string path);
 
         IEnumerable<StaffMember> GetStaff();
 
-        Task<StaffMember> GetStaffMember(Guid id);
+        Task<StaffMember> GetStaffMember(int id);
 
         Task<StaffMember> AddStaffMember(StaffMember d);
 
         Task<StaffMember> EditStaffMember(StaffMember d);
 
-        Task<StaffMember> DeleteStaffMember(Guid id);
+        Task<StaffMember> DeleteStaffMember(int id);
 
-        Task EditStaffMemberResumePath(Guid id, string path);
+        Task EditStaffMemberResumePath(int id, string path);
 
         IEnumerable<Vacancy> GetVacancies();
 
-        Task<Vacancy> GetVacancy(Guid id);
+        Task<Vacancy> GetVacancy(int id);
 
-        Task<IEnumerable<Candidate>> GetVacancyCandidates(Guid id);
+        Task<IEnumerable<CheckedCandidate>> GetVacancyCandidates(int id);
 
-        Task<IEnumerable<Candidate>> GetOtherVacancyCandidates(Guid id);
+        Task<IEnumerable<Candidate>> GetOtherVacancyCandidates(int id);
 
         Task<Vacancy> AddVacancy(Vacancy d);
 
         Task<Vacancy> EditVacancy(Vacancy d);
 
-        Task<Vacancy> DeleteVacancy(Guid id);
+        Task<Vacancy> DeleteVacancy(int id);
 
-        Task<Candidate> RemoveCandidateFromVacancy(Guid idCandidate, Guid idVacancy);
+        Task<Candidate> RemoveCandidateFromVacancy(int idCandidate, int idVacancy);
 
         Task<Candidate> AddVacancyCandidate(VacancyIdCouple couple);
 
-        Task<IEnumerable<StaffMember>> GetDemandStaff(Guid id);
+        Task<IEnumerable<StaffMember>> GetDemandStaff(int id);
 
-        Task<IEnumerable<StaffMember>> GetOtherDemandStaff(Guid id);
+        Task<IEnumerable<StaffMember>> GetOtherDemandStaff(int id);
 
-        Task<StaffMember> RemoveStaffMemberFromDemand(Guid idStaffMember, Guid idDemand);
+        Task<StaffMember> RemoveStaffMemberFromDemand(int idStaffMember, int idDemand);
 
         Task<StaffMember> AddDemandStaffMember(DemandIdCouple couple);
 

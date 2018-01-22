@@ -34,7 +34,7 @@ namespace App.Controllers
 
         [Route("{id}")]
         [HttpGet]
-        public async Task<StaffMember> GetStaffMember(Guid id)
+        public async Task<StaffMember> GetStaffMember(int id)
         {
             return await repository.GetStaffMember(id);
         }
@@ -55,14 +55,14 @@ namespace App.Controllers
 
         [Route("{id}")]
         [HttpDelete]
-        public async Task<StaffMember> DeleteStaffMember(Guid id)
+        public async Task<StaffMember> DeleteStaffMember(int id)
         {
             return await repository.DeleteStaffMember(id);
         }
 
         [Route("uploadResume/{id}")]
         [HttpPost]
-        public async Task<IHttpActionResult> UploadResume(Guid id)
+        public async Task<IHttpActionResult> UploadResume(int id)
         {
             try
             {

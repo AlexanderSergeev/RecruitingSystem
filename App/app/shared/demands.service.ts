@@ -17,7 +17,7 @@ export class DemandsService {
             .map(res => res.json());
     }
 
-    getDemand(id: string) {
+    getDemand(id: number) {
         return this.http
             .get('/api/demands/' + id)
             .map(res => {
@@ -72,7 +72,7 @@ export class DemandsService {
             .catch((error: any) => { return Observable.throw(error); });
     }
 
-    getDemandStaff(id: string) {
+    getDemandStaff(id: number) {
         return this.http
             .get('/api/demands/staff/' + id)
             .map(res => {
@@ -80,7 +80,7 @@ export class DemandsService {
             });
     }
 
-    getOtherDemandStaff(id: string) {
+    getOtherDemandStaff(id: number) {
         return this.http
             .get('/api/demands/otherStaff/' + id)
             .map(res => {
@@ -88,14 +88,14 @@ export class DemandsService {
             });
     }
 
-    removeStaffMemberFromDemand(idStaffMember: number, idDemand: string) {
+    removeStaffMemberFromDemand(idStaffMember: number, idDemand: number) {
         return this.http.delete('/api/demands/' + idStaffMember + '/' + idDemand)
             .map(this.extractData)
             .catch(this.handleErrorObservable);
     }
 
 
-    addDemandStaffMember(idStaffMember: number, idDemand: string) {
+    addDemandStaffMember(idStaffMember: number, idDemand: number) {
         var json = JSON.stringify({
             IdStaffMember: idStaffMember,
             IdDemand: idDemand

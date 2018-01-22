@@ -9,7 +9,7 @@ namespace App.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public System.Guid Id { get; set; }
+        public int Id { get; set; }
         [Required]
         public string Name { get; set; }
         public string DemandLocation { get; set; }
