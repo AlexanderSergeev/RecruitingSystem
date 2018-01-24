@@ -69,12 +69,13 @@ import { ActivatedRoute, Router } from '@angular/router';
                         </td>
                     </ng-template>
                     <td>
-                        <span *ngIf="candidate.Status===0">Pending</span>
-                        <span *ngIf="candidate.Status===1">Hold</span>
-                        <span *ngIf="candidate.Status===2">Accept</span>
-                        <span *ngIf="candidate.Status===3">Decline</span>
+                        <span *ngIf="candidate.Status==0">Pending</span>
+                        <span *ngIf="candidate.Status==1">Hold</span>
+                        <span *ngIf="candidate.Status==2">Accept</span>
+                        <span *ngIf="candidate.Status==3">Decline</span>
                     </td>
                     <td>
+                        <button (click)="popUpStatusShow(candidate.Id);" style="margin-left:5px;" class="btn btn-info">Сменить статус</button>
                         <button (click)="remove(candidate.Id);" style="margin-left:5px;" class="btn btn-danger">Удалить</button>
                     </td>
                 </tr>
@@ -86,7 +87,35 @@ import { ActivatedRoute, Router } from '@angular/router';
 	    <div class="b-popup-content">
 	        <router-outlet></router-outlet>
 	    </div>
-	</div>`,
+	</div>
+    <div hidden="hidden" class="b-popup" id="popupStatusForm">
+        <div class="b-popup-content">
+            <form #myForm="ngForm" novalidate>
+                <div class="row">
+                    <h4 style="margin-left:15px;">Статус кандидата</h4>
+                    <br>
+                    <div class="form-group">
+                        <label class="col-md-6 control-label">Статус: </label>
+                        <div class="col-md-10">
+                            <select id="status" name="status" [(ngModel)]="status">
+                                <option value="0" selected="selected">Pending</option>
+                                <option value="1">Hold</option>
+                                <option value="2">Accept</option>
+                                <option value="3">Decline</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <br>
+                            <button [disabled]="myForm.invalid" (click)="changeCandidateStatus(candidateId, status);" class="btn btn-primary">Сохранить</button>
+                            <button (click)="popUpStatusHide()" class="btn btn-primary">Отменить</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>`,
     providers: [VacanciesService]
 })
 export class VacancyComponent implements OnInit, OnDestroy {
@@ -94,6 +123,8 @@ export class VacancyComponent implements OnInit, OnDestroy {
     candidates: Candidate[] = [];
     sub: any;
     id: number;
+    status: number;
+    candidateId: number;
 
     constructor(private vacanciesService: VacanciesService, private route: ActivatedRoute, private router: Router) { }
     ngOnInit() {
@@ -109,11 +140,29 @@ export class VacancyComponent implements OnInit, OnDestroy {
         document.getElementById("popupСandidateForm").style.display = "block";
     }
 
+    popUpStatusShow(id: number) {
+        this.candidateId = id;
+        document.getElementById("popupStatusForm").style.display = "block";
+    }
+
+    popUpStatusHide() {
+        document.getElementById("popupStatusForm").style.display = "none";
+    }
+
     remove(id: number) {
         const vacancyComponent = this;
         this.vacanciesService.removeCandidateFromVacancy(id, this.id).subscribe(function () {
             let index = vacancyComponent.candidates.findIndex(c => c.Id === id);
             vacancyComponent.candidates.splice(index, 1);
+        });
+    }
+
+    changeCandidateStatus(id: number, status: number) {
+        this.popUpStatusHide();
+        const vacancyComponent = this;
+        this.vacanciesService.changeCandidateStatus(id, this.id, status).subscribe(function () {
+            let index = vacancyComponent.candidates.findIndex(c => c.Id === id);
+            vacancyComponent.candidates[index].Status = status;
         });
     }
 

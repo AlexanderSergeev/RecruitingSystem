@@ -75,5 +75,7 @@ namespace App.DataAccess
         Task<Candidate> CheckCandidate(VacancyIdCouple couple, bool status);
 
         Task<Candidate> CheckCandidateInterview(VacancyIdCouple couple, bool status);
+
+        Task<Candidate> ChangeCandidateStatus(VacancyIdCouple couple, int status);
     }
 }

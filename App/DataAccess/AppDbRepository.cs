@@ -420,5 +420,18 @@ namespace App.DataAccess
             return result;
         }
 
+        public async Task<Candidate> ChangeCandidateStatus(VacancyIdCouple couple, int status)
+        {
+            Candidate result = null;
+            var vacancyCandidate = await context.VacancyCandidates.FirstOrDefaultAsync(x => x.IdVacancy == couple.IdVacancy && x.IdCandidate == couple.IdCandidate);
+            if (vacancyCandidate != null)
+            {
+                vacancyCandidate.Status = status;
+                result = await context.Candidates.FirstOrDefaultAsync(x => x.Id == vacancyCandidate.IdCandidate);
+            }
+            await context.SaveChangesAsync();
+            return result;
+        }
+
     }
 }

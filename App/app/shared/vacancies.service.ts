@@ -114,6 +114,19 @@ export class VacanciesService {
             .catch(this.handleErrorObservable);
     }
 
+    changeCandidateStatus(idCandidate: number, idVacancy: number, status: number) {
+        var json = JSON.stringify({
+            IdCandidate: idCandidate,
+            IdVacancy: idVacancy
+        });
+
+        let headers = new Headers({ 'Content-Type': 'application/json;charset=utf-8' });
+
+        return this.http.put('/api/vacancies/candidates/status/' + status, json, { headers: headers })
+            .map(this.extractData)
+            .catch(this.handleErrorObservable);
+    }
+
     removeCandidateFromVacancy(idCandidate: number, idVacancy: number) {
         return this.http.delete('/api/vacancies/' + idCandidate + '/' + idVacancy)
             .map(this.extractData)

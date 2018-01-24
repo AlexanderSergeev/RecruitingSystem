@@ -173,7 +173,7 @@ namespace App.Controllers
             }
             catch (Exception)
             {
-                return BadRequest("Произошла ошибка при загрузке  технического конспекта");
+                return BadRequest("Произошла ошибка при загрузке технического конспекта");
             }
         }
     }
