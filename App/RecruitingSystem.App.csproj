@@ -172,6 +172,7 @@
     <Compile Include="DataAccess\IAppDbRepository.cs" />
     <Compile Include="DataAccess\AppDbContext.cs" />
     <Compile Include="DataAccess\AppDbRepository.cs" />
+    <Compile Include="Email\EmailSender.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

@@ -4,6 +4,7 @@ using App.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
+using App.Email;
 
 namespace App.Controllers
 {
@@ -75,7 +76,14 @@ namespace App.Controllers
         [HttpPut]
         public async Task<Candidate> CheckCandidateInterview(bool status, [FromBody]VacancyIdCouple couple)
         {
-            return await repository.CheckCandidateInterview(couple, status);
+            var result = await repository.CheckCandidateInterview(couple, status);
+            if (status)
+            {
+                var body = "Требуется проведение собеседования с кандидатом " + couple.IdCandidate + " по вакансии " +
+                           couple.IdVacancy + ".";
+                EmailSender.SendEmail("FlsRecruiting@fls.com", "tech@tech.ru", "Проведение собеседования", body);
+            }
+            return result;
         }
 
         [Route("candidates/status/{status}")]

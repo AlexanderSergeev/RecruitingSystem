@@ -4,6 +4,7 @@ using App.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
+using App.Email;
 
 namespace App.Controllers
 {
@@ -61,8 +62,12 @@ namespace App.Controllers
         [HttpPost]
         public async Task<Vacancy> ConvertToVacancy([FromBody]Demand d)
         {
-            await repository.DeleteDemand(d.Id);
-            return await repository.AddVacancy(new Vacancy { Name = d.Name, VacancyLocation = d.DemandLocation, VacancyStatus = 0});
+            await repository.DeleteDemand(d.Id); 
+            var result = await repository.AddVacancy(new Vacancy { Name = d.Name, VacancyLocation = d.DemandLocation, VacancyStatus = 0});
+            var location = d.DemandLocation!=null ? d.DemandLocation : "N/A";
+            var body = "<p>Запрос " + d.Id + " был конвертирован в вакансию.</p><p>Название: " + d.Name + "</p><p>Локация: " + location + "</p>";
+            EmailSender.SendEmail("FlsRecruiting@fls.com", "hr@hr.ru", "Конвертация запроса в вакансию", body);
+            return result;
         }
 
         [Route("staff/{id}")]
