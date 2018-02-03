@@ -1,5 +1,4 @@
-﻿using System.Configuration;
-using Autofac;
+﻿using Autofac;
 using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;
 using App.DataAccess;
@@ -18,8 +17,6 @@ namespace App
       builder.RegisterControllers(typeof(Global).Assembly);
 
       builder.RegisterType<AppDbRepository>().As<IAppDbRepository>();
-
-      builder.RegisterType<AppDbContext>().As<AppDbContext>().WithParameter("connectionString", ConfigurationManager.ConnectionStrings["PrimaryConnectionString"].ConnectionString);
 
       return builder.Build();
     }
