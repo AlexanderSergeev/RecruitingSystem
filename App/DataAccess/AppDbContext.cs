@@ -1,19 +1,19 @@
 ﻿using App.Models;
-using System.Configuration;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
 
 namespace App.DataAccess
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<User, Role, int, CustomClasses.CustomUserLogin, CustomClasses.CustomUserRole, CustomClasses.CustomUserClaim>
     {
-        public AppDbContext() : base(ConfigurationManager.ConnectionStrings["PrimaryConnectionString"].ConnectionString)
+        public AppDbContext(string connectionString) : base(connectionString)
         {
             Database.SetInitializer(new DropCreateDatabaseIfModelChanges<AppDbContext>());
         }
 
         public static AppDbContext Create()
         {
-            return new AppDbContext();
+            return new AppDbContext("name=PrimaryConnectionString");
         }
 
         public DbSet<Demand> Demands { get; set; }

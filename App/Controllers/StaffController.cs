@@ -14,9 +14,9 @@ namespace App.Controllers
     [RoutePrefix("api/staff")]
     public class StaffController : ApiController
     {
-        private IAppDbRepository repository;
+        private IStaffRepository repository;
 
-        public StaffController(IAppDbRepository repoInstance)
+        public StaffController(IStaffRepository repoInstance)
         {
             if (repoInstance == null)
             {

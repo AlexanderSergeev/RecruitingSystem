@@ -14,9 +14,9 @@ namespace App.Controllers
     [RoutePrefix("api/candidates")]
     public class CandidatesController : ApiController
     {
-        private IAppDbRepository repository;
+        private ICandidatesRepository repository;
 
-        public CandidatesController(IAppDbRepository repoInstance)
+        public CandidatesController(ICandidatesRepository repoInstance)
         {
             if (repoInstance == null)
             {

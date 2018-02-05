@@ -1,6 +1,6 @@
 ﻿using System.Net.Mail;
 
-namespace App.Email
+namespace App.Services
 {
     public class EmailSender
     {

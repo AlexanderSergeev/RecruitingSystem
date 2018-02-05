@@ -4,7 +4,7 @@ using App.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
-using App.Email;
+using App.Services;
 
 namespace App.Controllers
 {
@@ -12,9 +12,9 @@ namespace App.Controllers
     [RoutePrefix("api/vacancies")]
     public class VacanciesController : ApiController
     {
-        private IAppDbRepository repository;
+        private IVacanciesRepository repository;
 
-        public VacanciesController(IAppDbRepository repoInstance)
+        public VacanciesController(IVacanciesRepository repoInstance)
         {
             if (repoInstance == null)
             {
