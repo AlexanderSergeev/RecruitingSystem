@@ -1,5 +1,6 @@
 ﻿import { Routes, RouterModule } from '@angular/router';
 import { DemandsComponent } from './demands/demands.component';
+import { LoginComponent } from './login/login.component';
 import { DemandFormComponent } from './demands/demandForm.component';
 import { VacanciesComponent } from './vacancies/vacancies.component';
 import { VacancyComponent } from './vacancies/vacancy.component';
@@ -14,7 +15,10 @@ import { StaffFormComponent } from './staff/staffForm.component';
 
 const routes: Routes = [
     {
-        path: '', redirectTo: 'demands', pathMatch: 'full'
+        path: '', redirectTo: 'login', pathMatch: 'full'
+    },
+    {
+        path: 'login', component: LoginComponent
     },
     {
         path: 'demands', component: DemandsComponent,
@@ -83,7 +87,7 @@ const routes: Routes = [
         ]
     },
     {
-        path: '**', redirectTo: 'demands', pathMatch: 'full'
+        path: '**', redirectTo: 'login', pathMatch: 'full'
     }
 ];
 

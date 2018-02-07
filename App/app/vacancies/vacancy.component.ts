@@ -6,6 +6,21 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
     selector: 'vacancy',
     template: `
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a [routerLink]="['/demands']" class="navbar-brand">Запросы</a>
+                <a [routerLink]="['/vacancies']" class="navbar-brand">Вакансии</a>
+                <a [routerLink]="['/staff']" class="navbar-brand">Сотрудники</a>
+                <a [routerLink]="['/candidates']" class="navbar-brand">Кандидаты</a>
+            </div>
+        </div>
+    </div> 
     <div style="overflow:auto;" id="list-vacancies-candidates" class="panel">
         <table class="table table-striped">
             <thead>

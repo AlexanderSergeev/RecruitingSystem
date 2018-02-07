@@ -11,8 +11,10 @@ import { appRouterModule } from "./app.routes";
 import { VacanciesService } from "./shared/vacancies.service";
 import { DemandsService } from "./shared/demands.service";
 import { CandidatesService } from "./shared/candidates.service";
+import { LoginService } from "./shared/login.service";
 import { StaffService } from "./shared/staff.service";
 import { AppComponent } from './app.component';
+import { LoginComponent } from './login/login.component';
 import { DemandFormComponent } from './demands/demandForm.component';
 import { CandidateFormComponent } from './candidates/candidateForm.component';
 import { StaffFormComponent } from './staff/staffForm.component';
@@ -23,8 +25,8 @@ import { FormsModule } from '@angular/forms';
 
 @NgModule({
     imports: [BrowserModule, HttpModule, appRouterModule, FormsModule],
-    declarations: [DemandsComponent, StaffComponent, CandidatesComponent, CandidateFormComponent, StaffFormComponent, VacanciesComponent, VacancyComponent, DemandComponent, AppComponent, DemandFormComponent, VacancyFormComponent, VacancyCandidateFormComponent, DemandStaffFormComponent],
+    declarations: [LoginComponent, DemandsComponent, StaffComponent, CandidatesComponent, CandidateFormComponent, StaffFormComponent, VacanciesComponent, VacancyComponent, DemandComponent, AppComponent, DemandFormComponent, VacancyFormComponent, VacancyCandidateFormComponent, DemandStaffFormComponent],
     bootstrap: [AppComponent],
-    providers: [DemandsService, VacanciesService, CandidatesService, StaffService]
+    providers: [LoginService, DemandsService, VacanciesService, CandidatesService, StaffService]
 })
 export class AppModule { }

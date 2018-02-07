@@ -34,3 +34,5 @@ App/app/shared/staff.service.js
 App/app/staff/staff.component.js
 App/app/staff/staffForm.component.js
 App/packages.config
+App/app/shared/login.service.js
+App/app/login/login.component.js

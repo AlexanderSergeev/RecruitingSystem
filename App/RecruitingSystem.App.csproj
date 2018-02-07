@@ -262,7 +262,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="app\login\" />
     <Folder Include="App_Data\" />
     <Folder Include="Content\" />
   </ItemGroup>
@@ -276,6 +275,8 @@
     <TypeScriptCompile Include="app\candidates\candidates.component.ts" />
     <TypeScriptCompile Include="app\demands\demand.component.ts" />
     <TypeScriptCompile Include="app\demands\demandStaffForm.component.ts" />
+    <TypeScriptCompile Include="app\login\login.component.ts" />
+    <TypeScriptCompile Include="app\shared\login.service.ts" />
     <TypeScriptCompile Include="app\shared\staff.ts" />
     <TypeScriptCompile Include="app\shared\staff.service.ts" />
     <TypeScriptCompile Include="app\shared\candidates.service.ts" />
