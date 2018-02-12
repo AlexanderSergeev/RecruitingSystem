@@ -71,6 +71,9 @@ export class VacanciesComponent implements OnInit {
     ngOnInit() {
         this.vacanciesService.getVacancies().subscribe(res => {
             this.vacancies = res;
+        },
+        error => {
+            alert(error.statusText);
         });
     }
 	
@@ -80,9 +83,16 @@ export class VacanciesComponent implements OnInit {
 
     remove(id: number) {
         const vacanciesComponent = this;
-        this.vacanciesService.remove(id).subscribe(function () {
-            let index = vacanciesComponent.vacancies.findIndex(d => d.Id == id);
-            vacanciesComponent.vacancies.splice(index, 1);
-        });
+        this.vacanciesService.remove(id).subscribe(
+            result => {
+            },
+            error => {
+                alert(error.statusText);
+            },
+            () => {
+                let index = vacanciesComponent.vacancies.findIndex(d => d.Id == id);
+                vacanciesComponent.vacancies.splice(index, 1);
+            }
+        );
     }
 }

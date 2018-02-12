@@ -61,6 +61,9 @@ export class VacancyFormComponent implements OnInit, OnDestroy {
                     this.Name = res.Name;
                     this.VacancyStatus = res.VacancyStatus;
                     this.VacancyLocation = res.VacancyLocation;
+                },
+                error => {
+                    alert(error.statusText);
                 });
             }
         });
@@ -82,6 +85,9 @@ export class VacancyFormComponent implements OnInit, OnDestroy {
                 data => {
                     let index = this.vacanciesComponent.vacancies.findIndex(d => d.Id == id);
                     this.vacanciesComponent.vacancies[index] = data;
+                },
+                error => {
+                    alert(error.statusText);
                 });
         }
         else {
@@ -90,6 +96,9 @@ export class VacancyFormComponent implements OnInit, OnDestroy {
                     this.vacanciesComponent.vacancies.push(data);
                     var listVacancies = document.getElementById('list-vacancies');
                     listVacancies.scrollTop = listVacancies.scrollHeight;
+                },
+                error => {
+                    alert(error.statusText);
                 });
         }
     }

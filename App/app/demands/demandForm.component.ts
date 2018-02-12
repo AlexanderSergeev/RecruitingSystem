@@ -49,6 +49,9 @@ export class DemandFormComponent implements OnInit, OnDestroy {
                     this.Id = res.Id;
                     this.Name = res.Name;
                     this.DemandLocation = res.DemandLocation;
+                },
+                error => {
+                    alert(error.statusText);
                 });
             }
         });
@@ -70,6 +73,9 @@ export class DemandFormComponent implements OnInit, OnDestroy {
                 data => {
                     let index = this.demandsComponent.demands.findIndex(d => d.Id == id);
                     this.demandsComponent.demands[index] = data;
+                },
+                error => {
+                    alert(error.statusText);
                 });
         }
         else {
@@ -78,6 +84,9 @@ export class DemandFormComponent implements OnInit, OnDestroy {
                     this.demandsComponent.demands.push(data);
                     var listDemands = document.getElementById('list-demands');
                     listDemands.scrollTop = listDemands.scrollHeight;
+                },
+                error => {
+                    alert(error.statusText);
                 });
         }
     }

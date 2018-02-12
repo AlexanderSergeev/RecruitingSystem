@@ -28,6 +28,12 @@ namespace App.Models
             if (roleName.Equals("HR"))
                 return Models.RoleType.HR;
 
+            if (roleName.Equals("Director"))
+                return Models.RoleType.Director;
+
+            if (roleName.Equals("ProjectManager"))
+                return Models.RoleType.ProjectManager;
+
 
             throw new ArgumentOutOfRangeException();
         }

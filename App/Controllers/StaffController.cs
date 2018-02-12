@@ -27,6 +27,7 @@ namespace App.Controllers
 
         [Route]
         [HttpGet]
+        [Authorize(Roles = "Administrator" + "," + "HR")]
         public IEnumerable<StaffMember> GetStaff()
         {
             return repository.GetStaff();
@@ -34,6 +35,7 @@ namespace App.Controllers
 
         [Route("{id}")]
         [HttpGet]
+        [Authorize(Roles = "Administrator" + "," + "HR")]
         public async Task<StaffMember> GetStaffMember(int id)
         {
             return await repository.GetStaffMember(id);
@@ -41,6 +43,7 @@ namespace App.Controllers
 
         [Route]
         [HttpPost]
+        [Authorize(Roles = "Administrator" + "," + "HR")]
         public async Task<StaffMember> AddStaffMember([FromBody]StaffMember d)
         {
             return await repository.AddStaffMember(d);
@@ -48,6 +51,7 @@ namespace App.Controllers
 
         [Route]
         [HttpPut]
+        [Authorize(Roles = "Administrator" + "," + "HR")]
         public async Task<StaffMember> EditStaffMember([FromBody]StaffMember d)
         {
             return await repository.EditStaffMember(d);
@@ -55,6 +59,7 @@ namespace App.Controllers
 
         [Route("{id}")]
         [HttpDelete]
+        [Authorize(Roles = "Administrator" + "," + "HR")]
         public async Task<StaffMember> DeleteStaffMember(int id)
         {
             return await repository.DeleteStaffMember(id);
@@ -62,6 +67,7 @@ namespace App.Controllers
 
         [Route("uploadResume/{id}")]
         [HttpPost]
+        [Authorize(Roles = "Administrator" + "," + "HR")]
         public async Task<IHttpActionResult> UploadResume(int id)
         {
             try

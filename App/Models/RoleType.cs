@@ -5,6 +5,10 @@ namespace App.Models
     {
         Administrator,
 
-        HR
+        Director,
+
+        HR,
+
+        ProjectManager
     }
 }

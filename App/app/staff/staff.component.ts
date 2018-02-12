@@ -74,6 +74,9 @@ export class StaffComponent implements OnInit {
     ngOnInit() {
         this.staffService.getStaff().subscribe(res => {
             this.staff = res;
+        },
+        error => {
+            alert(error.statusText);
         });
     }
 	
@@ -83,9 +86,16 @@ export class StaffComponent implements OnInit {
 
     remove(id: number) {
         const staffComponent = this;
-        this.staffService.remove(id).subscribe(function () {
-            let index = staffComponent.staff.findIndex(d => d.Id == id);
-            staffComponent.staff.splice(index, 1);
-        });
+        this.staffService.remove(id).subscribe(
+            result => {
+            },
+            error => {
+                alert(error.statusText);
+            },
+            () => {
+                let index = staffComponent.staff.findIndex(d => d.Id == id);
+                staffComponent.staff.splice(index, 1);
+            }
+        );
     }
 }

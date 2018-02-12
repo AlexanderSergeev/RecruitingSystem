@@ -145,9 +145,14 @@ export class VacancyComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
             this.id = params['id'];
-            this.vacanciesService.getVacancyCandidates(this.id).subscribe(res => {
-                this.candidates = res;
-            });
+            if (typeof this.id === 'number') {
+                this.vacanciesService.getVacancyCandidates(this.id).subscribe(res => {
+                        this.candidates = res;
+                    },
+                    error => {
+                        alert(error.statusText);
+                    });
+            }
         });
     }
 
@@ -166,35 +171,63 @@ export class VacancyComponent implements OnInit, OnDestroy {
 
     remove(id: number) {
         const vacancyComponent = this;
-        this.vacanciesService.removeCandidateFromVacancy(id, this.id).subscribe(function () {
-            let index = vacancyComponent.candidates.findIndex(c => c.Id === id);
-            vacancyComponent.candidates.splice(index, 1);
-        });
+        this.vacanciesService.removeCandidateFromVacancy(id, this.id).subscribe(
+            result => {
+            },
+            error => {
+                alert(error.statusText);
+            },
+            () => {
+                let index = vacancyComponent.candidates.findIndex(c => c.Id === id);
+                vacancyComponent.candidates.splice(index, 1);
+            }
+        );
     }
 
     changeCandidateStatus(id: number, status: number) {
         this.popUpStatusHide();
         const vacancyComponent = this;
-        this.vacanciesService.changeCandidateStatus(id, this.id, status).subscribe(function () {
+        this.vacanciesService.changeCandidateStatus(id, this.id, status).subscribe(
+        result => {
+        },
+        error => {
+            alert(error.statusText);
+        },
+        () => {
             let index = vacancyComponent.candidates.findIndex(c => c.Id === id);
             vacancyComponent.candidates[index].Status = status;
-        });
+        }
+        );
     }
 
     check(id: number, status: boolean) {
         const vacancyComponent = this;
-        this.vacanciesService.checkCandidate(id, this.id, status).subscribe(function () {
+        this.vacanciesService.checkCandidate(id, this.id, status).subscribe(
+        result => {
+        },
+        error => {
+            alert(error.statusText);
+        },
+        () => {
             let index = vacancyComponent.candidates.findIndex(c => c.Id === id);
             vacancyComponent.candidates[index].Checked = status;
-        });
+        }
+        );
     }
 
     checkInterview(id: number, status: boolean) {
         const vacancyComponent = this;
-        this.vacanciesService.checkCandidateInterview(id, this.id, status).subscribe(function () {
+        this.vacanciesService.checkCandidateInterview(id, this.id, status).subscribe(
+        result => {
+        },
+        error => {
+            alert(error.statusText);
+        },
+        () => {
             let index = vacancyComponent.candidates.findIndex(c => c.Id === id);
             vacancyComponent.candidates[index].InterviewRequired = status;
-        });
+        }
+        );
     }
 
     ngOnDestroy() {

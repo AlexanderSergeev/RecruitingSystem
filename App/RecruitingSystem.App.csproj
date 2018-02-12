@@ -202,11 +202,11 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="DataAccess\VacanciesRepository.cs" />
-    <Compile Include="DataAccess\IVacanciesRepository.cs" />
+    <Compile Include="DataAccess\Contracts\IVacanciesRepository.cs" />
     <Compile Include="DataAccess\StaffRepository.cs" />
-    <Compile Include="DataAccess\IStaffRepository.cs" />
+    <Compile Include="DataAccess\Contracts\IStaffRepository.cs" />
     <Compile Include="DataAccess\DemandsRepository.cs" />
-    <Compile Include="DataAccess\IDemandsRepository.cs" />
+    <Compile Include="DataAccess\Contracts\IDemandsRepository.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\StaffController.cs" />
     <Compile Include="Controllers\AppController.cs" />
@@ -216,8 +216,8 @@
     <Compile Include="DataAccess\CandidatesRepository.cs" />
     <Compile Include="DataAccess\CustomClasses.cs" />
     <Compile Include="DataAccess\AppDbContext.cs" />
-    <Compile Include="DataAccess\ICandidatesRepository.cs" />
-    <Compile Include="DataAccess\IUserRepository.cs" />
+    <Compile Include="DataAccess\Contracts\ICandidatesRepository.cs" />
+    <Compile Include="DataAccess\Contracts\IUserRepository.cs" />
     <Compile Include="DataAccess\UserRepository.cs" />
     <Compile Include="Services\EmailSender.cs" />
     <Compile Include="Global.asax.cs">

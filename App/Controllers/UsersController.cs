@@ -27,15 +27,14 @@ namespace App.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("login")]
-        public Task<User> Login([FromBody]LoginModel model)
+        public async Task<User> Login([FromBody]LoginModel model)
         {
+            var user = await repository.FindByEmailAndPasswordAsync(model);
 
-            var user = repository.FindByEmailAndPasswordAsync(model);
-
-            var userRole = repository.GetUserRole(user.Result);
+            var userRole = await repository.GetUserRole(user);
 
             _authenticationService.SignOut();
-            _authenticationService.SignIn(user.Result, userRole.Result.Name);
+            _authenticationService.SignIn(user, userRole.Name);
 
             return user;
         }

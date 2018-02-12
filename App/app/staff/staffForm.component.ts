@@ -63,6 +63,9 @@ export class StaffFormComponent implements OnInit, OnDestroy {
                     this.Name = res.Name;
                     this.Surname = res.Surname;
                     this.Patronym = res.Patronym;
+                },
+                error => {
+                    alert(error.statusText);
                 });
             }
         });
@@ -88,6 +91,9 @@ export class StaffFormComponent implements OnInit, OnDestroy {
                     let index = this.staffComponent.staff.findIndex(d => d.Id === id);
                     this.staffComponent.staff[index] = data;
                     this.uploadResume(id, filePathInput);
+                },
+                error => {
+                    alert(error.statusText);
                 });
         }
         else {
@@ -97,6 +103,9 @@ export class StaffFormComponent implements OnInit, OnDestroy {
                     var listStaff = document.getElementById('list-staff');
                     listStaff.scrollTop = listStaff.scrollHeight;
                     this.uploadResume(data.Id, filePathInput);
+                },
+                error => {
+                    alert(error.statusText);
                 });
         }
     }
@@ -112,6 +121,9 @@ export class StaffFormComponent implements OnInit, OnDestroy {
                     data => {
                         let index = this.staffComponent.staff.findIndex(d => d.Id === id);
                         this.staffComponent.staff[index].ResumePath = data;
+                    },
+                    error => {
+                        alert(error.statusText);
                     });
             }
         }

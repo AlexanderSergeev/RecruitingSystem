@@ -65,6 +65,9 @@ export class VacancyCandidateFormComponent implements OnInit, OnDestroy {
             this.idVacancy = params['id'];
             this.vacanciesService.getOtherVacancyCandidates(this.idVacancy).subscribe(res => {
                 this.candidates = res;
+            },
+            error => {
+                alert(error.statusText);
             });
         });
     }
@@ -79,6 +82,9 @@ export class VacancyCandidateFormComponent implements OnInit, OnDestroy {
                     listVacanciesCandidates.scrollTop = listVacanciesCandidates.scrollHeight;
                     let index = vacancyCandidateForm.candidates.findIndex(c => c.Id === idCandidate);
                     vacancyCandidateForm.candidates.splice(index, 1);
+                },
+                error => {
+                    alert(error.statusText);
                 });
         }
     }

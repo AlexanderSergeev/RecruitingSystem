@@ -1,5 +1,6 @@
 ﻿import { Component } from '@angular/core';
 import { LoginService } from '../shared/login.service';
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'login',
@@ -24,7 +25,7 @@ import { LoginService } from '../shared/login.service';
             <div class="form-group">
                 <div class="col-md-10">
                     <br>
-                    <button [routerLink]="['/demands']" [disabled]="myForm.invalid" (click)="login(Login, Password)" class="btn btn-primary">Войти</button>
+                    <button [disabled]="myForm.invalid" (click)="login(Login, Password)" class="btn btn-primary">Войти</button>
                 </div>
             </div>
         </div> 
@@ -37,11 +38,19 @@ export class LoginComponent {
     Login: string;
     Password: string;
 
-    constructor(private loginService: LoginService) { }
+    constructor(private router: Router, private loginService: LoginService) { }
 
     login(login: string, password: string) {
-        alert(login);
-        alert(password);
+        this.loginService.login(login, password).subscribe(
+            result => {
+            },
+            error => {
+                alert("Ошибка авторизации");
+            },
+            () => {
+                this.router.navigate(['vacancies']);
+            }
+        );
     }
 
 }

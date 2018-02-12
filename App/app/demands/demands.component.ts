@@ -66,6 +66,9 @@ export class DemandsComponent implements OnInit {
     ngOnInit() {
         this.demandsService.getDemands().subscribe(res => {
             this.demands = res;
+        },
+        error => {
+            alert(error.statusText);
         });
     }
 	
@@ -75,17 +78,31 @@ export class DemandsComponent implements OnInit {
 
     remove(id: number) {
         const demandsComponent = this;
-        this.demandsService.remove(id).subscribe(function () {
-            let index = demandsComponent.demands.findIndex(d => d.Id == id);
-            demandsComponent.demands.splice(index, 1);
-        });
+        this.demandsService.remove(id).subscribe(
+            result => {
+            },
+            error => {
+                alert(error.statusText);
+            },
+            () => {
+                let index = demandsComponent.demands.findIndex(d => d.Id == id);
+                demandsComponent.demands.splice(index, 1);
+            }
+        );
     }
 
     convertToVacancy(demand: Demand) {
         const demandsComponent = this;
-        this.demandsService.convertToVacancy(demand).subscribe(function () {
-            let index = demandsComponent.demands.findIndex(d => d.Id == demand.Id);
-            demandsComponent.demands.splice(index, 1);
-        });
+        this.demandsService.convertToVacancy(demand).subscribe(
+            result => {
+            },
+            error => {
+                alert(error.statusText);
+            },
+            () => {
+                let index = demandsComponent.demands.findIndex(d => d.Id == demand.Id);
+                demandsComponent.demands.splice(index, 1);
+            }
+        );
     }
 }

@@ -90,9 +90,15 @@ export class CandidatesComponent implements OnInit {
 
     constructor(private candidatesService: CandidatesService) { }
     ngOnInit() {
-        this.candidatesService.getCandidates().subscribe(res => {
-            this.candidates = res;
-        });
+        this.candidatesService.getCandidates().subscribe(
+            result => {
+                this.candidates = result;
+            },
+            error => {
+                alert(error.statusText);
+            }
+        );
+
     }
 	
 	popUpShow() {
@@ -101,9 +107,18 @@ export class CandidatesComponent implements OnInit {
 
     remove(id: number) {
         const candidatesComponent = this;
-        this.candidatesService.remove(id).subscribe(function () {
-            let index = candidatesComponent.candidates.findIndex(d => d.Id == id);
-            candidatesComponent.candidates.splice(index, 1);
-        });
+        this.candidatesService.remove(id).subscribe
+        (
+            result => {
+            },
+            error => {
+                alert(error.statusText);
+            },
+            () =>
+            {
+                let index = candidatesComponent.candidates.findIndex(d => d.Id == id);
+                candidatesComponent.candidates.splice(index, 1);
+            }
+        );
     }
 }

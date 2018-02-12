@@ -10,6 +10,19 @@ export class LoginService {
 
     constructor(private http: Http) { }
 
+    login(login: string, password: string) {
+        var json = JSON.stringify({
+            Email: login,
+            Password: password
+        });
+
+        let headers = new Headers({ 'Content-Type': 'application/json;charset=utf-8' });
+
+        return this.http.post('/api/users/login', json, { headers: headers })
+            .map((resp: Response) => resp.json())
+            .catch((error: any) => { return Observable.throw(error); });
+    }
+
     private extractData(res: Response) {
         let body = res.json();
         return body || {};

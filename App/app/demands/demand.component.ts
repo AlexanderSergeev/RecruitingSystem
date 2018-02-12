@@ -74,10 +74,15 @@ export class DemandComponent implements OnInit, OnDestroy {
     constructor(private demandsService: DemandsService, private route: ActivatedRoute, private router: Router) { }
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
-            this.id = params['id'];
-            this.demandsService.getDemandStaff(this.id).subscribe(res => {
-                this.staff = res;
-            });
+            this.id = params ['id'];
+            if (typeof this.id === 'number') {
+                this.demandsService.getDemandStaff(this.id).subscribe(res => {
+                        this.staff = res;
+                    },
+                    error => {
+                        alert(error.statusText);
+                    });
+            }
         });
     }
 
@@ -87,10 +92,17 @@ export class DemandComponent implements OnInit, OnDestroy {
 
     remove(id: number) {
         const demandComponent = this;
-        this.demandsService.removeStaffMemberFromDemand(id, this.id).subscribe(function () {
-            let index = demandComponent.staff.findIndex(c => c.Id === id);
-            demandComponent.staff.splice(index, 1);
-        });
+        this.demandsService.removeStaffMemberFromDemand(id, this.id).subscribe(
+            result => {
+            },
+            error => {
+                alert(error.statusText);
+            },
+            () => {
+                let index = demandComponent.staff.findIndex(c => c.Id === id);
+                demandComponent.staff.splice(index, 1);
+            }
+        );
     }
 
     ngOnDestroy() {

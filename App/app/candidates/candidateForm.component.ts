@@ -70,12 +70,17 @@ export class CandidateFormComponent implements OnInit, OnDestroy {
         this.sub = this.route.params.subscribe(params => {
             let id = params['id'];
             if (id != 0) {
-                this.candidatesService.getCandidate(id).subscribe(res => {
-                    this.Id = res.Id;
-                    this.Name = res.Name;
-                    this.Surname = res.Surname;
-                    this.Patronym = res.Patronym;
-                });
+                this.candidatesService.getCandidate(id).subscribe(
+                    res => {
+                        this.Id = res.Id;
+                        this.Name = res.Name;
+                        this.Surname = res.Surname;
+                        this.Patronym = res.Patronym;
+                    },
+                    error => {
+                        alert(error.statusText);
+                    }
+                );
             }
         });
     }
@@ -104,7 +109,11 @@ export class CandidateFormComponent implements OnInit, OnDestroy {
                     this.uploadResume(id, resumePathInput);
                     this.uploadSummary(id, summaryPathInput);
                     this.uploadInterview(id, interviewPathInput);
-                });
+                },
+                error => {
+                    alert(error.statusText);
+                }
+            );
         }
         else {
             this.candidatesService.addCandidate(name, surname, patronym).subscribe(
@@ -115,7 +124,11 @@ export class CandidateFormComponent implements OnInit, OnDestroy {
                     this.uploadResume(data.Id, resumePathInput);
                     this.uploadSummary(data.Id, summaryPathInput);
                     this.uploadInterview(data.Id, interviewPathInput);
-                });
+                },
+                error => {
+                    alert(error.statusText);
+                }
+            );
         }
     }
 
@@ -130,6 +143,9 @@ export class CandidateFormComponent implements OnInit, OnDestroy {
                     data => {
                         let index = this.candidatesComponent.candidates.findIndex(d => d.Id === id);
                         this.candidatesComponent.candidates[index].ResumePath = data;
+                    },
+                    error => {
+                        alert(error.statusText);
                     });
             }
         }
@@ -146,6 +162,9 @@ export class CandidateFormComponent implements OnInit, OnDestroy {
                     data => {
                         let index = this.candidatesComponent.candidates.findIndex(d => d.Id === id);
                         this.candidatesComponent.candidates[index].InterviewPath = data;
+                    },
+                    error => {
+                        alert(error.statusText);
                     });
             }
         }
@@ -162,6 +181,9 @@ export class CandidateFormComponent implements OnInit, OnDestroy {
                     data => {
                         let index = this.candidatesComponent.candidates.findIndex(d => d.Id === id);
                         this.candidatesComponent.candidates[index].SummaryPath = data;
+                    },
+                    error => {
+                        alert(error.statusText);
                     });
             }
         }

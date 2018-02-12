@@ -65,6 +65,9 @@ export class DemandStaffFormComponent implements OnInit, OnDestroy {
             this.idDemand = params['id'];
             this.demandsService.getOtherDemandStaff(this.idDemand).subscribe(res => {
                 this.staff = res;
+            },
+            error => {
+                alert(error.statusText);
             });
         });
     }
@@ -79,6 +82,9 @@ export class DemandStaffFormComponent implements OnInit, OnDestroy {
                     listDemandsStaff.scrollTop = listDemandsStaff.scrollHeight;
                     let index = demandStaffMemberForm.staff.findIndex(c => c.Id === idStaffMember);
                     demandStaffMemberForm.staff.splice(index, 1);
+                },
+                error => {
+                    alert(error.statusText);
                 });
         }
     }
