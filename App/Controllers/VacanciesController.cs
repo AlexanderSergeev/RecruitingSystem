@@ -25,7 +25,7 @@ namespace App.Controllers
 
         [Route]
         [HttpGet]
-        [Authorize(Roles = "Administrator" + "," + "HR" + "," + "ProjectManager" + "," + "Director")]
+        [Authorize]
         public IEnumerable<Vacancy> GetVacancies()
         {
             return repository.GetVacancies();
@@ -33,7 +33,7 @@ namespace App.Controllers
 
         [Route("{id}")]
         [HttpGet]
-        [Authorize(Roles = "Administrator" + "," + "HR" + "," + "ProjectManager" + "," + "Director")]
+        [Authorize]
         public async Task<Vacancy> GetVacancy(int id)
         {
             return await repository.GetVacancy(id);
@@ -41,7 +41,7 @@ namespace App.Controllers
 
         [Route("candidates/{id}")]
         [HttpGet]
-        [Authorize(Roles = "Administrator" + "," + "HR" + "," + "ProjectManager" + "," + "Director")]
+        [Authorize]
         public async Task<IEnumerable<CheckedCandidate>> GetVacancyCandidates(int id)
         {
             return await repository.GetVacancyCandidates(id);
@@ -49,7 +49,7 @@ namespace App.Controllers
 
         [Route("otherCandidates/{id}")]
         [HttpGet]
-        [Authorize(Roles = "Administrator" + "," + "HR" + "," + "ProjectManager" + "," + "Director")]
+        [Authorize]
         public async Task<IEnumerable<Candidate>> GetOtherVacancyCandidates(int id)
         {
             return await repository.GetOtherVacancyCandidates(id);

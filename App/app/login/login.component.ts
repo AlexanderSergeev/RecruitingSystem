@@ -37,6 +37,7 @@ export class LoginComponent {
     sub: any;
     Login: string;
     Password: string;
+    userRole: string;
 
     constructor(private router: Router, private loginService: LoginService) { }
 
@@ -48,7 +49,25 @@ export class LoginComponent {
                 alert("Ошибка авторизации");
             },
             () => {
-                this.router.navigate(['vacancies']);
+            this.loginService.getCurrentUserRole().subscribe(res => {
+                    this.userRole = res;
+                },
+                error => {
+                    alert(error.statusText);
+                },
+                () => {
+                    switch (this.userRole) {
+                        case "HR":
+                            this.router.navigate(['candidates']);
+                            break;
+                        case "ProjectManager":
+                            this.router.navigate(['demands']);
+                            break;
+                        default:
+                            this.router.navigate(['vacancies']);
+                            break;
+                    }
+                });
             }
         );
     }

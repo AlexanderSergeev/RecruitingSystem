@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using App.DataAccess;
 using App.Models;
@@ -37,6 +38,15 @@ namespace App.Controllers
             _authenticationService.SignIn(user, userRole.Name);
 
             return user;
+        }
+
+        [HttpGet]
+        [Route("role")]
+        [Authorize]
+        public string GetAccountInfo()
+        {
+            var role = ((ClaimsIdentity)RequestContext.Principal.Identity).FindFirst(ClaimsIdentity.DefaultRoleClaimType).Value;
+            return role;
         }
     }
 }

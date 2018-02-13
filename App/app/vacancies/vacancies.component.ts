@@ -1,5 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { VacanciesService } from '../shared/vacancies.service';
+import { LoginService } from '../shared/login.service';
 import { Vacancy } from '../shared/vacancy';
 
 @Component({
@@ -47,14 +48,14 @@ import { Vacancy } from '../shared/vacancy';
                     </ng-template>
                     <td><a [routerLink]="['/vacancies', vacancy.Id]">Кандидаты</a></td>
                     <td>
-                        <button (click)="popUpShow();" [routerLink]="['/vacancies/form', vacancy.Id]" class="btn btn-info">Редактировать</button>
-                        <button (click)="remove(vacancy.Id);" style="margin-left:5px;" class="btn btn-danger">Удалить</button>
+                        <button (click)="popUpShow();" [routerLink]="['/vacancies/form', vacancy.Id]" class="btn btn-info editVacancy">Редактировать</button>
+                        <button (click)="remove(vacancy.Id);" style="margin-left:5px;" class="btn btn-danger deleteVacancy">Удалить</button>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <button (click)="popUpShow();" [routerLink]="['/vacancies/form', 0]" class="btn btn-primary">Добавить</button>
+    <button (click)="popUpShow();" [routerLink]="['/vacancies/form', 0]" class="btn btn-primary addVacancy">Добавить</button>
 	
 	<div hidden="hidden" class="b-popup" id="popupVacancy">
 		<div class="b-popup-content">
@@ -66,15 +67,49 @@ import { Vacancy } from '../shared/vacancy';
 export class VacanciesComponent implements OnInit {
 
     vacancies: Array<Vacancy> = [];
+    userRole: string; 
 
-    constructor(private vacanciesService: VacanciesService) { }
+    constructor(private vacanciesService: VacanciesService, private loginService: LoginService) { }
     ngOnInit() {
-        this.vacanciesService.getVacancies().subscribe(res => {
-            this.vacancies = res;
-        },
-        error => {
-            alert(error.statusText);
-        });
+        this.loginService.getCurrentUserRole().subscribe(res => {
+                this.userRole = res;
+            },
+            error => {
+                alert(error.statusText);
+            },
+            () => {
+                switch (this.userRole) {
+                case "Administrator":  
+                case "Director":  
+                    break;
+                default:
+                {
+                    let arr1 = document.getElementsByClassName("btn btn-info editVacancy");
+                    for (let i = 0; i < arr1.length; i++) {
+                        alert('edirt' + i);
+                        arr1[i].setAttribute('disabled', 'disabled');
+                    }
+                    let arr2 = document.getElementsByClassName("addVacancy");
+                    for (let i = 0; i < arr2.length; i++) {
+                        alert('add'+i);
+                        arr2[i].setAttribute('disabled', 'disabled');
+                    }
+                    let arr3 = document.getElementsByClassName("deleteVacancy");
+                    for (let i = 0; i < arr3.length; i++) {
+                        alert('del'+i);
+                        arr3[i].setAttribute('disabled', 'disabled');
+                    }
+                    break;
+                }
+                }
+
+                this.vacanciesService.getVacancies().subscribe(res => {
+                        this.vacancies = res;
+                    },
+                    error => {
+                        alert(error.statusText);
+                    });
+            });
     }
 	
 	popUpShow() {

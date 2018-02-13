@@ -23,6 +23,14 @@ export class LoginService {
             .catch((error: any) => { return Observable.throw(error); });
     }
 
+    getCurrentUserRole() {
+        return this.http
+            .get('/api/users/role')
+            .map(res => {
+                return res.json();
+            });
+    }
+
     private extractData(res: Response) {
         let body = res.json();
         return body || {};
