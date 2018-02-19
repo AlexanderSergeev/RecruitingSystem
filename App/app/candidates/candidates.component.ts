@@ -1,6 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { CandidatesService } from '../shared/candidates.service';
 import { Candidate } from '../shared/candidate';
+import { LoginService } from '../shared/login.service';
 
 @Component({
     selector: 'list-candidates',
@@ -13,14 +14,25 @@ import { Candidate } from '../shared/candidate';
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a [routerLink]="['/demands']" class="navbar-brand">Запросы</a>
-                <a [routerLink]="['/vacancies']" class="navbar-brand">Вакансии</a>
-                <a [routerLink]="['/staff']" class="navbar-brand">Сотрудники</a>
-                <a [routerLink]="['/candidates']" class="navbar-brand">Кандидаты</a>
+                <span *ngIf="userRole!=='Technical'">
+                    <a [routerLink]="['/demands']" class="navbar-brand">Запросы</a>
+                </span>
+                <span *ngIf="userRole!=='Technical' && userRole!=='ProjectManager'">
+                    <a [routerLink]="['/vacancies']" class="navbar-brand">Вакансии</a>
+                </span>
+                <span *ngIf="userRole!=='Technical' && userRole!=='ProjectManager' && userRole!=='Director'">
+                    <a [routerLink]="['/staff']" class="navbar-brand">Сотрудники</a>
+                </span>
+                <span *ngIf="userRole!=='ProjectManager' && userRole!=='Director'">
+                    <a [routerLink]="['/candidates']" class="navbar-brand">Кандидаты</a>
+                </span>
+                <span>
+                    <a [routerLink]="['/login']" class="navbar-brand">Выйти</a>
+                </span>
             </div>
         </div>
     </div> 
-    <div style="overflow:auto;" id="list-candidates" class="panel">
+    <div *ngIf="userRole!=='ProjectManager' && userRole!=='Director'" style="overflow:auto;" id="list-candidates" class="panel">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -69,13 +81,13 @@ import { Candidate } from '../shared/candidate';
                     </ng-template>
                     <td>
                         <button (click)="popUpShow();" [routerLink]="['/candidates/form', candidate.Id]" style="margin-left:5px;" class="btn btn-info">Редактировать</button>
-                        <button (click)="remove(candidate.Id);" style="margin-left:5px;" class="btn btn-danger">Удалить</button>
+                        <button *ngIf="userRole!=='Technical'" (click)="remove(candidate.Id);" style="margin-left:5px;" class="btn btn-danger">Удалить</button>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <button (click)="popUpShow();" [routerLink]="['/candidates/form', 0]" class="btn btn-primary">Добавить</button>
+    <button *ngIf="userRole!=='Technical' && userRole!=='ProjectManager' && userRole!=='Director'" (click)="popUpShow();" [routerLink]="['/candidates/form', 0]" class="btn btn-primary">Добавить</button>
 	
 	<div hidden="hidden" class="b-popup" id="popupCandidate">
 		<div class="b-popup-content">
@@ -87,18 +99,26 @@ import { Candidate } from '../shared/candidate';
 export class CandidatesComponent implements OnInit {
 
     candidates: Array<Candidate> = [];
+    userRole: string; 
 
-    constructor(private candidatesService: CandidatesService) { }
+    constructor(private candidatesService: CandidatesService, private loginService: LoginService) { }
     ngOnInit() {
-        this.candidatesService.getCandidates().subscribe(
-            result => {
-                this.candidates = result;
+        this.loginService.getCurrentUserRole().subscribe(res => {
+                this.userRole = res;
             },
             error => {
                 alert(error.statusText);
-            }
-        );
-
+            },
+            () => {
+                this.candidatesService.getCandidates().subscribe(
+                    result => {
+                        this.candidates = result;
+                    },
+                    error => {
+                        alert(error.statusText);
+                    }
+                );
+            });
     }
 	
 	popUpShow() {

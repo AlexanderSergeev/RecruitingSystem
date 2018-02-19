@@ -27,7 +27,7 @@ namespace App.Controllers
 
         [Route]
         [HttpGet]
-        [Authorize(Roles = "Administrator" + "," + "HR")]
+        [Authorize(Roles = "Administrator" + "," + "HR" + "," + "Technical")]
         public IEnumerable<Candidate> GetCandidates()
         {
             return repository.GetCandidates();
@@ -35,7 +35,7 @@ namespace App.Controllers
 
         [Route("{id}")]
         [HttpGet]
-        [Authorize(Roles = "Administrator" + "," + "HR")]
+        [Authorize(Roles = "Administrator" + "," + "HR" + "," + "Technical")]
         public async Task<Candidate> GetCandidate(int id)
         {
             return await repository.GetCandidate(id);
@@ -51,7 +51,7 @@ namespace App.Controllers
 
         [Route]
         [HttpPut]
-        [Authorize(Roles = "Administrator" + "," + "HR")]
+        [Authorize(Roles = "Administrator" + "," + "HR" + "," + "Technical")]
         public async Task<Candidate> EditCandidate([FromBody]Candidate d)
         {
             return await repository.EditCandidate(d);
@@ -147,7 +147,7 @@ namespace App.Controllers
 
         [Route("uploadInterview/{id}")]
         [HttpPost]
-        [Authorize(Roles = "Administrator" + "," + "HR")]
+        [Authorize(Roles = "Administrator" + "," + "Technical" + "," + "HR")]
         public async Task<IHttpActionResult> UploadInterview(int id)
         {
             try

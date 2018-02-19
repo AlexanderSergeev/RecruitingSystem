@@ -43,7 +43,7 @@ namespace App.Controllers
 
         [Route]
         [HttpPost]
-        [Authorize(Roles = "Administrator" + "," + "ProjectManager" + "," + "Director")]
+        [Authorize(Roles = "Administrator" + "," + "ProjectManager")]
         public async Task<Demand> AddDemand([FromBody]Demand d)
         {
             return await repository.AddDemand(d);
@@ -51,7 +51,7 @@ namespace App.Controllers
 		
 		[Route]
         [HttpPut]
-		[Authorize(Roles = "Administrator" + "," + "ProjectManager" + "," + "Director")]
+		[Authorize(Roles = "Administrator" + "," + "ProjectManager")]
         public async Task<Demand> EditDemand([FromBody]Demand d)
         {
             return await repository.EditDemand(d);
@@ -59,7 +59,7 @@ namespace App.Controllers
 		
 		[Route("{id}")]
         [HttpDelete]
-		[Authorize(Roles = "Administrator" + "," + "ProjectManager" + "," + "Director")]
+		[Authorize(Roles = "Administrator" + "," + "ProjectManager")]
         public async Task<Demand> DeleteDemand(int id)
         {
             return await repository.DeleteDemand(id);
@@ -67,7 +67,7 @@ namespace App.Controllers
 
         [Route("convert")]
         [HttpPost]
-        [Authorize(Roles = "Administrator" + "," + "ProjectManager" + "," + "Director")]
+        [Authorize(Roles = "Administrator" + "," + "ProjectManager")]
         public async Task<Vacancy> ConvertToVacancy([FromBody]Demand d)
         {
             await repository.DeleteDemand(d.Id); 
@@ -88,7 +88,7 @@ namespace App.Controllers
 
         [Route("otherStaff/{id}")]
         [HttpGet]
-        [Authorize(Roles = "Administrator" + "," + "HR" + "," + "ProjectManager" + "," + "Director")]
+        [Authorize(Roles = "Administrator" + "," + "HR" + "," + "ProjectManager")]
         public async Task<IEnumerable<StaffMember>> GetOtherDemandStaff(int id)
         {
             return await repository.GetOtherDemandStaff(id);
@@ -96,7 +96,7 @@ namespace App.Controllers
 
         [Route("staff")]
         [HttpPost]
-        [Authorize(Roles = "Administrator" + "," + "ProjectManager" + "," + "Director")]
+        [Authorize(Roles = "Administrator" + "," + "HR" + "," + "ProjectManager")]
         public async Task<StaffMember> AddDemandStaffMember([FromBody]DemandIdCouple couple)
         {
             return await repository.AddDemandStaffMember(couple);
@@ -104,7 +104,7 @@ namespace App.Controllers
 
         [Route("{idStaffMember}/{idDemand}")]
         [HttpDelete]
-        [Authorize(Roles = "Administrator" + "," + "ProjectManager" + "," + "Director")]
+        [Authorize(Roles = "Administrator" + "," + "HR" + "," + "ProjectManager")]
         public async Task<StaffMember> RemoveStaffMemberFromDemand(int idStaffMember, int idDemand)
         {
             return await repository.RemoveStaffMemberFromDemand(idStaffMember, idDemand);

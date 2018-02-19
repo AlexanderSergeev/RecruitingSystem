@@ -34,6 +34,9 @@ namespace App.Models
             if (roleName.Equals("ProjectManager"))
                 return Models.RoleType.ProjectManager;
 
+            if (roleName.Equals("Technical"))
+                return Models.RoleType.Technical;
+
 
             throw new ArgumentOutOfRangeException();
         }

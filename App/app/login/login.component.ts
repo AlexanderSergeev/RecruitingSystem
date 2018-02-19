@@ -58,6 +58,7 @@ export class LoginComponent {
                 () => {
                     switch (this.userRole) {
                         case "HR":
+                        case "Technical":
                             this.router.navigate(['candidates']);
                             break;
                         case "ProjectManager":

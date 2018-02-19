@@ -2,10 +2,11 @@
 import { DemandsService } from '../shared/demands.service';
 import { DemandsComponent } from './demands.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoginService } from '../shared/login.service';
 
 @Component({
     template: `
-    <form #myForm="ngForm" novalidate>
+    <form *ngIf="userRole!=='Technical'" #myForm="ngForm" novalidate>
         <div class="row">
             <h4 style="margin-left:15px;">Запрос на ресурс</h4>
             <br>
@@ -24,7 +25,7 @@ import { ActivatedRoute, Router } from '@angular/router';
             <div class="form-group">
                 <div class="col-md-10">
                     <br>
-                    <button [routerLink]="['/demands']" [disabled]="myForm.invalid" (click)="addDemand(Name, DemandLocation)" class="btn btn-primary">Сохранить</button>
+                    <button *ngIf="userRole!=='HR' && userRole!=='Director'" [routerLink]="['/demands']" [disabled]="myForm.invalid" (click)="addDemand(Name, DemandLocation)" class="btn btn-primary">Сохранить</button>
                     <button [routerLink]="['/demands']" (click)="popUpHide()" class="btn btn-primary">Отменить</button>
                 </div>
             </div>
@@ -38,22 +39,31 @@ export class DemandFormComponent implements OnInit, OnDestroy {
     Id: number;
     Name: string;
     DemandLocation: string;
+    userRole: string; 
 
-    constructor(private demandsService: DemandsService, private demandsComponent: DemandsComponent, private route: ActivatedRoute, private router: Router) { }
+    constructor(private demandsService: DemandsService, private loginService: LoginService, private demandsComponent: DemandsComponent, private route: ActivatedRoute, private router: Router) { }
 
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
-            let id = params['id'];
-            if (id != 0) {
-                this.demandsService.getDemand(id).subscribe(res => {
-                    this.Id = res.Id;
-                    this.Name = res.Name;
-                    this.DemandLocation = res.DemandLocation;
+            this.loginService.getCurrentUserRole().subscribe(res => {
+                    this.userRole = res;
                 },
                 error => {
                     alert(error.statusText);
+                },
+                () => {
+                    let id = params['id'];
+                    if (id != 0) {
+                        this.demandsService.getDemand(id).subscribe(res => {
+                                this.Id = res.Id;
+                                this.Name = res.Name;
+                                this.DemandLocation = res.DemandLocation;
+                            },
+                            error => {
+                                alert(error.statusText);
+                            });
+                    }
                 });
-            }
         });
     }
 

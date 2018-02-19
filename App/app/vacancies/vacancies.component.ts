@@ -14,14 +14,25 @@ import { Vacancy } from '../shared/vacancy';
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a [routerLink]="['/demands']" class="navbar-brand">Запросы</a>
-                <a [routerLink]="['/vacancies']" class="navbar-brand">Вакансии</a>
-                <a [routerLink]="['/staff']" class="navbar-brand">Сотрудники</a>
-                <a [routerLink]="['/candidates']" class="navbar-brand">Кандидаты</a>
+                <span *ngIf="userRole!=='Technical'">
+                    <a [routerLink]="['/demands']" class="navbar-brand">Запросы</a>
+                </span>
+                <span *ngIf="userRole!=='Technical' && userRole!=='ProjectManager'">
+                    <a [routerLink]="['/vacancies']" class="navbar-brand">Вакансии</a>
+                </span>
+                <span *ngIf="userRole!=='Technical' && userRole!=='ProjectManager' && userRole!=='Director'">
+                    <a [routerLink]="['/staff']" class="navbar-brand">Сотрудники</a>
+                </span>
+                <span *ngIf="userRole!=='ProjectManager' && userRole!=='Director'">
+                    <a [routerLink]="['/candidates']" class="navbar-brand">Кандидаты</a>
+                </span>
+                <span>
+                    <a [routerLink]="['/login']" class="navbar-brand">Выйти</a>
+                </span>
             </div>
         </div>
     </div>  
-    <div style="overflow:auto;" id="list-vacancies" class="panel">
+    <div *ngIf="userRole!=='Technical' && userRole!=='ProjectManager'" style="overflow:auto;" id="list-vacancies" class="panel">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -48,14 +59,14 @@ import { Vacancy } from '../shared/vacancy';
                     </ng-template>
                     <td><a [routerLink]="['/vacancies', vacancy.Id]">Кандидаты</a></td>
                     <td>
-                        <button (click)="popUpShow();" [routerLink]="['/vacancies/form', vacancy.Id]" class="btn btn-info editVacancy">Редактировать</button>
-                        <button (click)="remove(vacancy.Id);" style="margin-left:5px;" class="btn btn-danger deleteVacancy">Удалить</button>
+                        <button (click)="popUpShow();" [routerLink]="['/vacancies/form', vacancy.Id]" class="btn btn-info">Редактировать</button>
+                        <button *ngIf="userRole!=='HR'" (click)="remove(vacancy.Id);" style="margin-left:5px;" class="btn btn-danger">Удалить</button>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <button (click)="popUpShow();" [routerLink]="['/vacancies/form', 0]" class="btn btn-primary addVacancy">Добавить</button>
+    <button *ngIf="userRole!=='Technical' && userRole!=='ProjectManager' && userRole!=='HR'" (click)="popUpShow();" [routerLink]="['/vacancies/form', 0]" class="btn btn-primary">Добавить</button>
 	
 	<div hidden="hidden" class="b-popup" id="popupVacancy">
 		<div class="b-popup-content">
@@ -78,31 +89,6 @@ export class VacanciesComponent implements OnInit {
                 alert(error.statusText);
             },
             () => {
-                switch (this.userRole) {
-                case "Administrator":  
-                case "Director":  
-                    break;
-                default:
-                {
-                    let arr1 = document.getElementsByClassName("btn btn-info editVacancy");
-                    for (let i = 0; i < arr1.length; i++) {
-                        alert('edirt' + i);
-                        arr1[i].setAttribute('disabled', 'disabled');
-                    }
-                    let arr2 = document.getElementsByClassName("addVacancy");
-                    for (let i = 0; i < arr2.length; i++) {
-                        alert('add'+i);
-                        arr2[i].setAttribute('disabled', 'disabled');
-                    }
-                    let arr3 = document.getElementsByClassName("deleteVacancy");
-                    for (let i = 0; i < arr3.length; i++) {
-                        alert('del'+i);
-                        arr3[i].setAttribute('disabled', 'disabled');
-                    }
-                    break;
-                }
-                }
-
                 this.vacanciesService.getVacancies().subscribe(res => {
                         this.vacancies = res;
                     },

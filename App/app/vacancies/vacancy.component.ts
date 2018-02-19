@@ -2,6 +2,7 @@
 import { VacanciesService } from '../shared/vacancies.service';
 import { Candidate } from '../shared/candidate';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoginService } from '../shared/login.service';
 
 @Component({
     selector: 'vacancy',
@@ -14,14 +15,25 @@ import { ActivatedRoute, Router } from '@angular/router';
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a [routerLink]="['/demands']" class="navbar-brand">Запросы</a>
-                <a [routerLink]="['/vacancies']" class="navbar-brand">Вакансии</a>
-                <a [routerLink]="['/staff']" class="navbar-brand">Сотрудники</a>
-                <a [routerLink]="['/candidates']" class="navbar-brand">Кандидаты</a>
+                <span *ngIf="userRole!=='Technical'">
+                    <a [routerLink]="['/demands']" class="navbar-brand">Запросы</a>
+                </span>
+                <span *ngIf="userRole!=='Technical' && userRole!=='ProjectManager'">
+                    <a [routerLink]="['/vacancies']" class="navbar-brand">Вакансии</a>
+                </span>
+                <span *ngIf="userRole!=='Technical' && userRole!=='ProjectManager' && userRole!=='Director'">
+                    <a [routerLink]="['/staff']" class="navbar-brand">Сотрудники</a>
+                </span>
+                <span *ngIf="userRole!=='ProjectManager' && userRole!=='Director'">
+                    <a [routerLink]="['/candidates']" class="navbar-brand">Кандидаты</a>
+                </span>
+                <span>
+                    <a [routerLink]="['/login']" class="navbar-brand">Выйти</a>
+                </span>
             </div>
         </div>
     </div> 
-    <div style="overflow:auto;" id="list-vacancies-candidates" class="panel">
+    <div *ngIf="userRole!=='Technical' && userRole!=='ProjectManager'" style="overflow:auto;" id="list-vacancies-candidates" class="panel">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -97,7 +109,7 @@ import { ActivatedRoute, Router } from '@angular/router';
             </tbody>
         </table>
     </div>
-    <button (click)="popUpShow();" [routerLink]="['/vacancies/:id/candidateForm', {id: id}]" class="btn btn-primary">Добавить</button>
+    <button *ngIf="userRole!=='Technical' && userRole!=='ProjectManager'" (click)="popUpShow();" [routerLink]="['/vacancies/:id/candidateForm', {id: id}]" class="btn btn-primary">Добавить</button>
     <div hidden="hidden" class="b-popup" id="popupСandidateForm">
 	    <div class="b-popup-content">
 	        <router-outlet></router-outlet>
@@ -138,19 +150,28 @@ export class VacancyComponent implements OnInit, OnDestroy {
     candidates: Candidate[] = [];
     sub: any;
     id: number;
-    status: number;
+    status: number = 0;
     candidateId: number;
+    userRole: string;
 
-    constructor(private vacanciesService: VacanciesService, private route: ActivatedRoute, private router: Router) { }
+    constructor(private vacanciesService: VacanciesService, private loginService: LoginService, private route: ActivatedRoute, private router: Router) { }
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
             this.id = params['id'];
-            if (typeof this.id === 'number') {
-                this.vacanciesService.getVacancyCandidates(this.id).subscribe(res => {
-                        this.candidates = res;
-                    },
+            if (!isNaN(Number(this.id))) {
+                this.loginService.getCurrentUserRole().subscribe(res => {
+                    this.userRole = res;
+                },
                     error => {
                         alert(error.statusText);
+                    },
+                    () => {
+                        this.vacanciesService.getVacancyCandidates(this.id).subscribe(res => {
+                            this.candidates = res;
+                        },
+                            error => {
+                                alert(error.statusText);
+                            });
                     });
             }
         });
@@ -188,45 +209,43 @@ export class VacancyComponent implements OnInit, OnDestroy {
         this.popUpStatusHide();
         const vacancyComponent = this;
         this.vacanciesService.changeCandidateStatus(id, this.id, status).subscribe(
-        result => {
-        },
-        error => {
-            alert(error.statusText);
-        },
-        () => {
-            let index = vacancyComponent.candidates.findIndex(c => c.Id === id);
-            vacancyComponent.candidates[index].Status = status;
-        }
+            result => {
+            },
+            error => {
+                alert(error.statusText);
+            },
+            () => {
+                let index = vacancyComponent.candidates.findIndex(c => c.Id === id);
+                vacancyComponent.candidates[index].Status = status;
+            }
         );
     }
 
     check(id: number, status: boolean) {
         const vacancyComponent = this;
         this.vacanciesService.checkCandidate(id, this.id, status).subscribe(
-        result => {
-        },
-        error => {
-            alert(error.statusText);
-        },
-        () => {
-            let index = vacancyComponent.candidates.findIndex(c => c.Id === id);
-            vacancyComponent.candidates[index].Checked = status;
-        }
+            result => {
+            },
+            error => {
+                alert(error.statusText);
+            },
+            () => {
+                
+            }
         );
     }
 
     checkInterview(id: number, status: boolean) {
         const vacancyComponent = this;
         this.vacanciesService.checkCandidateInterview(id, this.id, status).subscribe(
-        result => {
-        },
-        error => {
-            alert(error.statusText);
-        },
-        () => {
-            let index = vacancyComponent.candidates.findIndex(c => c.Id === id);
-            vacancyComponent.candidates[index].InterviewRequired = status;
-        }
+            result => {
+            },
+            error => {
+                alert(error.statusText);
+            },
+            () => {
+               
+            }
         );
     }
 

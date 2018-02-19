@@ -9,6 +9,8 @@ namespace App.Models
 
         HR,
 
-        ProjectManager
+        ProjectManager,
+
+        Technical
     }
 }

@@ -2,10 +2,11 @@
 import { VacanciesService } from '../shared/vacancies.service';
 import { VacanciesComponent } from './vacancies.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoginService } from '../shared/login.service';
 
 @Component({
     template: `
-    <form #myForm="ngForm" novalidate>
+    <form *ngIf="userRole!=='Technical' && userRole!=='ProjectManager'" #myForm="ngForm" novalidate>
         <div class="row">
             <h4 style="margin-left:15px;">Вакансия</h4>
             <br>
@@ -34,7 +35,7 @@ import { ActivatedRoute, Router } from '@angular/router';
             <div class="form-group">
                 <div class="col-md-10">
                     <br>
-                    <button [routerLink]="['/vacancies']" [disabled]="myForm.invalid" (click)="addVacancy(Name, VacancyStatus, VacancyLocation)" class="btn btn-primary">Сохранить</button>
+                    <button *ngIf="userRole!=='HR'" [routerLink]="['/vacancies']" [disabled]="myForm.invalid" (click)="addVacancy(Name, VacancyStatus, VacancyLocation)" class="btn btn-primary">Сохранить</button>
                     <button [routerLink]="['/vacancies']" (click)="popUpHide()" class="btn btn-primary">Отменить</button>
                 </div>
             </div>
@@ -49,23 +50,32 @@ export class VacancyFormComponent implements OnInit, OnDestroy {
     Name: string;
     VacancyStatus: number;
     VacancyLocation: string;
+    userRole: string;
 
-    constructor(private vacanciesService: VacanciesService, private vacanciesComponent: VacanciesComponent, private route: ActivatedRoute, private router: Router) { }
+    constructor(private vacanciesService: VacanciesService, private loginService: LoginService, private vacanciesComponent: VacanciesComponent, private route: ActivatedRoute, private router: Router) { }
 
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
-            let id = params['id'];
-            if (id != 0) {
-                this.vacanciesService.getVacancy(id).subscribe(res => {
-                    this.Id = res.Id;
-                    this.Name = res.Name;
-                    this.VacancyStatus = res.VacancyStatus;
-                    this.VacancyLocation = res.VacancyLocation;
+            this.loginService.getCurrentUserRole().subscribe(res => {
+                    this.userRole = res;
                 },
                 error => {
                     alert(error.statusText);
+                },
+                () => {
+                    let id = params['id'];
+                    if (id != 0) {
+                        this.vacanciesService.getVacancy(id).subscribe(res => {
+                                this.Id = res.Id;
+                                this.Name = res.Name;
+                                this.VacancyStatus = res.VacancyStatus;
+                                this.VacancyLocation = res.VacancyLocation;
+                            },
+                            error => {
+                                alert(error.statusText);
+                            });
+                    }
                 });
-            }
         });
     }
 

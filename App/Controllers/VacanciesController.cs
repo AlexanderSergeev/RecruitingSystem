@@ -25,7 +25,7 @@ namespace App.Controllers
 
         [Route]
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Administrator" + "," + "Director" + "," + "HR")]
         public IEnumerable<Vacancy> GetVacancies()
         {
             return repository.GetVacancies();
@@ -33,7 +33,7 @@ namespace App.Controllers
 
         [Route("{id}")]
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Administrator" + "," + "Director" + "," + "HR")]
         public async Task<Vacancy> GetVacancy(int id)
         {
             return await repository.GetVacancy(id);
@@ -41,7 +41,7 @@ namespace App.Controllers
 
         [Route("candidates/{id}")]
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Administrator" + "," + "Director" + "," + "HR")]
         public async Task<IEnumerable<CheckedCandidate>> GetVacancyCandidates(int id)
         {
             return await repository.GetVacancyCandidates(id);
@@ -49,7 +49,7 @@ namespace App.Controllers
 
         [Route("otherCandidates/{id}")]
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Administrator" + "," + "Director" + "," + "HR")]
         public async Task<IEnumerable<Candidate>> GetOtherVacancyCandidates(int id)
         {
             return await repository.GetOtherVacancyCandidates(id);
@@ -65,7 +65,7 @@ namespace App.Controllers
 
         [Route("candidates")]
         [HttpPost]
-        [Authorize(Roles = "Administrator" + "," + "Director")]
+        [Authorize(Roles = "Administrator" + "," + "Director" + "," + "HR")]
         public async Task<Candidate> AddVacancyCandidate([FromBody]VacancyIdCouple couple)
         {
             return await repository.AddVacancyCandidate(couple);
@@ -81,7 +81,7 @@ namespace App.Controllers
 
         [Route("candidates/interview/{status}")]
         [HttpPut]
-        [Authorize(Roles = "Administrator" + "," + "HR")]
+        [Authorize(Roles = "Administrator" + "," + "Director" + "," + "HR")]
         public async Task<Candidate> CheckCandidateInterview(bool status, [FromBody]VacancyIdCouple couple)
         {
             var result = await repository.CheckCandidateInterview(couple, status);
@@ -96,7 +96,7 @@ namespace App.Controllers
 
         [Route("candidates/status/{status}")]
         [HttpPut]
-        [Authorize(Roles = "Administrator" + "," + "HR")]
+        [Authorize(Roles = "Administrator" + "," + "Director" + "," + "HR")]
         public async Task<Candidate> ChangeCandidateStatus(int status, [FromBody]VacancyIdCouple couple)
         {
             return await repository.ChangeCandidateStatus(couple, status);

@@ -2,6 +2,7 @@ DECLARE @adminRoleId INT;
 DECLARE @hrRoleId INT;
 DECLARE @directorRoleId INT;
 DECLARE @projectRoleId INT;
+DECLARE @technicalRoleId INT;
 
 INSERT INTO [dbo].[AspNetRoles] ([Name]) VALUES (N'Administrator');
 SELECT @adminRoleId = SCOPE_IDENTITY();
@@ -11,6 +12,8 @@ INSERT INTO [dbo].[AspNetRoles] ([Name]) VALUES (N'HR')
 SELECT @hrRoleId = SCOPE_IDENTITY();
 INSERT INTO [dbo].[AspNetRoles] ([Name]) VALUES (N'ProjectManager')
 SELECT @projectRoleId = SCOPE_IDENTITY();
+INSERT INTO [dbo].[AspNetRoles] ([Name]) VALUES (N'Technical')
+SELECT @technicalRoleId = SCOPE_IDENTITY();
 
 DECLARE @administratorUserId INT;
 
@@ -37,7 +40,7 @@ INSERT INTO [dbo].[AspNetUsers]
            ,NULL
            ,1
            ,0
-           ,N'admin@kpmg.ru');
+           ,N'admin@admin.com');
 SELECT @administratorUserId = SCOPE_IDENTITY();
 
 INSERT INTO [dbo].[AspNetUserRoles]
@@ -148,6 +151,41 @@ INSERT INTO [dbo].[AspNetUserRoles]
            ,[RoleId])
      VALUES
            (@projectUserId, @projectRoleId);
+		   
+
+DECLARE @technicalUserId INT;
+
+INSERT INTO [dbo].[AspNetUsers]
+           ([Email]
+           ,[EmailConfirmed]
+           ,[PasswordHash]
+           ,[SecurityStamp]
+           ,[PhoneNumber]
+           ,[PhoneNumberConfirmed]
+           ,[TwoFactorEnabled]
+           ,[LockoutEndDateUtc]
+           ,[LockoutEnabled]
+           ,[AccessFailedCount]
+           ,[UserName])
+     VALUES
+           (N'technical@technical.com'
+           ,1
+           ,N'AOE5qmpKwWGC3eMCRhhDhEXQwBRbzoVX5/3Ojt0pWg5UwIhQVjUFMVrGjO+2pXXuRg=='
+           ,N'e9933650-62ab-4786-b8cd-b0e1243a5c93'
+           ,N'+70000000000'
+           ,0
+           ,0
+           ,NULL
+           ,1
+           ,0
+           ,N'technical@technical.com');
+SELECT @technicalUserId = SCOPE_IDENTITY();
+
+INSERT INTO [dbo].[AspNetUserRoles]
+           ([UserId]
+           ,[RoleId])
+     VALUES
+           (@technicalUserId, @technicalRoleId);
 
 
 
